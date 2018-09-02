@@ -11,18 +11,26 @@ int main(int argc, char** argv) {
 		cout << "Usage: ./junit-test-palindrome [num]" << endl;
 		return 0;
 	}
-	for (int i = 0; i < atoi(argv[1]); i++) {
+	bool failed = false;
+
+	for (signed int i = 0; i < atoi(argv[1]); i++) {
 		string s = to_string(i);
 		stringstream ss(s);
 
 		bool is_palindrome = equal(s.begin(), s.begin() + s.size()/2, s.rbegin());
 		if (helper(ss, s.size()) == is_palindrome) {
-			cout << "OK: " << i << ", is palindrome: " << is_palindrome << endl;
+			//cout << "OK: " << i << ", is palindrome: " << is_palindrome << endl;
 		} else {
-			cout << "FAILED!" << endl;
+			failed = true;
+			cout << "[FAILED] On input " << i << ". Expected " << is_palindrome
+				<< " got " <<  helper(ss, s.size()) << endl;
 			cout << "Press enter to continue" << endl;
 			getchar();
 		}
+	}
+
+	if (!failed) {
+		cerr << endl << "[OK] Passed checks" << endl << endl;
 	}
 
   return 0;

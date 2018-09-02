@@ -21,32 +21,54 @@ int main(int argc, char *argv[]) {
 	vector<char*> pointers;
 
 	const string _FAIL = "\033[31m[FAIL] \033[0m";
-	const string _OK = "\033[32m[OK] \033[0m";
+	const string _OK = "\033[32m[ OK ] \033[0m";
 	const string _NOTE = "\033[35m[NOTE] \033[0m";
 	const string _TEST = "\033[36m[TEST] \033[0m";
+	const string _DONE = "[DONE]";
 
 	// TEST MASS MEMORY ALLOCATION
-	cerr << _TEST << "Testing mass memory allocation" << endl;
+	cerr << _TEST << "Allocating three 3000 char blocks" << endl;
 	char* po1;
 	po1 = mngr.alloc_chars(3000);
+
+	char* po2;
+	po2 = mngr.alloc_chars(3000);
+
+	char* po3;
+	po3 = mngr.alloc_chars(3000);
+	cerr << _DONE << endl << endl;
+
+	cerr << _TEST << "Checking returned pointers" << endl;
+
+	if (po1 + 3000 == po2 && po2 + 3000 == po3) {
+		cerr << _OK << "Pointers OK" << endl;
+	} else {
+		cerr << _FAIL << "Pointers incorrect. Got P1: " << (void*)po1
+									<< " P2:" << (void*)po2 << " P3:" << (void*)po3 << endl;
+	}
+	cerr << endl;
+
+	cerr << _TEST << "Setting chars via pointers. a: 0-2999, b:2999-5999, "
+										<< "c:5999-8999" << endl;
+
 	for (int c = 0; c < 3000; c++) {
 		po1[c] = 'a';
 	}
 
-	char* po2;
-	po2 = mngr.alloc_chars(3000);
 	for (int c = 0; c < 3000; c++) {
 		po2[c] = 'b';
 	}
 
-	char* po3;
-	po3 = mngr.alloc_chars(3000);
 	for (int c = 0; c < 3000; c++) {
 		po3[c] = 'c';
 	}
 
+	cerr << _DONE << endl << endl;
+
+	cerr << _TEST << "Checking if chars were set correctly" << endl;
+
 	int count = 0;
-	for (int i = 0; i < 3000; i++) {
+	for (size_t i = 0; i < 3000; i++) {
 		if (po1[i] == 'a') {
 			count++;
 		}
@@ -60,7 +82,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	count = 0;
-	for (int i = 0; i < 3000; i++) {
+	for (size_t i = 0; i < 3000; i++) {
 		if (po2[i] == 'b') {
 			count++;
 		}
@@ -74,7 +96,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	count = 0;
-	for (int i = 0; i < 3000; i++) {
+	for (size_t i = 0; i < 3000; i++) {
 		if (po3[i] == 'c') {
 			count++;
 		}
@@ -96,7 +118,7 @@ int main(int argc, char *argv[]) {
 	// Adding when not enough space
 	cerr << _TEST << "Try allocating when buffer is full" << endl;
 	char* tmp;
-	for (int i = 0; i < 100; i++) {
+	for (size_t i = 0; i < 100; i++) {
 		tmp = mngr.alloc_chars(i);
 		pointers.push_back(tmp);
 	}
@@ -131,7 +153,7 @@ int main(int argc, char *argv[]) {
 	cerr << endl;
 
 	// Check with user
-	cerr << _NOTE << "This next test can easily take 30-60 minutes to run due to valgrind." << endl;
+	cerr << _NOTE << "This next test can easily take hours minutes to run due to valgrind." << endl;
 
 	char in = '0';
 	while (true) {
@@ -151,7 +173,7 @@ int main(int argc, char *argv[]) {
 
 	// Create 10000 single char allocations
 	cerr << _TEST << "Create 10000 single char allocations (if running with valgrind, this can take hours)" << endl;
-	for (int i = 0; i < 10000; i++) {
+	for (size_t i = 0; i < 10000; i++) {
 		p = mngr.alloc_chars(1);
 		*p = 'a';
 		pointers.push_back(p);
@@ -163,16 +185,16 @@ int main(int argc, char *argv[]) {
 	// Check returned pointers (should be sequential)
 	cerr << _TEST << "Check if returned pointers and values are correct" << endl;
 	bool failed = false;
-	for (int i = 0; i < pointers.size()-1; i++) {
+	for (size_t i = 0; i < pointers.size()-1; i++) {
 		if (pointers[i]+1 != pointers[i+1]) {
 			failed = true;
 			break;
 		}
 	}
 	if (!failed) {
-		cerr << _OK << "returned pointers were OK" << endl;
+		cerr << _OK << "Returned pointers were OK" << endl;
 	} else {
-		cerr << _FAIL << "returned pointers were incorrect" << endl;
+		cerr << _FAIL << "Returned pointers were incorrect" << endl;
 		pause();
 	}
 
@@ -185,16 +207,16 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	if (!failed) {
-		cerr << _OK << "returned values were OK" << endl;
+		cerr << _OK << "Returned values were OK" << endl;
 	} else {
-		cerr << _FAIL << "returned values were incorrect" << endl;
+		cerr << _FAIL << "Returned values were incorrect" << endl;
 		pause();
 	}
 	cerr << endl;
 
 	// Free 2000 pointers in the middle of the buffer
 	cerr << _TEST << "Trying to free 2000 pointers in middle of buffer" << endl;
-	for (int i = 0; i < 2000; i++) {
+	for (size_t i = 0; i < 2000; i++) {
 		mngr.free_chars(pointers[2999] + i);
 	}
 	cerr << "[DONE]" << endl << endl;
@@ -204,16 +226,16 @@ int main(int argc, char *argv[]) {
 	p = mngr.alloc_chars(2000);
 	pointers.push_back(p);
 	if (p != NULL) {
-		cerr << _OK << "returned valid pointer" << endl;
+		cerr << _OK << "Returned valid pointer" << endl;
 	} else {
-		cerr << _FAIL << "null pointer returned" << endl;
+		cerr << _FAIL << "Null pointer returned" << endl;
 		pause();
 	}
 	cerr << endl;
 
 	// Writing to new 2000 char pointer
 	cerr << _TEST << "Testing writing to new pointer" << endl;
-	for (int i = 0; i < 2000; i++) {
+	for (size_t i = 0; i < 2000; i++) {
 		p[i] = 'b';
 	}
 	cerr << "[DONE]" << endl << endl;
@@ -221,7 +243,7 @@ int main(int argc, char *argv[]) {
 	// Check integrity
 	cerr << _TEST << "Check if all values in buffer are correct" << endl;
 	failed = false;
-	for (int i = 0; i < 10000; i++) {
+	for (size_t i = 0; i < 10000; i++) {
 		tmp = pointers.at(0) + i;
 		if (i < 2999 || i >= 4999) {
 			if (*tmp != 'a') {
@@ -238,14 +260,12 @@ int main(int argc, char *argv[]) {
 		}
 		// cerr << *tmp;
 	}
-	cerr << endl;
 	if (!failed) {
-		cerr << _OK << "all values were as expected" << endl;
+		cerr << _OK << "All values were as expected" << endl;
 	} else {
-		cerr << _FAIL << "found unexpected values in buffer" << endl;
+		cerr << _FAIL << "Found unexpected values in buffer" << endl;
 		pause();
 	}
-	cerr << endl;
 
 	// Free all pointers
 	cerr << _TEST << "Free all allocated pointers" << endl;
@@ -257,12 +277,12 @@ int main(int argc, char *argv[]) {
 	/* MORE TESTS HERE? */
 
 	// Tests complete
+	cerr << endl;
+	cerr << _NOTE << "Author: Jonathan Holtmann" << endl;
 	cerr << _NOTE << "Tests complete. Make sure to run this with valgrind ";
 	cerr << "to check for memory leaks as well." << endl;
 	cerr << _NOTE << "If you can think of more tests to add, please either add them ";
-	cerr << "yourself or suggest them on Piazza." << endl << endl;
-
-	cerr << _NOTE << "Author: Jonathan Holtmann" << endl;
+	cerr << "yourself or suggest them on Piazza." << endl;
 	cerr << _NOTE << "Have a nice day!" << endl;
 
   return 0;
