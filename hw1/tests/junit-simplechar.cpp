@@ -135,6 +135,12 @@ int main(int argc, char *argv[]) {
 	pointers.clear();
 	cerr << "[DONE]" << endl << endl;
 
+	// Test out of bound pointer
+	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
+	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p - 9000); // 1000 chars before buffer
+	cerr << _DONE << endl << endl;
+
 	// Free all allocated memory
 	cerr << _TEST << "Free currently allocated memory" << endl;
 	mngr.free_chars(po1);
@@ -208,7 +214,7 @@ int main(int argc, char *argv[]) {
 	for (size_t i = 0; i < 2000; i++) {
 		mngr.free_chars(pointers[2999 + i]);
 	}
-	cerr << "[DONE]" << endl;
+	cerr << "[DONE]" << endl << endl;
 
 	// Allocate 2000 characters
 	cerr << _TEST << "Trying to allocate 2000 chars" << endl;
