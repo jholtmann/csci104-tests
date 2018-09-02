@@ -40,11 +40,14 @@ int main(int argc, char *argv[]) {
 
 	cerr << _TEST << "Checking returned pointers" << endl;
 
-	if (po1 + 3000 == po2 && po2 + 3000 == po3) {
+	if (po1 + 3000 == po2 && po2 + 3000 == po3
+			&& po1 != po2 && po2 != po3 && po1 != po3
+			&& po1 != NULL && po2 != NULL && po3 != NULL) {
 		cerr << _OK << "Pointers OK" << endl;
 	} else {
 		cerr << _FAIL << "Pointers incorrect. Got P1: " << (void*)po1
 									<< " P2:" << (void*)po2 << " P3:" << (void*)po3 << endl;
+		pause();
 	}
 	cerr << endl;
 
