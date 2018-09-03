@@ -201,9 +201,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	if (!failed) {
-		cerr << _OK << "Returned pointers were OK" << endl;
+		cerr << _OK << "Returned pointers are OK" << endl;
 	} else {
-		cerr << _FAIL << "Returned pointers were incorrect" << endl;
+		cerr << _FAIL << "Returned pointers are incorrect" << endl;
 		pause();
 	}
 
@@ -275,6 +275,7 @@ int main(int argc, char *argv[]) {
 		cerr << _FAIL << "Found unexpected values in buffer" << endl;
 		pause();
 	}
+	cerr << endl;
 
 	// Free all pointers
 	cerr << _TEST << "Free all allocated pointers" << endl;
