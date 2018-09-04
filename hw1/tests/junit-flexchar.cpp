@@ -16,7 +16,7 @@ void pause() {
 }
 
 int main(int argc, char *argv[]) {
-  flexCharManager mngr;
+	flexCharManager mngr;
 	char* p = NULL;
 	char* tmp = NULL;
 	vector<char*> pointers;
@@ -153,6 +153,12 @@ int main(int argc, char *argv[]) {
 	}
 	cerr << endl;
 
+	// Test freeing out of bound pointer
+	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
+	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p - 10000); // 1000 chars before buffer
+	cerr << _DONE << endl << endl;
+
 	// Adding when not enough space
 	cerr << _TEST << "Try allocating when buffer is full" << endl;
 	pointers.clear();
@@ -182,12 +188,6 @@ int main(int argc, char *argv[]) {
 	}
 	pointers.clear();
 	cerr << "[DONE]" << endl << endl;
-
-	// Test freeing out of bound pointer
-	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
-	mngr.free_chars(p + 2000); // 1000 chars past buffer
-	mngr.free_chars(p - 9000); // 1000 chars before buffer
-	cerr << _DONE << endl << endl;
 
 	// Free all allocated memory
 	cerr << _TEST << "Free currently allocated memory" << endl;
