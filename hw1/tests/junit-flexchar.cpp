@@ -195,12 +195,13 @@ int main(int argc, char *argv[]) {
 	mngr.free_chars(po2);
 	mngr.free_chars(po3);
 	mngr.free_chars(p);
-	cerr << "[DONE]" << endl << endl;
+	cerr << "[DONE] If you see chars between this and the next done,";
+	cerr << " freeing failed" << endl;
 
 	for (size_t i = 0; i < 10000; i++) {
 		cerr << po1[i];
 	}
-	cerr << endl;
+	cerr << _DONE << endl << endl;
 
 	// Make sure buffer is empty
 	cerr << _TEST << "Check if buffer was emptied by allocating 10000 char block" << endl;
