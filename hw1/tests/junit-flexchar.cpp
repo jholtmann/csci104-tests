@@ -128,17 +128,19 @@ int main(int argc, char *argv[]) {
 	cerr << endl;
 
 	// Test allocating out of bound pointer
-	cerr << _TEST << "Test allocating out of bound" << endl;
-	char* t1 = mngr.alloc_chars(-1000);
-	char* t2 = mngr.alloc_chars(12000);
-	if (t1 == NULL && t2 == NULL) {
-		cerr << _OK << "Returned NULL pointers as expected" << endl;
-	} else {
-		cerr << _FAIL << "Returned " << (void*)t1 << " and " << (void*)t2;
-		cerr << ", expected NULL" << endl;
-		pause();
-	}
-	cerr << endl;
+        cerr << _TEST << "Test allocating out of bound" << endl;
+        char* t1 = mngr.alloc_chars(-1000);
+        char* t2 = mngr.alloc_chars(12000);
+        char* t3 = mngr.alloc_chars(-1);
+        char* t4 = mngr.alloc_chars(10001);
+        if (t1 == NULL && t2 == NULL && t3 == NULL && t4 == NULL) {
+                cerr << _OK << "Returned NULL pointers as expected" << endl;
+        } else {
+                cerr << _FAIL << "Returned " << (void*)t1 << ", " << (void*)t2 << ", " << (void*)t3 << ", and " << (void*)t4;
+                cerr << ", expected NULL" << endl;
+                pause();
+        }
+        cerr << endl;
 
 	// Max out buffer
 	cerr << _TEST << "Try allocating another 1000 chars" << endl;
@@ -155,8 +157,11 @@ int main(int argc, char *argv[]) {
 
 	// Test freeing out of bound pointer
 	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
-	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p + 2000);  // 1000 chars past buffer
 	mngr.free_chars(p - 10000); // 1000 chars before buffer
+        mngr.free_chars(p + 1000);  // 1 chars past buffer
+        mngr.free_chars(p - 9001);  // 1 chars before buffer
+
 	cerr << _DONE << endl << endl;
 
 	// Adding when not enough space
