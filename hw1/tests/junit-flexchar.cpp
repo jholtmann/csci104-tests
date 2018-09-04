@@ -11,14 +11,16 @@ using namespace std;
 
 /* http://www.cplusplus.com/forum/articles/7312/ */
 void pause() {
-	cerr << "Press ENTER to continue... " << flush;
+	cerr << "Press ENTER to continue tests" << flush;
   cin.ignore( std::numeric_limits <std::streamsize> ::max(), '\n' );
 }
 
 int main(int argc, char *argv[]) {
-  flexCharManager mngr;
+  simpleCharManager mngr;
 	char* p;
+	char* tmp;
 	vector<char*> pointers;
+	bool failed;
 
 	const string _FAIL = "\033[31m[FAIL] \033[0m";
 	const string _OK = "\033[32m[ OK ] \033[0m";
@@ -113,19 +115,71 @@ int main(int argc, char *argv[]) {
 	}
 	cerr << endl;
 
+	// Try allocating 0 chars
+	cerr << _TEST << "Try allocating 0 chars" << endl;
+	tmp = mngr.alloc_chars(0);
+
+	if (tmp == NULL) {
+		cerr << _OK << "Returned NULL as expected" << endl;
+	} else {
+		cerr << _FAIL << "Returned " << (void*)tmp << ", expected NULL" << endl;
+		pause();
+	}
+	cerr << endl;
+
+	// Test allocating out of bound pointer
+	cerr << _TEST << "Test allocating out of bound" << endl;
+	char* t1 = mngr.alloc_chars(-1000);
+	char* t2 = mngr.alloc_chars(12000);
+	if (t1 == NULL && t2 == NULL) {
+		cerr << _OK << "Returned NULL pointers as expected" << endl;
+	} else {
+		cerr << _FAIL << "Returned " << (void*)t1 << " and " << (void*)t2;
+		cerr << ", expected NULL" << endl;
+		pause();
+	}
+	cerr << endl;
+
+	// Test freeing out of bound pointer
+	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
+	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p - 9000); // 1000 chars before buffer
+	cerr << _DONE << endl << endl;
+
 	// Max out buffer
 	cerr << _TEST << "Try allocating another 1000 chars" << endl;
 	p = mngr.alloc_chars(1000);
-	cerr << "[DONE]" << endl << endl;
+
+	if (p == po3 + 3000) {
+		cerr << _OK << "Returned valid pointer" << endl;
+	} else {
+		cerr << _FAIL << "Returned " << (void*)p << " expected ";
+		cerr << (void*)(po3+3000) << endl;
+		pause();
+	}
+	cerr << endl;
 
 	// Adding when not enough space
 	cerr << _TEST << "Try allocating when buffer is full" << endl;
-	char* tmp;
-	for (size_t i = 0; i < 100; i++) {
-		tmp = mngr.alloc_chars(i);
-		pointers.push_back(tmp);
+	pointers.clear();
+	for (size_t i = 1; i < 100; i++) {
+		pointers.push_back(mngr.alloc_chars(i));
 	}
-	cerr << "[DONE]" << endl << endl;
+
+	failed = false;
+	for (char* c : pointers) {
+		if (c != NULL) {
+			failed = true;
+			cerr << "\t [ERROR] Got pointer " << (void*)c << endl;
+		}
+	}
+	if (!failed) {
+		cerr << _OK << "All returned pointers were NULL" << endl;
+	} else {
+		cerr << _FAIL << "Some returned pointers were not NULL" << endl;
+		pause();
+	}
+	cerr << endl;
 
 	// Free null pointer
 	cerr << _TEST << "Try freeing null pointer" << endl;
@@ -135,12 +189,6 @@ int main(int argc, char *argv[]) {
 	pointers.clear();
 	cerr << "[DONE]" << endl << endl;
 
-	// Test out of bound pointer
-	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
-	mngr.free_chars(p + 2000); // 1000 chars past buffer
-	mngr.free_chars(p - 9000); // 1000 chars before buffer
-	cerr << _DONE << endl << endl;
-
 	// Free all allocated memory
 	cerr << _TEST << "Free currently allocated memory" << endl;
 	mngr.free_chars(po1);
@@ -149,8 +197,13 @@ int main(int argc, char *argv[]) {
 	mngr.free_chars(p);
 	cerr << "[DONE]" << endl << endl;
 
+	for (size_t i = 0; i < 10000; i++) {
+		cerr << po1[i];
+	}
+	cerr << endl;
+
 	// Make sure buffer is empty
-	cerr << _TEST << "Check if buffer was emptied by allocating 10000 chars" << endl;
+	cerr << _TEST << "Check if buffer was emptied by allocating 10000 char block" << endl;
 	p = mngr.alloc_chars(10000);
 	if (p != NULL) {
 		cerr << _OK << "Buffer successfully freed" << endl;
@@ -193,7 +246,7 @@ int main(int argc, char *argv[]) {
 
 	// Check returned pointers (should be sequential)
 	cerr << _TEST << "Check if returned pointers and values are correct" << endl;
-	bool failed = false;
+	failed = false;
 	for (size_t i = 0; i < pointers.size()-1; i++) {
 		if (pointers[i]+1 != pointers[i+1]) {
 			failed = true;
