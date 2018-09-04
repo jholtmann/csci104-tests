@@ -16,7 +16,7 @@ void pause() {
 }
 
 int main(int argc, char *argv[]) {
-  simpleCharManager mngr;
+  flexCharManager mngr;
 	char* p;
 	char* tmp;
 	vector<char*> pointers;
