@@ -17,8 +17,8 @@ void pause() {
 
 int main(int argc, char *argv[]) {
   simpleCharManager mngr;
-	char* p;
-	char* tmp;
+	char* p = NULL;
+	char* tmp = NULL;
 	vector<char*> pointers;
 	bool failed;
 
@@ -140,12 +140,6 @@ int main(int argc, char *argv[]) {
 	}
 	cerr << endl;
 
-	// Test freeing out of bound pointer
-	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
-	mngr.free_chars(p + 2000); // 1000 chars past buffer
-	mngr.free_chars(p - 9000); // 1000 chars before buffer
-	cerr << _DONE << endl << endl;
-
 	// Max out buffer
 	cerr << _TEST << "Try allocating another 1000 chars" << endl;
 	p = mngr.alloc_chars(1000);
@@ -158,6 +152,12 @@ int main(int argc, char *argv[]) {
 		pause();
 	}
 	cerr << endl;
+
+	// Test freeing out of bound pointer
+	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
+	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p - 9000); // 1000 chars before buffer
+	cerr << _DONE << endl << endl;
 
 	// Adding when not enough space
 	cerr << _TEST << "Try allocating when buffer is full" << endl;
