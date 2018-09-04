@@ -17,8 +17,8 @@ void pause() {
 
 int main(int argc, char *argv[]) {
   simpleCharManager mngr;
-	char* p = NULL;
-	char* tmp = NULL;
+	char* p = nullptr;
+	char* tmp = nullptr;
 	vector<char*> pointers;
 	bool failed;
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
 	if (po1 + 3000 == po2 && po2 + 3000 == po3
 			&& po1 != po2 && po2 != po3 && po1 != po3
-			&& po1 != NULL && po2 != NULL && po3 != NULL) {
+			&& po1 != nullptr && po2 != nullptr && po3 != nullptr) {
 		cerr << _OK << "Pointers OK" << endl;
 	} else {
 		cerr << _FAIL << "Pointers incorrect. Got P1: " << (void*)po1
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 	cerr << _TEST << "Try allocating 0 chars" << endl;
 	tmp = mngr.alloc_chars(0);
 
-	if (tmp == NULL) {
+	if (tmp == nullptr) {
 		cerr << _OK << "Returned NULL as expected" << endl;
 	} else {
 		cerr << _FAIL << "Returned " << (void*)tmp << ", expected NULL" << endl;
@@ -128,17 +128,19 @@ int main(int argc, char *argv[]) {
 	cerr << endl;
 
 	// Test allocating out of bound pointer
-	cerr << _TEST << "Test allocating out of bound" << endl;
-	char* t1 = mngr.alloc_chars(-1000);
-	char* t2 = mngr.alloc_chars(12000);
-	if (t1 == NULL && t2 == NULL) {
-		cerr << _OK << "Returned NULL pointers as expected" << endl;
-	} else {
-		cerr << _FAIL << "Returned " << (void*)t1 << " and " << (void*)t2;
-		cerr << ", expected NULL" << endl;
-		pause();
-	}
-	cerr << endl;
+  cerr << _TEST << "Test allocating out of bound" << endl;
+  char* t1 = mngr.alloc_chars(-1000);
+  char* t2 = mngr.alloc_chars(12000);
+  char* t3 = mngr.alloc_chars(-1);
+  char* t4 = mngr.alloc_chars(10001);
+  if (t1 == nullptr && t2 == nullptr && t3 == nullptr && t4 == nullptr) {
+          cerr << _OK << "Returned NULL pointers as expected" << endl;
+  } else {
+          cerr << _FAIL << "Returned " << (void*)t1 << ", " << (void*)t2 << ", " << (void*)t3 << ", and " << (void*)t4;
+          cerr << ", expected NULL" << endl;
+          pause();
+  }
+  cerr << endl;
 
 	// Max out buffer
 	cerr << _TEST << "Try allocating another 1000 chars" << endl;
@@ -155,8 +157,11 @@ int main(int argc, char *argv[]) {
 
 	// Test freeing out of bound pointer
 	cerr << _TEST << "Test freeing pointers that are not within buffer" << endl;
-	mngr.free_chars(p + 2000); // 1000 chars past buffer
+	mngr.free_chars(p + 2000);  // 1000 chars past buffer
 	mngr.free_chars(p - 10000); // 1000 chars before buffer
+  mngr.free_chars(p + 1000);  // 1 chars past buffer
+  mngr.free_chars(p - 9001);  // 1 chars before buffer
+
 	cerr << _DONE << endl << endl;
 
 	// Adding when not enough space
@@ -168,7 +173,7 @@ int main(int argc, char *argv[]) {
 
 	failed = false;
 	for (char* c : pointers) {
-		if (c != NULL) {
+		if (c != nullptr) {
 			failed = true;
 			cerr << "\t [ERROR] Got pointer " << (void*)c << endl;
 		}
@@ -205,7 +210,7 @@ int main(int argc, char *argv[]) {
 	// Make sure buffer is empty
 	cerr << _TEST << "Check if buffer was emptied by allocating 10000 char block" << endl;
 	p = mngr.alloc_chars(10000);
-	if (p != NULL) {
+	if (p != nullptr) {
 		cerr << _OK << "Buffer successfully freed" << endl;
 		mngr.free_chars(p);
 	} else {
@@ -268,7 +273,7 @@ int main(int argc, char *argv[]) {
 	cerr << _TEST << "Trying to allocate 2000 chars" << endl;
 	p = mngr.alloc_chars(2000);
 	pointers.push_back(p);
-	if (p != NULL) {
+	if (p != nullptr) {
 		cerr << _OK << "Returned valid pointer" << endl;
 	} else {
 		cerr << _FAIL << "Null pointer returned" << endl;
