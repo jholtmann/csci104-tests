@@ -180,6 +180,7 @@ if __name__ == "__main__":
 	git_dir = os.path.abspath(git_dir)
 	test_dir = os.path.abspath(test_dir)
 	test_to_run = args.test
+	force_update = False
 
 	git_script = os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest_hw2.py")
 
@@ -199,7 +200,7 @@ if __name__ == "__main__":
 			os.makedirs(git_dir)
 		git_clone(git_dir)
 		cmake(test_dir)
-		update = True
+		force_update = True
 
 	if not no_pull:
 		changes = git_pull(git_dir)
@@ -210,7 +211,7 @@ if __name__ == "__main__":
 		checkForUpdate()
 
 	if not args.noupdate:
-		if changes:
+		if changes or force_update:
 			if not suppress: print("-- Updating tests")
 			updateTests(test_list)
 
