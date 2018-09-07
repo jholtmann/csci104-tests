@@ -198,6 +198,7 @@ if __name__ == "__main__":
 		if not os.path.isdir(git_dir):
 			os.makedirs(git_dir)
 		git_clone(git_dir)
+		cmake(test_dir)
 		update = True
 
 	if not no_pull:
