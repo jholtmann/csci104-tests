@@ -74,9 +74,8 @@ def runTest(name, paths):
 	res = make(paths[2], test_dir)
 
 	run = True
-	for line in res:
-		if "failed" in line:
-			run = False
+	if "failed" in res:
+		run = False
 
 	if run:
 		if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
