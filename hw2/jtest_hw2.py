@@ -64,22 +64,33 @@ def updateTests(list):
 	cmake(test_dir)
 
 def runAll(list):
-	for test, paths in list.items():
-		runTest(test, paths)
+	make("check", test_dir)
+	# for test, paths in list.items():
+	# 	runTest(test, paths)
 
 def runTest(name, paths):
 	print("\n#######################  Test: %s  #######################" % name)
 	if not suppress: print("-- Running test %s from file %s" % (name, paths[1]))
-	make(paths[2], test_dir)
+	res = make(paths[2], test_dir)
 
-	if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
-	p = subprocess.Popen([paths[0] + os.sep + paths[2]], cwd=test_dir)
-	p.wait()
+	run = True
+	for line in res:
+		if "failed" in line:
+			run = False
+
+	if run:
+		if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
+		p = subprocess.Popen(["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]], cwd=test_dir)
+		p.wait()
+	else:
+		if not suppress: print("-- Errors detected while compiling, stopping")
+		sys.exit()
 
 def make(test, dir):
 	if not suppress: print("-- Running: make %s\n" % test)
-	p = subprocess.Popen(["make", test], cwd=dir)
+	p = subprocess.Popen(["make", test], cwd=dir, stdout=subprocess.PIPE)
 	p.wait()
+	return p.stdout
 
 def cmake(dir):
 	if not suppress: print("-- Running cmake in directory %s\n" % dir)
@@ -98,7 +109,7 @@ def updateSelf():
 
 	#https://stackoverflow.com/a/5758926
 	args = sys.argv[:]
-	if debug: print('Re-spawning %s' % ' '.join(args))
+	if not suppress: print('-- Re-spawning %s\n' % ' '.join(args))
 
 	args.insert(0, sys.executable)
 	if sys.platform == 'win32':
@@ -140,6 +151,10 @@ if __name__ == "__main__":
 			print("-- Please place this script in your hw-[yourid]/hw2 directory")
 			sys.exit()
 
+	print("####################################################")
+	print("                   JTEST HW2              ")
+	print("####################################################")
+
 	pull_only = args.pull
 	no_pull = args.nopull
 
@@ -169,14 +184,6 @@ if __name__ == "__main__":
 
 	git_script = os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest_hw2.py")
 
-	if not args.noselfupdate:
-		checkForUpdate()
-
-	print("\n")
-	print("####################################################")
-	print("                   JTEST HW2              ")
-	print("####################################################")
-
 	####################### DEFINE TESTS #######################
 	test_list = dict()
 	test_list["ssort"] = [os.path.abspath(test_dir + os.sep + "selection_sort_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-ssort.cpp"), "selection_sort_test"]
@@ -198,6 +205,9 @@ if __name__ == "__main__":
 		changes = git_pull(git_dir)
 	else:
 		changes = True
+
+	if not args.noselfupdate:
+		checkForUpdate()
 
 	if not args.noupdate:
 		if changes:

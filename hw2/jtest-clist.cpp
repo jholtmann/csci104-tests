@@ -158,3 +158,33 @@ TEST(ListJTest, CircularIndicies) {
 
 	delete populatedList;
 }
+
+TEST(ListJTest, SetSingleItem)
+{
+	std::vector<int> contents{0};
+
+	CircularListInt * populatedList = makeCircularList(contents);
+
+	EXPECT_TRUE(checkListContent(populatedList, contents));
+
+	populatedList->set(0, 2);
+	contents[0] = 2;
+
+	EXPECT_TRUE(checkListContent(populatedList, contents));
+
+	delete populatedList;
+}
+
+TEST(ListJTest, SetEmptyList)
+{
+	std::vector<int> contents{0};
+
+	CircularListInt * list = new CircularListInt();
+
+	list->set(0, 2);
+	contents[0] = 2;
+
+	EXPECT_EQ(0, list->get(0));
+
+	delete list;
+}
