@@ -245,7 +245,7 @@ int main(int argc, char *argv[]) {
 		p = mngr.alloc_chars(1);
 		*p = 'a';
 		pointers.push_back(p);
-		if (i % 50 == 0)
+		if (i % 1000 == 0)
 			cerr << "\t Created pointer: "<< i << endl;
 	}
 	cerr << "[DONE]" << endl << endl;
