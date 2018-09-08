@@ -59,19 +59,19 @@ def updateTests(list):
 
 	# Check if basic test files are still there
 	for test, paths in list.items():
-		ind_path = paths[0] + os.sep + "basic_tests.cpp"
-		if os.path.isfile(ind_path):
-			if not suppress: print("-- Found %s" % ind_path)
-			if not suppress: print("-- Removing %s" % ind_path)
-			os.remove(ind_path)
+		# ind_path = paths[0] + os.sep + "basic_tests.cpp"
+		# if os.path.isfile(ind_path):
+		# 	if not suppress: print("-- Found %s" % ind_path)
+		# 	if not suppress: print("-- Removing %s" % ind_path)
+		# 	os.remove(ind_path)
 		if debug: print("-- Copying %s into %s" % (paths[1], paths[0]))
 		copy(paths[1], paths[0])
 	cmake(test_dir)
 
 def runAll(list):
-	make("check", test_dir)
-	# for test, paths in list.items():
-	# 	runTest(test, paths)
+	# make("check", test_dir)
+	for test, paths in list.items():
+		runTest(test, paths)
 
 def runTest(name, paths):
 	print("\n#######################  Test: %s  #######################" % name)
@@ -79,12 +79,20 @@ def runTest(name, paths):
 	res = make(paths[2], test_dir)
 
 	run = True
-	if "failed" in res:
-		run = False
+
+	for line in res:
+		if b"failed" in line or b"error" in line or b"Error" in line:
+			run = False
 
 	if run:
 		if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
-		p = subprocess.Popen(["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]], cwd=test_dir)
+		if valgrind:
+			command = ["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]]
+		elif gdb:
+			command = ["gdb", paths[0] + os.sep + paths[2]]
+		else:
+			command = "paths[0] + os.sep + paths[2], cwd=test_dir"
+		p = subprocess.Popen(command, cwd=test_dir)
 		p.wait()
 	else:
 		if not suppress: print("-- Errors detected while compiling, stopping")
@@ -134,18 +142,22 @@ def hashFile(file):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='JTest Script - HW2')
-	required = parser.add_argument_group('required arguments')
+	advanced = parser.add_argument_group('advanced arguments')
 
 	parser.add_argument('-a','--all', help='Run all HW2 test cases', action='store_true', required=False, default=False)
 	parser.add_argument('-t','--test', help='Runs individual test case', choices=["ssort","clist","duckduck"], required=False, default="")
 	parser.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
-	parser.add_argument('-np','--nopull', help="Don't pull repository", action='store_true', required=False, default=False)
-	parser.add_argument('-nu','--noupdate', help="Don't update tests", action='store_true', required=False, default=False)
-	parser.add_argument('-ns','--noselfupdate', help="Don't update self", action='store_true', required=False, default=False)
-	parser.add_argument('--gitdir', help='Override git directory (relative path)', required=False, default="")
-	parser.add_argument('--testdir', help='Override tests directory (relative path)', required=False, default="")
-	parser.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
+	parser.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
+	parser.add_argument('-g','--gdb', help="Run gdb on test cases. Helpful for tracing segfaults. Does not run valgrind", action='store_true', required=False, default=False)
 	parser.add_argument('-s', '--suppress', help='Suppress status messages', action='store_true', required=False, default=False)
+
+	advanced.add_argument('-np','--nopull', help="Don't pull repository", action='store_true', required=False, default=False)
+	advanced.add_argument('-nu','--noupdate', help="Don't update tests", action='store_true', required=False, default=False)
+	advanced.add_argument('-ns','--noself', help="Don't update self", action='store_true', required=False, default=False)
+
+	advanced.add_argument('--gitdir', help='Override git directory (relative path)', required=False, default="")
+	advanced.add_argument('--testdir', help='Override tests directory (relative path)', required=False, default="")
+	advanced.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
 
 	args = parser.parse_args()
 
@@ -162,11 +174,25 @@ if __name__ == "__main__":
 	pull_only = args.pull
 	no_pull = args.nopull
 
+	suppress = args.suppress
+	debug = args.debug
+	valgrind = not args.novalgr
+
+	gdb = args.gdb
+	if gdb:
+		valgrind = False
+
+	if gdb and args.all:
+		print("-! --gdb is incompatible with --all")
+		sys.exit()
+	if args.test == "" and gdb:
+		print("-! --gdb requires a test to be set using --test")
+		sys.exit()
 	if args.pull and args.nopull:
-		print("-- --pull and --nopull are mutually exclusive options")
+		print("-! --pull and --nopull are mutually exclusive options")
 		sys.exit()
 	if args.all and args.test != "":
-		print("-- --all and --test are mutually exclusive")
+		print("-! --all and --test are mutually exclusive")
 		sys.exit()
 
 	if args.gitdir == "":
@@ -179,9 +205,6 @@ if __name__ == "__main__":
 	else:
 		test_dir = args.testdir
 
-	suppress = args.suppress
-	debug = args.debug
-
 	git_dir = os.path.abspath(git_dir)
 	test_dir = os.path.abspath(test_dir)
 	test_to_run = args.test
@@ -193,7 +216,7 @@ if __name__ == "__main__":
 	test_list = dict()
 	test_list["ssort"] = [os.path.abspath(test_dir + os.sep + "selection_sort_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-ssort.cpp"), "selection_sort_test"]
 	test_list["clist"] = [os.path.abspath(test_dir + os.sep + "circular_list_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-clist.cpp"), "circular_list_test"]
-	test_list["duckduck"] = [os.path.abspath(test_dir + os.sep + "duck_duck_goose_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-duckduck.cpp"), "duck_duck_goose_test"]
+	#test_list["duckduck"] = [os.path.abspath(test_dir + os.sep + "duck_duck_goose_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-duckduck.cpp"), "duck_duck_goose_test"]
 	###########################################################
 
 	# check if repo exists
@@ -212,13 +235,15 @@ if __name__ == "__main__":
 	else:
 		changes = True
 
-	if not args.noselfupdate:
+	if not args.noself:
 		checkForUpdate()
 
 	if not args.noupdate:
 		if changes or force_update:
 			if not suppress: print("-- Updating tests")
 			updateTests(test_list)
+	else:
+		cmake(test_dir)
 
 	if args.test != "":
 		runTest(args.test, test_list[args.test])
