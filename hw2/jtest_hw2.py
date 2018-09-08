@@ -7,6 +7,11 @@ import argparse
 from shutil import copy
 import hashlib
 
+#####################################################
+# AUTHOR: Jonathan Holtmann
+# CSCI 104 HW2 Test Case Script
+#####################################################
+
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
