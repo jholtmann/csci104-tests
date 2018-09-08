@@ -86,7 +86,7 @@ TEST(SelSortJTest, EmptyListMin)
 
 TEST(SelSortJTestStress, TenThousandElementMin) {
 	std::vector<int> contents;
-	for (int i = -5000; i <= 5000; i++) {
+	for (int i = 5000; i >= -5000; i--) {
 		contents.push_back(i);
 	}
 
@@ -100,7 +100,7 @@ TEST(SelSortJTestStress, TenThousandElementMin) {
 
 TEST(SelSortJTestStress, HundredThousandElementMin) {
 	std::vector<int> contents;
-	for (int i = -50000; i <= 50000; i++) {
+	for (int i = 50000; i >= -50000; i--) {
 		contents.push_back(i);
 	}
 
@@ -114,7 +114,7 @@ TEST(SelSortJTestStress, HundredThousandElementMin) {
 
 TEST(SelSortJTestStress, MillionElementMin) {
 	std::vector<int> contents;
-	for (int i = -500000; i <= 500000; i++) {
+	for (int i = 500000; i >= -500000; i--) {
 		contents.push_back(i);
 	}
 

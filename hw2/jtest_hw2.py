@@ -142,22 +142,24 @@ def hashFile(file):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='JTest Script - HW2')
-	advanced = parser.add_argument_group('advanced arguments')
+	test_args = parser.add_argument_group('test arguments')
+	advanced_args = parser.add_argument_group('advanced arguments')
 
-	parser.add_argument('-a','--all', help='Run all HW2 test cases', action='store_true', required=False, default=False)
-	parser.add_argument('-t','--test', help='Runs individual test case', choices=["ssort","clist","duckduck"], required=False, default="")
-	parser.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
-	parser.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
-	parser.add_argument('-g','--gdb', help="Run gdb on test cases. Helpful for tracing segfaults. Does not run valgrind", action='store_true', required=False, default=False)
 	parser.add_argument('-s', '--suppress', help='Suppress status messages', action='store_true', required=False, default=False)
+	parser.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
 
-	advanced.add_argument('-np','--nopull', help="Don't pull repository", action='store_true', required=False, default=False)
-	advanced.add_argument('-nu','--noupdate', help="Don't update tests", action='store_true', required=False, default=False)
-	advanced.add_argument('-ns','--noself', help="Don't update self", action='store_true', required=False, default=False)
+	test_args.add_argument('-a','--all', help='Run all HW2 test cases', action='store_true', required=False, default=False)
+	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["ssort","clist","duckduck"], required=False, default="")
+	test_args.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
+	test_args.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
+	test_args.add_argument('-g','--gdb', help="Run gdb on test cases. Helpful for tracing segfaults. Does not run valgrind", action='store_true', required=False, default=False)
 
-	advanced.add_argument('--gitdir', help='Override git directory (relative path)', required=False, default="")
-	advanced.add_argument('--testdir', help='Override tests directory (relative path)', required=False, default="")
-	advanced.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
+	advanced_args.add_argument('-np','--nopull', help="Don't pull repository", action='store_true', required=False, default=False)
+	advanced_args.add_argument('-nu','--noupdate', help="Don't update tests", action='store_true', required=False, default=False)
+	advanced_args.add_argument('-ns','--noself', help="Don't update self", action='store_true', required=False, default=False)
+
+	advanced_args.add_argument('--gitdir', help='Override git directory (relative path)', required=False, default="")
+	advanced_args.add_argument('--testdir', help='Override tests directory (relative path)', required=False, default="")
 
 	args = parser.parse_args()
 
