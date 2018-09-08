@@ -91,7 +91,7 @@ def runTest(name, paths):
 		elif gdb:
 			command = ["gdb", paths[0] + os.sep + paths[2]]
 		else:
-			command = "paths[0] + os.sep + paths[2], cwd=test_dir"
+			command = paths[0] + os.sep + paths[2]
 		p = subprocess.Popen(command, cwd=test_dir)
 		p.wait()
 	else:
@@ -218,7 +218,7 @@ if __name__ == "__main__":
 	test_list = dict()
 	test_list["ssort"] = [os.path.abspath(test_dir + os.sep + "selection_sort_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-ssort.cpp"), "selection_sort_test"]
 	test_list["clist"] = [os.path.abspath(test_dir + os.sep + "circular_list_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-clist.cpp"), "circular_list_test"]
-	#test_list["duckduck"] = [os.path.abspath(test_dir + os.sep + "duck_duck_goose_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-duckduck.cpp"), "duck_duck_goose_test"]
+	test_list["duckduck"] = [os.path.abspath(test_dir + os.sep + "duck_duck_goose_tests"), os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest-duckduck.cpp"), "duck_duck_goose_test"]
 	###########################################################
 
 	# check if repo exists
