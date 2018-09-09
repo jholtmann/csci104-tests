@@ -84,3 +84,17 @@ TEST(ListJTest, RepeatedRemoveHead) {
 
 	delete list;
 }
+
+TEST(ListJTest, RemoveMiddle) {
+	std::vector<int> contents{8, 953, 4, 200, 68};
+	CircularListInt *list = makeCircularList(contents);
+	printList(list);
+	list->remove(3);
+	contents.erase(contents.begin() + 3);
+	printList(list);
+
+	EXPECT_EQ(contents.size(), list->size());
+	EXPECT_TRUE(checkListContent(list, contents));
+
+	delete list;
+}

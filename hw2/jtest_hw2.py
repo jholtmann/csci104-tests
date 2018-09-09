@@ -68,11 +68,6 @@ def updateTests(list):
 		copy(paths[1], paths[0])
 	cmake(test_dir)
 
-def runAll(list):
-	# make("check", test_dir)
-	for test, paths in list.items():
-		runTest(test, paths)
-
 def runTest(name, paths):
 	print("\n#######################  Test: %s  #######################" % name)
 	if not suppress: print("-- Running test %s from file %s" % (name, paths[1]))
@@ -80,27 +75,33 @@ def runTest(name, paths):
 
 	run = True
 
-	for line in res:
-		if b"failed" in line or b"error" in line or b"Error" in line:
-			run = False
-
-	if run:
-		if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
-		if valgrind:
-			command = ["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]]
-		elif gdb:
-			command = ["gdb", paths[0] + os.sep + paths[2]]
-		else:
-			command = paths[0] + os.sep + paths[2]
-		p = subprocess.Popen(command, cwd=test_dir)
+	if name == "duckduck":
+		if not suppress: print("-- Builging duck_duck_goose executable in %s" % os.path.abspath(script_dir))
+		p = subprocess.Popen(["g++", "-g", "-std=c++11", "duck_duck_goose.cpp", "circular_list_int.cpp", "-o", "hw2-check/duck_duck_goose"], cwd=os.path.abspath(script_dir))
 		p.wait()
+
+	if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
+	if valgrind:
+		command = ["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]]
+	elif gdb:
+		command = ["gdb", paths[0] + os.sep + paths[2]]
 	else:
-		if not suppress: print("-- Errors detected while compiling, stopping")
-		sys.exit()
+		command = paths[0] + os.sep + paths[2]
+	p = subprocess.Popen(command, cwd=test_dir)
+	p.wait()
 
 def make(test, dir):
 	if not suppress: print("-- Running: make %s\n" % test)
 	p = subprocess.Popen(["make", test], cwd=dir, stdout=subprocess.PIPE)
+	while True:
+		line = p.stdout.readline().rstrip()
+		if not line:
+			break
+		print(line.decode("utf-8"))
+		if b"failed" in line or b"error" in line or b"Error" in line:
+			if not suppress: print("-- Errors detected while compiling, stopping")
+			sys.exit()
+
 	p.wait()
 	return p.stdout
 
@@ -172,6 +173,8 @@ if __name__ == "__main__":
 	print("####################################################")
 	print("                   JTEST HW2              ")
 	print("####################################################")
+	print("Author: Jonathan Holtmann")
+	print("Tests by: Jonathan Holtmann")
 
 	pull_only = args.pull
 	no_pull = args.nopull
@@ -251,4 +254,11 @@ if __name__ == "__main__":
 		runTest(args.test, test_list[args.test])
 
 	if args.all:
-		runAll(test_list)
+		make("check", test_dir)
+
+	print("-- Finished tests")
+	print("####################################################")
+	print("                Have a nice day!              ")
+	print("####################################################")
+	print("Author: Jonathan Holtmann")
+	print("Tests by: Jonathan Holtmann")
