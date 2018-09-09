@@ -15,6 +15,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
+version = "v1.0"
 
 class bcolors:
 	HEADER = '\033[95m'
@@ -28,7 +29,7 @@ class bcolors:
 
 def git_pull(gdir):
 	try:
-		if not suppress: print("-- Pulling repo %s" % gdir)
+		if not suppress: print("jtest: Pulling repo %s" % gdir)
 		repo = git.Repo(gdir)
 		hash = repo.head.object.hexsha
 		o = repo.remotes.origin
@@ -39,46 +40,45 @@ def git_pull(gdir):
 		else:
 			return False
 	except git.exc.GitCommandError:
-		print("-- Failed to pull git repository")
+		print("jtest: Failed to pull git repository")
 		sys.exit()
 
 def git_clone(gdir):
 	try:
-		if not suppress: print("-- Cloning %s into %s" % (repo_url, gdir))
+		if not suppress: print("jtest: Cloning %s into %s" % (repo_url, gdir))
 		repo = git.Repo.init(gdir)
 		origin = repo.create_remote('origin', repo_url)
 		origin.fetch()
 		origin.pull(origin.refs[0].remote_head)
 	except git.exc.GitCommandError:
-		print("-- Failed to clone git repository")
+		print("jtest: Failed to clone git repository")
 		sys.exit()
 
 def updateTests(list):
 	dir = os.path.abspath(test_dir)
-	if not suppress: print("-- Test directory: " + dir)
+	if not suppress: print("jtest: Test directory: " + dir)
 
 	# Check if basic test files are still there
 	for test, paths in list.items():
 		# ind_path = paths[0] + os.sep + "basic_tests.cpp"
 		# if os.path.isfile(ind_path):
-		# 	if not suppress: print("-- Found %s" % ind_path)
-		# 	if not suppress: print("-- Removing %s" % ind_path)
+		# 	if not suppress: print("jtest: Found %s" % ind_path)
+		# 	if not suppress: print("jtest: Removing %s" % ind_path)
 		# 	os.remove(ind_path)
-		if debug: print("-- Copying %s into %s" % (paths[1], paths[0]))
+		if debug: print("jtest: Copying %s into %s" % (paths[1], paths[0]))
 		copy(paths[1], paths[0])
-	cmake(test_dir)
 
 def runTest(name, paths):
-	print("\n#######################  Test: %s  #######################" % name)
-	if not suppress: print("-- Running test %s from file %s" % (name, paths[1]))
+	print("\n####################  Test: %s  ####################" % name)
+	if not suppress: print("jtest: Running test %s from file %s" % (name, paths[1]))
 	res = make(paths[2], test_dir)
 
-	if name == "duckduck":
-		if not suppress: print("-- Builging duck_duck_goose executable in %s" % os.path.abspath(script_dir))
-		p = subprocess.Popen(["g++", "-g", "-std=c++11", "duck_duck_goose.cpp", "circular_list_int.cpp", "-o", "hw2-check/duck_duck_goose"], cwd=os.path.abspath(script_dir))
-		p.wait()
+	# if name == "duckduck":
+	# 	if not suppress: print("jtest: Builging duck_duck_goose executable in %s" % os.path.abspath(script_dir))
+	# 	p = subprocess.Popen(["g++", "-g", "-std=c++11", "duck_duck_goose.cpp", "circular_list_int.cpp", "-o", "hw2-check/duck_duck_goose"], cwd=os.path.abspath(script_dir))
+	# 	p.wait()
 
-	if not suppress: print("-- Executing %s" % (paths[0] + os.sep + paths[2]))
+	if not suppress: print("jtest: Executing %s" % (paths[0] + os.sep + paths[2]))
 	if valgrind:
 		command = ["valgrind", "--leak-check=full", "--show-leak-kinds=all", paths[0] + os.sep + paths[2]]
 	elif gdb:
@@ -89,7 +89,7 @@ def runTest(name, paths):
 	p.wait()
 
 def make(test, dir):
-	if not suppress: print("-- Running: make %s\n" % test)
+	if not suppress: print("jtest: Running: make %s\n" % test)
 	p = subprocess.Popen(["make", test], cwd=dir, stdout=subprocess.PIPE)
 	while True:
 		line = p.stdout.readline().rstrip()
@@ -97,36 +97,44 @@ def make(test, dir):
 			break
 		print(line.decode("utf-8"))
 		if b"failed" in line or b"error" in line or b"Error" in line:
-			if not suppress: print("-- Errors detected while compiling, stopping")
+			if not suppress: print("jtest: Errors detected while compiling, stopping")
 			sys.exit()
 
 	p.wait()
 	return p.stdout
 
 def cmake(dir):
-	if not suppress: print("-- Running cmake in directory %s\n" % dir)
-	p = subprocess.Popen(["cmake", "CMakeLists.txt"], cwd=dir)
+	if not suppress: print("jtest: Running cmake in directory %s\n" % dir)
+	p = subprocess.Popen(["cmake", "CMakeLists.txt"], cwd=dir, stdout=subprocess.PIPE)
+	while True:
+		line = p.stdout.readline().rstrip().decode("utf-8")
+		if not line:
+			break
+		print(line)
+		if "failed" in line or "error" in line or "Error" in line:
+			if not suppress: print("jtest: Errors detected while running cmake, stopping")
+			sys.exit()
 	p.wait()
 
 def checkForUpdate():
-	if not suppress: print("-- Checking for script updates in git repo")
-	if debug: print("-- Comparing hashes of %s and %s" % (script_path, git_script))
+	if not suppress: print("jtest: Checking for script updates in git repo")
+	if debug: print("jtest: Comparing hashes of %s and %s" % (script_path, git_script))
 	if hashFile(script_path) != hashFile(git_script):
 		updateSelf()
 
 def updateSelf():
-	if not suppress: print("-- Updating self")
+	if not suppress: print("jtest: Updating self")
 	copy(git_script, script_path)
 
 	#https://stackoverflow.com/a/5758926
 	args = sys.argv[:]
-	if not suppress: print('-- Re-spawning %s\n' % ' '.join(args))
+	if not suppress: print('jtest: Re-spawning %s\n' % ' '.join(args))
 
 	args.insert(0, sys.executable)
 	if sys.platform == 'win32':
 		args = ['"%s"' % arg for arg in args]
 
-	if debug: print("-- Respawning script in dir %s" % os.path.realpath(script_dir))
+	if debug: print("jtest: Respawning script in dir %s" % os.path.realpath(script_dir))
 	os.chdir(os.path.realpath(script_dir))
 	os.execv(sys.executable, args)
 
@@ -146,6 +154,7 @@ if __name__ == "__main__":
 
 	parser.add_argument('-s', '--suppress', help='Suppress status messages', action='store_true', required=False, default=False)
 	parser.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
+	parser.add_argument('-v', '--version', action='version', version="JTest HW2 " + version)
 
 	test_args.add_argument('-a','--all', help='Run all HW2 test cases', action='store_true', required=False, default=False)
 	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["ssort","clist","duckduck"], required=False, default="")
@@ -165,12 +174,13 @@ if __name__ == "__main__":
 	if args.testdir == "":
 		if (not (script_path.split(os.sep)[-2].split('-')[-1] != "hw" and
 			script_path.split(os.sep)[-1] != "hw2")):
-			print("-- Please place this script in your hw-[yourid]/hw2 directory")
+			print("jtest: Please place this script in your hw-[yourid]/hw2 directory")
 			sys.exit()
 
-	print("####################################################")
-	print("                   JTEST HW2              ")
-	print("####################################################")
+	print("########################################################")
+	print("                       JTEST HW2                  ")
+	print("########################################################")
+	print('JTest HW2 ' + version)
 	print("Author: Jonathan Holtmann")
 	print("Tests by: Jonathan Holtmann")
 
@@ -224,13 +234,12 @@ if __name__ == "__main__":
 
 	# check if repo exists
 	if os.path.isdir(git_dir):
-		if not suppress: print("-- Found csci104-tests git directory")
+		if not suppress: print("jtest: Found csci104-tests git directory")
 	else:
-		if not suppress: print("-- Git directory csci104-tests not found")
+		if not suppress: print("jtest: Git directory csci104-tests not found")
 		if not os.path.isdir(git_dir):
 			os.makedirs(git_dir)
 		git_clone(git_dir)
-		cmake(test_dir)
 		force_update = True
 
 	if not no_pull:
@@ -243,10 +252,10 @@ if __name__ == "__main__":
 
 	if not args.noupdate:
 		if changes or force_update:
-			if not suppress: print("-- Updating tests")
+			if not suppress: print("jtest: Updating tests")
 			updateTests(test_list)
-	else:
-		cmake(test_dir)
+
+	cmake(test_dir)
 
 	if args.test != "":
 		runTest(args.test, test_list[args.test])
@@ -254,9 +263,10 @@ if __name__ == "__main__":
 	if args.all:
 		make("check", test_dir)
 
-	print("-- Finished tests")
-	print("####################################################")
-	print("                Have a nice day!              ")
-	print("####################################################")
+	print("jtest: Finished")
+	print("########################################################")
+	print("                   Have a nice day!              ")
+	print("########################################################")
+	print('JTest HW2 ' + version)
 	print("Author: Jonathan Holtmann")
 	print("Tests by: Jonathan Holtmann")
