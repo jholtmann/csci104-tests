@@ -14,7 +14,7 @@ TEST(DDGRoundJTest, SecondTwoPlayerTest)
 	srand(12345);
 
 	GameData testData;
-	testData.itPlayerID = 701;
+	testData.itPlayerID = 220;
 	testData.playerList.push_back(8);
 
 	std::stringstream roundOutputStream;
@@ -28,11 +28,11 @@ TEST(DDGRoundJTest, SecondTwoPlayerTest)
 	EXPECT_EQ(testData.playerList.size(), 1);
 
 	// two possibilities
-	if(roundOutput.find("701 took 8's spot") != std::string::npos)
+	if(roundOutput.find("220 took 8's spot") != std::string::npos)
 	{
 		EXPECT_EQ(testData.itPlayerID, 8);
 	}
-	else if(roundOutput.find("701 is out!") != std::string::npos)
+	else if(roundOutput.find("220 is out!") != std::string::npos)
 	{
 		EXPECT_EQ(testData.itPlayerID, 0);
 	}
