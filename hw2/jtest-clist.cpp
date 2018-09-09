@@ -88,10 +88,58 @@ TEST(ListJTest, RepeatedRemoveHead) {
 TEST(ListJTest, RemoveMiddle) {
 	std::vector<int> contents{8, 953, 4, 200, 68};
 	CircularListInt *list = makeCircularList(contents);
-	printList(list);
+	//printList(list);
 	list->remove(3);
 	contents.erase(contents.begin() + 3);
-	printList(list);
+	//printList(list);
+
+	EXPECT_EQ(contents.size(), list->size());
+	EXPECT_TRUE(checkListContent(list, contents));
+
+	delete list;
+}
+
+TEST(ListJTest, FillEmptyFill) {
+	std::vector<int> contents{8, 953, 4, 200, 68};
+	CircularListInt *list = makeCircularList(contents);
+
+	while (contents.size() > 0) {
+		list->remove(0);
+		contents.erase(contents.begin());
+	}
+
+	EXPECT_EQ(0, list->size());
+	EXPECT_TRUE(checkListContent(list, contents));
+
+	std::vector<int> contents2{9,512,2134,-5312,5321,-6,6,-9};
+	for (size_t i = 0; i < contents2.size(); i++)
+		list->push_back(contents2[i]);
+
+	EXPECT_EQ(contents2.size(), list->size());
+	EXPECT_TRUE(checkListContent(list, contents2));
+
+	delete list;
+}
+
+TEST(ListJTestStress, TenThousandListCreate) {
+	std::vector<int> contents;
+	for (int i = -5000; i <= 5000; i++) {
+		contents.push_back(i);
+	}
+	CircularListInt *list = makeCircularList(contents);
+
+	EXPECT_EQ(contents.size(), list->size());
+	EXPECT_TRUE(checkListContent(list, contents));
+
+	delete list;
+}
+
+TEST(ListJTestStress, HundredThousandListCreate) {
+	std::vector<int> contents;
+	for (int i = -50000; i <= 50000; i++) {
+		contents.push_back(i);
+	}
+	CircularListInt *list = makeCircularList(contents);
 
 	EXPECT_EQ(contents.size(), list->size());
 	EXPECT_TRUE(checkListContent(list, contents));

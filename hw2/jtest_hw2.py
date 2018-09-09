@@ -73,8 +73,6 @@ def runTest(name, paths):
 	if not suppress: print("-- Running test %s from file %s" % (name, paths[1]))
 	res = make(paths[2], test_dir)
 
-	run = True
-
 	if name == "duckduck":
 		if not suppress: print("-- Builging duck_duck_goose executable in %s" % os.path.abspath(script_dir))
 		p = subprocess.Popen(["g++", "-g", "-std=c++11", "duck_duck_goose.cpp", "circular_list_int.cpp", "-o", "hw2-check/duck_duck_goose"], cwd=os.path.abspath(script_dir))
