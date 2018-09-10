@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <selection_sort.h>
 #include <selection_sort_utils.h>
+#include <misc_utils.h>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
@@ -85,6 +86,7 @@ TEST(SelSortJTest, EmptyListMin)
 }
 
 TEST(SelSortJTestStress, TenThousandElementMin) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = 5000; i >= -5000; i--) {
 		contents.push_back(i);
@@ -99,6 +101,7 @@ TEST(SelSortJTestStress, TenThousandElementMin) {
 }
 
 TEST(SelSortJTestStress, HundredThousandElementMin) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = 50000; i >= -50000; i--) {
 		contents.push_back(i);
@@ -113,6 +116,7 @@ TEST(SelSortJTestStress, HundredThousandElementMin) {
 }
 
 TEST(SelSortJTestStress, MillionElementMin) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = 500000; i >= -500000; i--) {
 		contents.push_back(i);
@@ -127,6 +131,7 @@ TEST(SelSortJTestStress, MillionElementMin) {
 }
 
 TEST(SelSortJTestStress, HundredListSort) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = -50; i > 50; i++) {
 		contents.push_back(i);
@@ -142,6 +147,7 @@ TEST(SelSortJTestStress, HundredListSort) {
 }
 
 TEST(SelSortJTestStress, ThousandListSort) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = -500; i > 500; i++) {
 		contents.push_back(i);
@@ -157,6 +163,7 @@ TEST(SelSortJTestStress, ThousandListSort) {
 }
 
 TEST(SelSortJTestStress, TenThousandListSort) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = -5000; i > -5000; i++) {
 		contents.push_back(i);
@@ -172,6 +179,7 @@ TEST(SelSortJTestStress, TenThousandListSort) {
 }
 
 TEST(SelSortJTestStress, HundredThousandListSort) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = -50000; i > -50000; i++) {
 		contents.push_back(i);
@@ -187,6 +195,7 @@ TEST(SelSortJTestStress, HundredThousandListSort) {
 }
 
 TEST(SelSortJTestStress, MillionListSort) {
+	removeStackLimit();
 	std::vector<int> contents;
 	for (int i = -500000; i > -500000; i++) {
 		contents.push_back(i);
