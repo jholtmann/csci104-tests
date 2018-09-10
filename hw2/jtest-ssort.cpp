@@ -2,6 +2,7 @@
 #include <selection_sort.h>
 #include <selection_sort_utils.h>
 #include <misc_utils.h>
+#include <map>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
@@ -80,8 +81,39 @@ TEST(SelSortJTest, ReversedListSort) {
 	deleteList(list);
 }
 
-TEST(SelSortJTest, EmptyListMin)
-{
+// Checks to make sure your code is not modifying the list pointers
+// or swapping values
+TEST(SelSortJTest, PointerIntegrity) {
+	std::vector<int> contents({10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8});
+	std::map<Item*, int> pointers;
+	Item * list = makeList(contents);
+	Item* trav = list;
+	while (trav != nullptr) {
+		pointers[trav] = trav->getValue();
+		trav = trav->next;
+	}
+
+	list = LLSelectionSort(list);
+
+	trav = list;
+	while (trav != nullptr) {
+		if(pointers.find(trav) == pointers.end()) {
+			FAIL();
+		} else {
+			// check to make sure value associated with pointer has not been altered
+			EXPECT_EQ(trav->getValue(), pointers[trav]);
+		}
+		trav = trav->next;
+	}
+
+	ASSERT_TRUE(checkValidPointers(list, contents.size()));
+	// ASSERT_TRUE(checkSameValues(list, contents));
+	// ASSERT_TRUE(checkIsSorted(list));
+
+	deleteList(list);
+}
+
+TEST(SelSortJTest, EmptyListMin) {
 	EXPECT_EQ(nullptr, findMin(nullptr));
 }
 
