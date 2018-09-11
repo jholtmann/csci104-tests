@@ -5,9 +5,6 @@
 #include <map>
 #include <chrono>
 
-using namespace std;
-using namespace std::chrono;
-
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
@@ -214,10 +211,10 @@ TEST(SelSortJTestStress, TenThousandListSort) {
 	deleteList(list);
 }
 
-TEST(SelSortJTestStress, HundredThousandListSort) {
+TEST(SelSortJTestStress, FiftyThousandListSort) {
 	removeStackLimit();
 	std::vector<int> contents;
-	for (int i = 50000; i >= -50000; i--) {
+	for (int i = 25000; i >= -25000; i--) {
 		contents.push_back(i);
 	}
 	Item * list = makeList(contents);
@@ -226,6 +223,133 @@ TEST(SelSortJTestStress, HundredThousandListSort) {
 	ASSERT_TRUE(checkValidPointers(list, contents.size()));
 	ASSERT_TRUE(checkSameValues(list, contents));
 	ASSERT_TRUE(checkIsSorted(list));
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, ThousandListMin) {
+	removeStackLimit();
+	double limit = 0.00075;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 500; i >= -500; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	findMin(list);
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, TenThousandListMin) {
+	removeStackLimit();
+	double limit = 0.00085;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 5000; i >= -5000; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	findMin(list);
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, HundredThousandListMin) {
+	removeStackLimit();
+	double limit = 0.0025;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 50000; i >= -50000; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	findMin(list);
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, MillionListMin) {
+	removeStackLimit();
+	double limit = 0.02;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 500000; i >= -500000; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	findMin(list);
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, ThousandListSort) {
+	removeStackLimit();
+	double limit = 0.02;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 500; i >= -500; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	list = LLSelectionSort(list);
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
+
+	deleteList(list);
+}
+
+TEST(SelSortJTestRuntime, TenThousandListSort) {
+	removeStackLimit();
+	double limit = 0.9;
+	limit *= 5;
+	std::vector<int> contents;
+
+	for (int i = 5000; i >= -5000; i--) {
+		contents.push_back(i);
+	}
+	Item * list = makeList(contents);
+
+	auto start = std::chrono::high_resolution_clock::now();
+	list = LLSelectionSort(list);
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	EXPECT_GE(limit, diff.count());
 
 	deleteList(list);
 }

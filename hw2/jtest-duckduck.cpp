@@ -70,7 +70,6 @@ TEST(DDGRoundJTest, MultiRoundTest)
 		testData.playerList.push_back(p);
 	}
 
-	// int r = 0;
 	while(testData.itPlayerID != 0) {
 		// std::cerr << "Round " << ++r << std::endl;
 		std::stringstream roundOutputStream;
@@ -84,4 +83,30 @@ TEST(DDGRoundJTest, MultiRoundTest)
 
 	EXPECT_EQ(1, testData.playerList.size());
 	EXPECT_EQ(0, testData.itPlayerID);
+}
+
+// Manually simulates DDGRound and compares to output of command line execution
+TEST(DDGRoundJTest, ConfigRead) {
+	srand(12345);
+
+	GameData testData;
+	testData.itPlayerID = 200;
+	std::vector<int> players = {8,14,1,231,76,168};
+	for (int p : players)
+		testData.playerList.push_back(p);
+
+	std::stringstream ss;
+
+	simulateDDGRound(&testData, ss);
+
+	std::string r_output_1 = ss.str();
+
+	std::string r_output_2;
+	ASSERT_TRUE(runDuckDuckGooseProgram(12345, 200, players, "config_read_test", r_output_2));
+
+	EXPECT_EQ(r_output_1, r_output_2);
+	// std::cerr << "1:" << std::endl;
+	// std::cerr << r_output_1 << std::endl;
+	// std::cerr << "2:" << std::endl;
+	// std::cerr << r_output_2 << std::endl;
 }
