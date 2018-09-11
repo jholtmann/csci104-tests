@@ -3,11 +3,15 @@
 #include <selection_sort_utils.h>
 #include <misc_utils.h>
 #include <map>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
-								homework assignment nr. 2/
+								homework assignment nr. 2
 */
 
 TEST(SelSortJTest, SameElementManyTimesMin) {
@@ -165,7 +169,7 @@ TEST(SelSortJTestStress, MillionElementMin) {
 TEST(SelSortJTestStress, HundredListSort) {
 	removeStackLimit();
 	std::vector<int> contents;
-	for (int i = -50; i > 50; i++) {
+	for (int i = 50; i >= -50; i--) {
 		contents.push_back(i);
 	}
 	Item * list = makeList(contents);
@@ -181,7 +185,7 @@ TEST(SelSortJTestStress, HundredListSort) {
 TEST(SelSortJTestStress, ThousandListSort) {
 	removeStackLimit();
 	std::vector<int> contents;
-	for (int i = -500; i > 500; i++) {
+	for (int i = 500; i >= -500; i--) {
 		contents.push_back(i);
 	}
 	Item * list = makeList(contents);
@@ -197,7 +201,7 @@ TEST(SelSortJTestStress, ThousandListSort) {
 TEST(SelSortJTestStress, TenThousandListSort) {
 	removeStackLimit();
 	std::vector<int> contents;
-	for (int i = -5000; i > -5000; i++) {
+	for (int i = 5000; i >= -5000; i--) {
 		contents.push_back(i);
 	}
 	Item * list = makeList(contents);
@@ -213,23 +217,7 @@ TEST(SelSortJTestStress, TenThousandListSort) {
 TEST(SelSortJTestStress, HundredThousandListSort) {
 	removeStackLimit();
 	std::vector<int> contents;
-	for (int i = -50000; i > -50000; i++) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-	list = LLSelectionSort(list);
-
-	ASSERT_TRUE(checkValidPointers(list, contents.size()));
-	ASSERT_TRUE(checkSameValues(list, contents));
-	ASSERT_TRUE(checkIsSorted(list));
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestStress, MillionListSort) {
-	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = -500000; i > -500000; i++) {
+	for (int i = 50000; i >= -50000; i--) {
 		contents.push_back(i);
 	}
 	Item * list = makeList(contents);

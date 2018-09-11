@@ -6,7 +6,7 @@
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
-								homework assignment nr. 2/
+								homework assignment nr. 2
 */
 
 TEST(DDGRoundBasic, ScricterTwoPlayers) {

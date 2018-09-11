@@ -15,7 +15,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v1.0"
+version = "v1.1"
 
 class bcolors:
 	HEADER = '\033[95m'
@@ -161,6 +161,7 @@ if __name__ == "__main__":
 	test_args.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
 	test_args.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
 	test_args.add_argument('-g','--gdb', help="Run gdb on test cases. Helpful for tracing segfaults. Does not run valgrind", action='store_true', required=False, default=False)
+	test_args.add_argument('-u','--uninstall', help="Remove jtest files and exit", action='store_true', required=False, default=False)
 
 	advanced_args.add_argument('-np','--nopull', help="Don't pull repository", action='store_true', required=False, default=False)
 	advanced_args.add_argument('-nu','--noupdate', help="Don't update tests", action='store_true', required=False, default=False)
@@ -224,6 +225,15 @@ if __name__ == "__main__":
 	force_update = False
 
 	git_script = os.path.abspath(git_dir + os.sep + "hw2" + os.sep + "jtest_hw2.py")
+
+	if args.uninstall:
+		print("jtest: removing test cases")
+		print("jtest: running rm -r jtest* in %s" % test_dir)
+		p = subprocess.Popen(["rm", "-rf", "jtest*"], cwd=test_dir)
+		p.wait()
+		print("jtest: done, exiting")
+		sys.exit()
+
 
 	####################### DEFINE TESTS #######################
 	test_list = dict()
