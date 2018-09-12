@@ -121,6 +121,21 @@ TEST(ListJTest, FillEmptyFill) {
 	delete list;
 }
 
+TEST(ListJTest, WrapAround) {
+	std::vector<int> contents;
+	CircularListInt *list = new CircularListInt();
+
+	for (int i = 0; i < 10; i++) {
+        	contents.push_back(i);
+        	list->push_back(i);
+	}
+
+	EXPECT_EQ(list->get(5), list->get(15));
+	EXPECT_EQ(list->get(0), list->get(10));
+
+	delete list;
+}
+
 TEST(ListJTestStress, TenThousandListCreate) {
 	std::vector<int> contents;
 	for (int i = -5000; i <= 5000; i++) {
