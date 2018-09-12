@@ -27,6 +27,16 @@ class bcolors:
 	BOLD = '\033[1m'
 	UNDERLINE = '\033[4m'
 
+def print_banner(str):
+	print("########################################################")
+	print("                     %s                  " % str)
+	print("########################################################")
+
+def print_credits():
+	print('JTest HW2 ' + version)
+	print("Author: Jonathan Holtmann")
+	print("Tests by: Jonathan Holtmann, Matthew Treadwell")
+
 def git_pull(gdir):
 	try:
 		if not suppress: print("jtest: Pulling repo %s" % gdir)
@@ -155,6 +165,7 @@ if __name__ == "__main__":
 	parser.add_argument('-s', '--suppress', help='Suppress status messages', action='store_true', required=False, default=False)
 	parser.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
 	parser.add_argument('-v', '--version', action='version', version="JTest HW2 " + version)
+	parser.add_argument('--credits', help='Print credits and exit', action='store_true', required=False, default=False)
 
 	test_args.add_argument('-a','--all', help='Run all HW2 test cases', action='store_true', required=False, default=False)
 	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["ssort","clist","duckduck"], required=False, default="")
@@ -172,18 +183,19 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
+	if args.credits:
+		print_credits()
+		sys.exit()
+
 	if args.testdir == "":
 		if (not (script_path.split(os.sep)[-2].split('-')[-1] != "hw" and
 			script_path.split(os.sep)[-1] != "hw2")):
 			print("jtest: Please place this script in your hw-[yourid]/hw2 directory")
 			sys.exit()
 
-	print("########################################################")
-	print("                       JTEST HW2                  ")
-	print("########################################################")
-	print('JTest HW2 ' + version)
-	print("Author: Jonathan Holtmann")
-	print("Tests by: Jonathan Holtmann")
+	print_banner("JTest HW2");
+	print_credits();
+	print("");
 
 	pull_only = args.pull
 	no_pull = args.nopull
@@ -274,9 +286,4 @@ if __name__ == "__main__":
 		make("check", test_dir)
 
 	print("jtest: Finished")
-	print("########################################################")
-	print("                   Have a nice day!              ")
-	print("########################################################")
-	print('JTest HW2 ' + version)
-	print("Author: Jonathan Holtmann")
-	print("Tests by: Jonathan Holtmann")
+	print_banner("Have a nice day!");

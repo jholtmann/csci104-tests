@@ -13,8 +13,8 @@ TEST(ListJTest, WrapAround) {
 	CircularListInt *list = new CircularListInt();
 
 	for (int i = 0; i < 10; i++) {
-        	contents.push_back(i);
-        	list->push_back(i);
+  	contents.push_back(i);
+  	list->push_back(i);
 	}
 
 	EXPECT_EQ(list->get(5), list->get(15));
