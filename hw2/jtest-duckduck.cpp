@@ -97,7 +97,8 @@ TEST(DDGRoundJTest, ConfigRead) {
 
 	std::stringstream ss;
 
-	simulateDDGRound(&testData, ss);
+	while (testData.itPlayerID != 0)
+		simulateDDGRound(&testData, ss);
 
 	std::string r_output_1 = ss.str();
 
