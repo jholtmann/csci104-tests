@@ -8,21 +8,32 @@
 								homework assignment nr. 2
 */
 
-TEST(ListJTest, CircularIndicies) {
-	std::vector<int> contents{-20, -1, 1};
+TEST(ListJTest, WrapAround) {
+	std::vector<int> contents;
+	CircularListInt *list = new CircularListInt();
+
+	for (int i = 0; i < 10; i++) {
+        	contents.push_back(i);
+        	list->push_back(i);
+	}
+
+	EXPECT_EQ(list->get(5), list->get(15));
+	EXPECT_EQ(list->get(0), list->get(10));
+
+	delete list;
+}
+
+TEST(ListJTest, SetManyItems) {
+	std::vector<int> contents{0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0};
 
 	CircularListInt * populatedList = makeCircularList(contents);
+	for (int i = 4; i < 14; i++) {
+		populatedList->set(i, 0);
+	}
 
-	EXPECT_TRUE(checkListContent(populatedList, contents));
-
-	// first try some gets
-	EXPECT_EQ(-20, populatedList->get(3));
-	EXPECT_EQ(1, populatedList->get(5));
-	EXPECT_EQ(-1, populatedList->get(10));
-
-	// now try setting an item
-	populatedList->set(4, 7998);
-	EXPECT_EQ(7998, populatedList->get(7));
+	for (int i = 0; i < 20; i++) {
+		EXPECT_EQ(0, populatedList->get(i));
+	}
 
 	delete populatedList;
 }
@@ -117,21 +128,6 @@ TEST(ListJTest, FillEmptyFill) {
 
 	EXPECT_EQ(contents2.size(), list->size());
 	EXPECT_TRUE(checkListContent(list, contents2));
-
-	delete list;
-}
-
-TEST(ListJTest, WrapAround) {
-	std::vector<int> contents;
-	CircularListInt *list = new CircularListInt();
-
-	for (int i = 0; i < 10; i++) {
-        	contents.push_back(i);
-        	list->push_back(i);
-	}
-
-	EXPECT_EQ(list->get(5), list->get(15));
-	EXPECT_EQ(list->get(0), list->get(10));
 
 	delete list;
 }
