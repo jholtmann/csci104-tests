@@ -2,6 +2,10 @@
 #include <random_generator.h>
 #include <duck_duck_goose.h>
 #include <gtest/gtest.h>
+#include <chrono>
+#include <runtime_evaluator.h>
+#include <random_generator.h>
+#include <algorithm>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
@@ -9,7 +13,28 @@
 								homework assignment nr. 2
 */
 
-TEST(DDGRoundBasic, ScricterTwoPlayers) {
+struct DDGRoundN {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			srand(seed);
+			BenchmarkTimer tmr;
+
+			GameData testData;
+			testData.itPlayerID = 701;
+			for (size_t i = 0; i < n; i++)
+				testData.playerList.push_back(rand() % 10000);
+
+			std::stringstream roundOutputStream;
+
+			tmr.start();
+			srand(12345);
+			simulateDDGRound(&testData, roundOutputStream);
+			tmr.stop();
+
+			return tmr.getTime();
+    }
+};
+
+TEST(DDGRoundJTest, ScricterTwoPlayers) {
 	srand(94785);
 
 	GameData testData;
@@ -111,4 +136,12 @@ TEST(DDGRoundJTest, ConfigRead) {
 	// std::cerr << r_output_1 << std::endl;
 	// std::cerr << "2:" << std::endl;
 	// std::cerr << r_output_2 << std::endl;
+}
+
+TEST(DDGRoundRuntime, RuntimeEvals) {
+	RuntimeEvaluator::Snippet snp{DDGRoundN()};
+	RuntimeEvaluator rntm("DDGRound", 1, 15, 3, snp);
+  rntm.setCorrelationThreshold(1.8);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
 }
