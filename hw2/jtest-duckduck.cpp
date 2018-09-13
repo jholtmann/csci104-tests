@@ -9,37 +9,7 @@
 								homework assignment nr. 2
 */
 
-struct DDGRoundN {
-    std::chrono::microseconds operator()(uint64_t n, int seed) const {
-			srand(seed);
-			BenchmarkTimer tmr;
-
-			GameData testData;
-			testData.itPlayerID = 701;
-			for (size_t i = 0; i < n; i++)
-				testData.playerList.push_back(rand() % 10000);
-
-			std::stringstream roundOutputStream;
-
-			tmr.start();
-			simulateDDGRound(&testData, roundOutputStream);
-			tmr.stop();
-
-			return tmr.getTime();
-    }
-};
-
-TEST(DDGRoundRuntime, RuntimeEvals) {
-	removeStackLimit();
-
-	RuntimeEvaluator::Snippet snp{DDGRoundN()};
-	RuntimeEvaluator rntm("DDGRound", 1, 20, 3, snp);
-  // rntm.setCorrelationThreshold(1.0);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
-}
-
-TEST(DDGRoundJTest, ScricterTwoPlayers) {
+TEST(DDGRoundBasic, ScricterTwoPlayers) {
 	srand(94785);
 
 	GameData testData;
