@@ -4,12 +4,23 @@
 #include <misc_utils.h>
 #include <map>
 #include <chrono>
+#include <runtime_evaluator.h>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
 								homework assignment nr. 2
 */
+
+TEST(SelSortJTestA, RunTimeEval) {
+	removeStackLimit();
+
+	Snippet snp = findMin;
+	RuntimeEvaluator rntm("findMin", 0, 1000000, 3, snp);
+	rntm.evaluate();
+	ASERT_TRUE(rntm.meetsComplexity(TimeComplexity.CONSTANT))
+
+}
 
 TEST(SelSortJTest, SameElementManyTimesMin) {
 	std::vector<int> contents({-1,1,1,3,5,6,7,15,5,5,5,1,4,6,7,1,20,20,21,99});

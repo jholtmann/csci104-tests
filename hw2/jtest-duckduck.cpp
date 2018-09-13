@@ -51,8 +51,9 @@ TEST(DDGRoundJTest, SeedTest) {
 
 		simulateDDGRound(&testData, roundOutputStream);
 
-		if (i != 0)
+		if (i != 0) {
 			EXPECT_EQ(prev_id, testData.itPlayerID);
+		}
 		prev_id = testData.itPlayerID;
 	}
 

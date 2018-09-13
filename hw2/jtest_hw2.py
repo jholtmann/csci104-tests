@@ -15,7 +15,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v1.1"
+version = "v1.11"
 
 class bcolors:
 	HEADER = '\033[95m'
@@ -122,9 +122,21 @@ def cmake(dir):
 			break
 		print(line)
 		if "failed" in line or "error" in line or "Error" in line:
-			if not suppress: print("jtest: Errors detected while running cmake, stopping")
+			if not suppress: print("jtest: Errors detected while compiling, stopping")
 			sys.exit()
 	p.wait()
+
+def test_all(dir):
+	if not suppress: print("jtest: Running: make check")
+	p = subprocess.Popen(["make", "check"], cwd=dir, stdout=subprocess.PIPE)
+	while True:
+		line = p.stdout.readline().rstrip().decode("utf-8")
+		if not line:
+			break
+		print(line)
+
+	p.wait()
+	return p.stdout
 
 def checkForUpdate():
 	if not suppress: print("jtest: Checking for script updates in git repo")
@@ -283,7 +295,7 @@ if __name__ == "__main__":
 		runTest(args.test, test_list[args.test])
 
 	if args.all:
-		make("check", test_dir)
+		test_all(test_dir)
 
 	print("jtest: Finished")
 	print_banner("Have a nice day!");
