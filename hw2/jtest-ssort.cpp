@@ -36,9 +36,7 @@ struct selSortN {
 			srand(seed);
 			BenchmarkTimer tmr(false);
 
-			std::vector<int> contents;
-			for (size_t i = 0; i < n; i++)
-				contents.push_back(rand() % 10000);
+			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, false);
 			Item *list = makeList(contents);
 
 			tmr.start();
@@ -249,8 +247,8 @@ TEST(SelSortJTestRuntime, MinRunTimeEval) {
 	removeStackLimit();
 
 	RuntimeEvaluator::Snippet snp{findMinN()};
-	RuntimeEvaluator rntm("findMin", 1, 15, 3, snp);
-  rntm.setCorrelationThreshold(1.0);
+	RuntimeEvaluator rntm("findMin", 1, 20, 10, snp);
+  rntm.setCorrelationThreshold(1.1);
 	rntm.evaluate();
 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
 }
@@ -259,7 +257,8 @@ TEST(SelSortJTestRuntime, SSortRunTimeEval) {
 	removeStackLimit();
 
 	RuntimeEvaluator::Snippet snp{selSortN()};
-	RuntimeEvaluator rntm("selSort", 1, 15, 3, snp);
+	RuntimeEvaluator rntm("selSort", 1, 12, 10, snp);
+  rntm.setCorrelationThreshold(1.5);
 	rntm.evaluate();
 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
 }
