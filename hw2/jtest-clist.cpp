@@ -306,7 +306,7 @@ TEST(ListJTestRuntime, setHead) {
 TEST(ListJTestRuntime, get) {
 	RuntimeEvaluator::Snippet snp{get()};
 	RuntimeEvaluator rntm("get", 1, 20, 3, snp);
-	rntm.setCorrelationThreshold(1.2);
+	rntm.setCorrelationThreshold(1.0);
 	rntm.evaluate();
 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
 }
