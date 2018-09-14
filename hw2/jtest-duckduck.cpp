@@ -137,10 +137,10 @@ TEST(DDGRoundJTest, ConfigRead) {
 	// std::cerr << r_output_2 << std::endl;
 }
 
-TEST(DDGRoundRuntime, RuntimeEvals) {
-	RuntimeEvaluator::Snippet snp{DDGRoundN()};
-	RuntimeEvaluator rntm("DDGRound", 1, 15, 3, snp);
-  rntm.setCorrelationThreshold(1.8);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
-}
+// TEST(DDGRoundRuntime, RuntimeEvals) {
+// 	RuntimeEvaluator::Snippet snp{DDGRoundN()};
+// 	RuntimeEvaluator rntm("DDGRound", 1, 15, 3, snp);
+//   rntm.setCorrelationThreshold(1.8);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
+// }

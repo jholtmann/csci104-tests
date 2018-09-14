@@ -279,42 +279,42 @@ TEST(ListJTestStress, FiftyThousandListCreate) {
 	delete list;
 }
 
-TEST(ListJTestRuntime, PushBack) {
-	RuntimeEvaluator::Snippet snp{pushBackN()};
-	RuntimeEvaluator rntm("pushBack", 1, 20, 10, snp);
-	rntm.setCorrelationThreshold(1.2);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
-}
-
-TEST(ListJTestRuntime, set) {
-	RuntimeEvaluator::Snippet snp{setN()};
-	RuntimeEvaluator rntm("set", 1, 18, 10, snp);
-	rntm.setCorrelationThreshold(1.6);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
-}
-
-TEST(ListJTestRuntime, setHead) {
-	RuntimeEvaluator::Snippet snp{pushBackN()};
-	RuntimeEvaluator rntm("setHead", 1, 20, 10, snp);
-	rntm.setCorrelationThreshold(1.0);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
-}
-
-TEST(ListJTestRuntime, get) {
-	RuntimeEvaluator::Snippet snp{get()};
-	RuntimeEvaluator rntm("get", 1, 20, 10, snp);
-	rntm.setCorrelationThreshold(1.0);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
-}
-
-TEST(ListJTestRuntime, getHead) {
-	RuntimeEvaluator::Snippet snp{getHead()};
-	RuntimeEvaluator rntm("getHead", 1, 20, 10, snp);
-	rntm.setCorrelationThreshold(1.5);
-	rntm.evaluate();
-	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
-}
+// TEST(ListJTestRuntime, PushBack) {
+// 	RuntimeEvaluator::Snippet snp{pushBackN()};
+// 	RuntimeEvaluator rntm("pushBack", 1, 20, 10, snp);
+// 	rntm.setCorrelationThreshold(1.2);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
+// }
+//
+// TEST(ListJTestRuntime, set) {
+// 	RuntimeEvaluator::Snippet snp{setN()};
+// 	RuntimeEvaluator rntm("set", 1, 18, 10, snp);
+// 	rntm.setCorrelationThreshold(1.6);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
+// }
+//
+// TEST(ListJTestRuntime, setHead) {
+// 	RuntimeEvaluator::Snippet snp{pushBackN()};
+// 	RuntimeEvaluator rntm("setHead", 1, 20, 10, snp);
+// 	rntm.setCorrelationThreshold(1.0);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
+// }
+//
+// TEST(ListJTestRuntime, get) {
+// 	RuntimeEvaluator::Snippet snp{get()};
+// 	RuntimeEvaluator rntm("get", 1, 20, 10, snp);
+// 	rntm.setCorrelationThreshold(1.0);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
+// }
+//
+// TEST(ListJTestRuntime, getHead) {
+// 	RuntimeEvaluator::Snippet snp{getHead()};
+// 	RuntimeEvaluator rntm("getHead", 1, 20, 10, snp);
+// 	rntm.setCorrelationThreshold(1.5);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
+// }
