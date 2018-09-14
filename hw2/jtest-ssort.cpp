@@ -16,7 +16,7 @@
 
 struct findMinN {
     std::chrono::microseconds operator()(uint64_t n, int seed) const {
-			BenchmarkTimer tmr;
+			BenchmarkTimer tmr(false);
 
 			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, false);
 			Item *list = makeList(contents);
@@ -34,7 +34,7 @@ struct findMinN {
 struct selSortN {
     std::chrono::microseconds operator()(uint64_t n, int seed) const {
 			srand(seed);
-			BenchmarkTimer tmr;
+			BenchmarkTimer tmr(false);
 
 			std::vector<int> contents;
 			for (size_t i = 0; i < n; i++)
@@ -249,8 +249,8 @@ TEST(SelSortJTestRuntime, MinRunTimeEval) {
 	removeStackLimit();
 
 	RuntimeEvaluator::Snippet snp{findMinN()};
-	RuntimeEvaluator rntm("findMin", 1, 20, 3, snp);
-  rntm.setCorrelationThreshold(1.2);
+	RuntimeEvaluator rntm("findMin", 1, 15, 3, snp);
+  rntm.setCorrelationThreshold(1.0);
 	rntm.evaluate();
 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
 }

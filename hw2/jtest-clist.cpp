@@ -1,12 +1,133 @@
 #include <gtest/gtest.h>
 #include <circular_list_int.h>
 #include <circular_list_utils.h>
+#include <chrono>
+#include <runtime_evaluator.h>
+#include <random_generator.h>
+#include <algorithm>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
 								homework assignment nr. 2
 */
+
+// Should be O(1)
+struct pushBackN {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, true);
+			// CircularListInt *list = new CircularListInt();
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			for (int i = 0; i < 100; i++)
+				list->push_back(1);
+			tmr.stop();
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
+
+// Should be O(n)
+struct setN {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, true);
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			list->set(list->size() - 1, 1);
+			tmr.stop();
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
+
+// Should be O(1)
+struct setHead {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, -2147483646, 2147483646, seed, true);
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			for (int i = 0; i < 100; i++)
+				list->set(0, 1);
+			tmr.stop();
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
+
+// Should be O(n)
+struct get {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, -2147483646, 2147483646, seed, true);
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			int b = list->get(list->size() - 1);
+			tmr.stop();
+
+			b++;
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
+
+// Should be O(1)
+struct getHead {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, -2147483646, 2147483646, seed, true);
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			int b = list->get(0);
+			tmr.stop();
+
+			b++;
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
+
+// Should be O(n)
+struct getTail {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, -2147483646, 2147483646, seed, true);
+			CircularListInt *list = makeCircularList(contents);
+
+			tmr.start();
+			int b = list->get(list->size() - 1);
+			tmr.stop();
+
+			b++;
+
+			delete list;
+
+			return tmr.getTime();
+    }
+};
 
 TEST(ListJTest, WrapAround) {
 	std::vector<int> contents;
@@ -145,9 +266,9 @@ TEST(ListJTestStress, TenThousandListCreate) {
 	delete list;
 }
 
-TEST(ListJTestStress, HundredThousandListCreate) {
+TEST(ListJTestStress, FiftyThousandListCreate) {
 	std::vector<int> contents;
-	for (int i = -50000; i <= 50000; i++) {
+	for (int i = -25000; i <= 25000; i++) {
 		contents.push_back(i);
 	}
 	CircularListInt *list = makeCircularList(contents);
@@ -156,4 +277,44 @@ TEST(ListJTestStress, HundredThousandListCreate) {
 	EXPECT_TRUE(checkListContent(list, contents));
 
 	delete list;
+}
+
+TEST(ListJTestRuntime, PushBack) {
+	RuntimeEvaluator::Snippet snp{pushBackN()};
+	RuntimeEvaluator rntm("pushBack", 1, 20, 3, snp);
+	rntm.setCorrelationThreshold(1.2);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
+}
+
+TEST(ListJTestRuntime, set) {
+	RuntimeEvaluator::Snippet snp{setN()};
+	RuntimeEvaluator rntm("set", 1, 20, 3, snp);
+	// rntm.setCorrelationThreshold(1.5);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
+}
+
+TEST(ListJTestRuntime, setHead) {
+	RuntimeEvaluator::Snippet snp{pushBackN()};
+	RuntimeEvaluator rntm("setHead", 1, 20, 3, snp);
+	rntm.setCorrelationThreshold(1.0);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
+}
+
+TEST(ListJTestRuntime, get) {
+	RuntimeEvaluator::Snippet snp{get()};
+	RuntimeEvaluator rntm("get", 1, 20, 3, snp);
+	rntm.setCorrelationThreshold(1.2);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
+}
+
+TEST(ListJTestRuntime, getHead) {
+	RuntimeEvaluator::Snippet snp{getHead()};
+	RuntimeEvaluator rntm("getHead", 1, 20, 3, snp);
+	rntm.setCorrelationThreshold(1.5);
+	rntm.evaluate();
+	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::CONSTANT));
 }

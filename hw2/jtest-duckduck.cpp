@@ -81,7 +81,6 @@ TEST(DDGRoundJTest, SeedTest) {
 		}
 		prev_id = testData.itPlayerID;
 	}
-
 }
 
 TEST(DDGRoundJTest, MultiRoundTest)
