@@ -48,8 +48,7 @@ TEST(DDGRoundJTest, ScricterTwoPlayers) {
 	std::string roundOutput = roundOutputStream.str();
 
 	// Check to make sure program output matches expected output exactly
-	if(roundOutput.find("8 is a Duck.") == std::string::npos ||
-			roundOutput.find("8 is a Goose!") == std::string::npos) {
+	if(roundOutput.find("8 is a Goose!") == std::string::npos) {
 		FAIL();
 	}
 
