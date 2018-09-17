@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtesting_utils.a  CMakeFiles/testing_utils.dir/runtime_evaluator.cpp.o CMakeFiles/testing_utils.dir/random_generator.cpp.o CMakeFiles/testing_utils.dir/misc_utils.cpp.o CMakeFiles/testing_utils.dir/user_code_runner.cpp.o
+/usr/bin/ranlib libtesting_utils.a

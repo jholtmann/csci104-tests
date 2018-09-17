@@ -1,0 +1,82 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/ProcessUNIX.c"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/EncodingC.c"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/System.c"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Configure.h"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/SharedForward.h"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Process.h"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Encoding.h"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/System.h"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/Directory.cxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Directory.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/EncodingCXX.cxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Encoding.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/RegularExpression.cxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/RegularExpression.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/SystemTools.cxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/SystemTools.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/kwsys/FStream.cxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/FStream.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/Configure.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/String.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/hashtable.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/hash_fun.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/hash_map.hxx"
+		},
+		{
+			"file" : "/home/jholt/cs104/hw-holtmann/hw3/hw3-check/testing_utils/generated_headers/kwsys/hash_set.hxx"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [],
+		"name" : "kwsys"
+	}
+}

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libkwsys.a  CMakeFiles/kwsys.dir/ProcessUNIX.c.o CMakeFiles/kwsys.dir/EncodingC.c.o CMakeFiles/kwsys.dir/System.c.o CMakeFiles/kwsys.dir/Directory.cxx.o CMakeFiles/kwsys.dir/EncodingCXX.cxx.o CMakeFiles/kwsys.dir/RegularExpression.cxx.o CMakeFiles/kwsys.dir/SystemTools.cxx.o CMakeFiles/kwsys.dir/FStream.cxx.o
+/usr/bin/ranlib libkwsys.a
