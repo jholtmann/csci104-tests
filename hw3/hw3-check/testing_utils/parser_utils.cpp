@@ -8,7 +8,7 @@
 testing::AssertionResult runParserProgram(std::string equation, std::string testName)
 {
 	// set up file structure
-	std::string executablePath = DDG_EXECUTABLE;
+	std::string executablePath = PARSER_EXECUTABLE;
 	std::string testFolder =  TEST_BINARY_DIR "/parser_tests/testFiles/" + testName;
 	kwsys::SystemTools::MakeDirectory(testFolder);
 	std::string configFilePath = testFolder + "/input.txt";
