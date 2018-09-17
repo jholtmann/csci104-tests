@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall -g3 -Og   CMakeFiles/stack_test.dir/basic_tests.cpp.o  -o stack_test ../testing_utils/libtesting_utils.a /usr/lib/libgtest.a ../libhw2_user_code.a ../testing_utils/kwsys/libkwsys.a -lpthread /usr/lib/libgtest_main.a 

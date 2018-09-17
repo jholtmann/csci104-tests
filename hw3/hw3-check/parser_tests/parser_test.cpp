@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <stackint.h>
+#include <parser.h>
 
 // Test basic addition
 TEST(ParserBasic, Plus)

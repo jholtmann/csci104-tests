@@ -94,3 +94,4 @@ add_subdirectory(testing_utils)
 # build actual tests
 # ----------------------------------------------------------
 add_subdirectory(stack_tests)
+add_subdirectory(parser_tests)
