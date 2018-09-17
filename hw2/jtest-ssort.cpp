@@ -4,12 +4,50 @@
 #include <misc_utils.h>
 #include <map>
 #include <chrono>
+#include <runtime_evaluator.h>
+#include <random_generator.h>
+#include <algorithm>
 
 /* 	AUTHOR: JONATHAN HOLTMANN
 		EMAIL: holtmann@usc.edu
 		DESCIPTION: The following contains extra test cases for the CSCI 104
 								homework assignment nr. 2
 */
+
+struct findMinN {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, false);
+			Item *list = makeList(contents);
+
+			tmr.start();
+			findMin(list);
+			tmr.stop();
+
+			deleteList(list);
+
+			return tmr.getTime();
+    }
+};
+
+struct selSortN {
+    std::chrono::microseconds operator()(uint64_t n, int seed) const {
+			srand(seed);
+			BenchmarkTimer tmr(false);
+
+			std::vector<int> contents = makeRandomNumberVector(n, 0, 2147483646, seed, false);
+			Item *list = makeList(contents);
+
+			tmr.start();
+			list = LLSelectionSort(list);
+			tmr.stop();
+
+			deleteList(list);
+
+			return tmr.getTime();
+    }
+};
 
 TEST(SelSortJTest, SameElementManyTimesMin) {
 	std::vector<int> contents({-1,1,1,3,5,6,7,15,5,5,5,1,4,6,7,1,20,20,21,99});
@@ -120,55 +158,42 @@ TEST(SelSortJTest, EmptyListMin) {
 
 TEST(SelSortJTestStress, TenThousandElementMin) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 5000; i >= -5000; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(10000, -2147483646, 2147483646, 12345, true);
 
 	Item * list = makeList(contents);
 	int min = findMin(list)->getValue();
 
-	EXPECT_EQ(-5000, min);
+	EXPECT_EQ(*std::min_element(contents.begin(), contents.end()), min);
 
 	deleteList(list);
 }
 
 TEST(SelSortJTestStress, HundredThousandElementMin) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 50000; i >= -50000; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(100000, -2147483646, 2147483646, 12345, true);
 
 	Item * list = makeList(contents);
 	int min = findMin(list)->getValue();
 
-	EXPECT_EQ(-50000, min);
+	EXPECT_EQ(*std::min_element(contents.begin(), contents.end()), min);
 
 	deleteList(list);
 }
 
 TEST(SelSortJTestStress, MillionElementMin) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 500000; i >= -500000; i--) {
-		contents.push_back(i);
-	}
-
+	std::vector<int> contents = makeRandomNumberVector(1000000, -2147483646, 2147483646, 12345, true);
 	Item * list = makeList(contents);
 	int min = findMin(list)->getValue();
 
-	EXPECT_EQ(-500000, min);
+	EXPECT_EQ(*std::min_element(contents.begin(), contents.end()), min);
 
 	deleteList(list);
 }
 
 TEST(SelSortJTestStress, HundredListSort) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 50; i >= -50; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(100, -2147483646, 2147483646, 12345, true);
 	Item * list = makeList(contents);
 	list = LLSelectionSort(list);
 
@@ -181,10 +206,7 @@ TEST(SelSortJTestStress, HundredListSort) {
 
 TEST(SelSortJTestStress, ThousandListSort) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 500; i >= -500; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(1000, -2147483646, 2147483646, 12345, true);
 	Item * list = makeList(contents);
 	list = LLSelectionSort(list);
 
@@ -197,10 +219,7 @@ TEST(SelSortJTestStress, ThousandListSort) {
 
 TEST(SelSortJTestStress, TenThousandListSort) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 5000; i >= -5000; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(10000, -2147483646, 2147483646, 12345, true);
 	Item * list = makeList(contents);
 	list = LLSelectionSort(list);
 
@@ -213,10 +232,7 @@ TEST(SelSortJTestStress, TenThousandListSort) {
 
 TEST(SelSortJTestStress, FiftyThousandListSort) {
 	removeStackLimit();
-	std::vector<int> contents;
-	for (int i = 25000; i >= -25000; i--) {
-		contents.push_back(i);
-	}
+	std::vector<int> contents = makeRandomNumberVector(50000, -2147483646, 2147483646, 12345, true);
 	Item * list = makeList(contents);
 	list = LLSelectionSort(list);
 
@@ -227,129 +243,22 @@ TEST(SelSortJTestStress, FiftyThousandListSort) {
 	deleteList(list);
 }
 
-TEST(SelSortJTestRuntime, ThousandListMin) {
-	removeStackLimit();
-	double limit = 0.00075;
-	limit *= 5;
-	std::vector<int> contents;
+// TEST(SelSortJTestRuntime, MinRunTimeEval) {
+// 	removeStackLimit();
+//
+// 	RuntimeEvaluator::Snippet snp{findMinN()};
+// 	RuntimeEvaluator rntm("findMin", 1, 20, 10, snp);
+//   rntm.setCorrelationThreshold(1.1);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::LINEAR));
+// }
 
-	for (int i = 500; i >= -500; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	findMin(list);
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestRuntime, TenThousandListMin) {
-	removeStackLimit();
-	double limit = 0.00085;
-	limit *= 5;
-	std::vector<int> contents;
-
-	for (int i = 5000; i >= -5000; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	findMin(list);
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestRuntime, HundredThousandListMin) {
-	removeStackLimit();
-	double limit = 0.0025;
-	limit *= 5;
-	std::vector<int> contents;
-
-	for (int i = 50000; i >= -50000; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	findMin(list);
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestRuntime, MillionListMin) {
-	removeStackLimit();
-	double limit = 0.02;
-	limit *= 5;
-	std::vector<int> contents;
-
-	for (int i = 500000; i >= -500000; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	findMin(list);
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestRuntime, ThousandListSort) {
-	removeStackLimit();
-	double limit = 0.02;
-	limit *= 5;
-	std::vector<int> contents;
-
-	for (int i = 500; i >= -500; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	list = LLSelectionSort(list);
-	auto end = std::chrono::high_resolution_clock::now();
-
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
-
-TEST(SelSortJTestRuntime, TenThousandListSort) {
-	removeStackLimit();
-	double limit = 0.9;
-	limit *= 5;
-	std::vector<int> contents;
-
-	for (int i = 5000; i >= -5000; i--) {
-		contents.push_back(i);
-	}
-	Item * list = makeList(contents);
-
-	auto start = std::chrono::high_resolution_clock::now();
-	list = LLSelectionSort(list);
-	auto end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	EXPECT_GE(limit, diff.count());
-
-	deleteList(list);
-}
+// TEST(SelSortJTestRuntime, SSortRunTimeEval) {
+// 	removeStackLimit();
+//
+// 	RuntimeEvaluator::Snippet snp{selSortN()};
+// 	RuntimeEvaluator rntm("selSort", 1, 12, 10, snp);
+//   rntm.setCorrelationThreshold(1.5);
+// 	rntm.evaluate();
+// 	ASSERT_TRUE(rntm.meetsComplexity(RuntimeEvaluator::TimeComplexity::QUADRATIC));
+// }
