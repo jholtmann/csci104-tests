@@ -56,12 +56,13 @@ if(NOT DEFINED HW3_DIR)
 endif()
 
 # build loose user code as a CMake library
+# Note: add any additional .cpp files you made here
 # ----------------------------------------------------------
 
 set(HW3_SOURCES
 	${HW3_DIR}/stackint.cpp
 	${HW3_DIR}/circular_list_int.cpp
-	${HW3_DIR}/parser)
+	${HW3_DIR}/parser.cpp)
 
 # first check that we have the right sources
 foreach(HW3_SOURCE ${HW3_SOURCES})
@@ -78,9 +79,12 @@ target_include_directories(hw3_user_code PUBLIC ${HW3_DIR})
 target_compile_definitions(hw3_user_code PRIVATE main=disabled_main)
 
 # build user executable
+# Note: add any addition .cpp or .h you made similar to how parser.cpp was added
 # ----------------------------------------------------------
 
-add_executable(${HW3_DIR}/parser)
+add_executable(parser
+		${HW3_DIR}/parser.cpp
+		)
 
 # build testing utils lib
 # ----------------------------------------------------------
