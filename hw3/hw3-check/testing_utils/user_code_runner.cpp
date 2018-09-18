@@ -53,11 +53,11 @@ void UserCodeRunner::setupCommandLine(std::string const &executablePath, std::ve
 		{
 			cmdLineStream << ' ';
 		}
-		cmdLineStream << arg;
+		cmdLineStream << '\"' << arg << "\"";
 	}
 	if(_saveStdout)
 	{
-		cmdLineStream << " > " << _outputFilePath;
+		cmdLineStream << " > " << '\"' << _outputFilePath << '\"';
 	}
 
 	_commandString = cmdLineStream.str();
@@ -162,4 +162,3 @@ UserCodeRunner::~UserCodeRunner()
 {
 	kwsysProcess_Delete(_process);
 }
-

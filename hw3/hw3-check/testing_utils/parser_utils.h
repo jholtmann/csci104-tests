@@ -12,6 +12,6 @@
 #include <string>
 
 // runs the user's parser executable with the given string "equation" as the input file.
-testing::AssertionResult runParserProgram(std::string equation, std::string testName);
+testing::AssertionResult runParserProgram(std::string equation, std::string testName, std::string &output);
 
 #endif
