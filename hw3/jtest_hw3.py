@@ -15,7 +15,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v2.2"
+version = "v2.21"
 
 class bcolors:
 	HEADER = '\033[95m'
@@ -269,8 +269,8 @@ if __name__ == "__main__":
 
 	####################### DEFINE TESTS #######################
 	test_list = dict()
-	test_list["stack"] = [os.path.abspath(test_dir + os.sep + "stack_tests"), os.path.abspath(git_dir + os.sep + "hw3" + os.sep + "stack-tests.cpp"), "stack_test"]
-	# test_list["parser"] = [os.path.abspath(test_dir + os.sep + "parser_tests"), os.path.abspath(git_dir + os.sep + "hw3" + os.sep + "jtest-parser.cpp"), "parser_test"]
+	test_list["stack"] = [os.path.abspath(test_dir + os.sep + "stack_tests"), os.path.abspath(git_dir + os.sep + "hw3" + os.sep + "hw3-check" + os.sep + "stack_tests" + os.sep + "stack_test.cpp"), "stack_test"]
+	test_list["parser"] = [os.path.abspath(test_dir + os.sep + "parser_tests"), os.path.abspath(git_dir + os.sep + "hw3" + os.sep + "hw3-check" + os.sep + "parser_tests" + os.sep + "parser_test.cpp"), "parser_test"]
 	###########################################################
 
 	# check if repo exists

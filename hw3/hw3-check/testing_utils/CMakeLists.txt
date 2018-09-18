@@ -13,11 +13,12 @@ set(TESTING_UTILS_SOURCES
 	random_generator.cpp
 	misc_utils.cpp
 	user_code_runner.cpp
-	rang.h)
+	rang.h
+	parser_utils.cpp)
 
 add_library(testing_utils STATIC ${TESTING_UTILS_SOURCES})
 target_include_directories(testing_utils PUBLIC . ${CMAKE_CURRENT_BINARY_DIR}/generated_headers)
 target_link_libraries(testing_utils hw3_user_code gtest kwsys)
 
 # tell utils library about the directory structure
-target_compile_definitions(testing_utils PUBLIC TEST_BINARY_DIR=\"${CMAKE_BINARY_DIR}\" USER_CODE_DIR=\"${HW3_DIR}\" DDG_EXECUTABLE=\"$<TARGET_FILE:parser>\")
+target_compile_definitions(testing_utils PUBLIC TEST_BINARY_DIR=\"${CMAKE_BINARY_DIR}\" USER_CODE_DIR=\"${HW3_DIR}\" PARSER_EXECUTABLE=\"$<TARGET_FILE:parser>\")

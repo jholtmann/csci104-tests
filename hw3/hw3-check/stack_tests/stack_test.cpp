@@ -2,17 +2,17 @@
 #include <random_generator.h>
 #include <stackint.h>
 
-TEST(JTestStack, MakeStack) {
+TEST(Stack, MakeStack) {
 	StackInt stack;
 }
 
-TEST(JTestStack, SingleItemStack) {
+TEST(Stack, SingleItemStack) {
 	StackInt stack;
 	stack.push(0);
 }
 
 // add one item and check that it's there
-TEST(JTestStack, OneItemAdd)
+TEST(Stack, OneItemAdd)
 {
     StackInt stack;
 
@@ -23,7 +23,7 @@ TEST(JTestStack, OneItemAdd)
 }
 
 // add one item and remove it
-TEST(JTestStack, OneItemAddRemove)
+TEST(Stack, OneItemAddRemove)
 {
     StackInt stack;
 
@@ -35,20 +35,20 @@ TEST(JTestStack, OneItemAddRemove)
     EXPECT_EQ(true, stack.empty());
 }
 
-TEST(JTestStack, SingleItemSetRetrieve) {
+TEST(Stack, SingleItemSetRetrieve) {
 	StackInt stack;
 	stack.push(0);
 	EXPECT_EQ(stack.top(), 0);
 }
 
-TEST(JTestStack, SingleItemEmpty) {
+TEST(Stack, SingleItemEmpty) {
 	StackInt stack;
 	stack.push(0);
 	stack.pop();
 	ASSERT_TRUE(stack.empty() == true);
 }
 
-TEST(JTestStack, FillEmpty) {
+TEST(Stack, FillEmpty) {
 	StackInt stack;
 	std::vector<int> vec = makeRandomIntVector(10, 12345, true);
 	for (int i : vec) {
@@ -62,7 +62,7 @@ TEST(JTestStack, FillEmpty) {
 	}
 }
 
-TEST(JTestStack, FillEmptyFill) {
+TEST(Stack, FillEmptyFill) {
 	StackInt stack;
 	std::vector<int> vec1 = makeRandomIntVector(10, 12345, true);
 	for (int i : vec1) {
@@ -89,7 +89,7 @@ TEST(JTestStack, FillEmptyFill) {
 	ASSERT_TRUE(stack.empty() == true);
 }
 
-TEST(JTestStackStress, TenThousandFillEmpty) {
+TEST(StackStress, TenThousandFillEmpty) {
 	StackInt stack;
 	std::vector<int> vec = makeRandomIntVector(10000, 12345, true);
 	for (int i : vec) {
@@ -103,7 +103,7 @@ TEST(JTestStackStress, TenThousandFillEmpty) {
 	}
 }
 
-TEST(JTestStackStress, FiftyThousandFillEmpty) {
+TEST(StackStress, FiftyThousandFillEmpty) {
 	StackInt stack;
 	std::vector<int> vec = makeRandomIntVector(50000, 12345, true);
 	for (int i : vec) {
