@@ -83,8 +83,7 @@ target_compile_definitions(hw3_user_code PRIVATE main=disabled_main)
 # ----------------------------------------------------------
 
 add_executable(parser
-		${HW3_DIR}/parser.cpp
-		)
+		${HW3_DIR}/parser.cpp)
 
 # build testing utils lib
 # ----------------------------------------------------------
