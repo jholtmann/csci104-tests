@@ -45,7 +45,7 @@ TEST(Stack, SingleItemEmpty) {
 	StackInt stack;
 	stack.push(0);
 	stack.pop();
-	ASSERT_TRUE(stack.empty() == true);
+	ASSERT_TRUE(stack.empty());
 }
 
 TEST(Stack, FillEmpty) {
@@ -74,7 +74,7 @@ TEST(Stack, FillEmptyFill) {
 		EXPECT_EQ(stack.top(), vec1[counter--]);
 		stack.pop();
 	}
-	ASSERT_TRUE(stack.empty() == true);
+	ASSERT_TRUE(stack.empty());
 
 	std::vector<int> vec2 = makeRandomIntVector(10, 54321, true);
 	for (int i : vec2) {
@@ -86,7 +86,7 @@ TEST(Stack, FillEmptyFill) {
 		EXPECT_EQ(stack.top(), vec2[counter--]);
 		stack.pop();
 	}
-	ASSERT_TRUE(stack.empty() == true);
+	ASSERT_TRUE(stack.empty());
 }
 
 TEST(StackStress, TenThousandFillEmpty) {

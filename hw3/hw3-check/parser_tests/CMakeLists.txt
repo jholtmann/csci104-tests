@@ -3,6 +3,7 @@
 file(GLOB STACK_TEST_SOURCES "*.cpp")
 
 add_executable(parser_test ${STACK_TEST_SOURCES})
+add_dependencies(parser_test parser)
 target_link_libraries(parser_test testing_utils gtest gtest_main)
 
 add_valgrind_gtests(parser_test)

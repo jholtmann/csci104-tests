@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
-#include <string>
 #include <parser_utils.h>
+
+#include <parser.h>
+#include <string>
 
 // Test basic addition
 TEST(Parser, Plus)
