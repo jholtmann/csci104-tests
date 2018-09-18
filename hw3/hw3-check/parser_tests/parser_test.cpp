@@ -152,15 +152,6 @@ TEST(Parser, MultipleTimesOperators)
 }
 
 // Simple test that uses all operators
-TEST(Parser, Combo)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("(<<14 *(>>123+333 ))", "Combo", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("12", output);
-}
-
-// Simple test that uses all operators
 TEST(Parser, MultipleOperatorsOne)
 {
   std::string output;
@@ -187,8 +178,14 @@ TEST(Parser, MultipleExpressions)
                             "((<123*234)\n"
                             "(1337*9001+42)\n"
                             "(*1138*3720)";
+  std::string expected =    "20328"
+                            "500000000"
+                            "2"
+                            "Malformed"
+                            "Malformed"
+                            "Malformed";
 
-  EXPECT_TRUE(runParserProgram("(<<14 *(>>123+333 ))", "Combo", output));
+  EXPECT_TRUE(runParserProgram(expression, "MultipleExpressions", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("12", output);
+  EXPECT_EQ(expected, output);
 }
