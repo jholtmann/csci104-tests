@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <parser_utils.h>
 
+#include <algorithm>
 #include <string>
 
 // Test basic addition
@@ -46,6 +47,46 @@ TEST(Parser, ShiftLeft)
   EXPECT_TRUE(runParserProgram("<2", "ShiftLeft", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("4", output);
+}
+
+TEST(Parser, ShiftRightNoValue)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram(">", "ShiftRightNoValue", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ShiftLeftNoValue)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<", "ShiftLeftNoValue", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ShiftParentheses)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(<2)", "ShiftParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustANumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("2", "JustANumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustANumberParentheses)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2)", "JustANumberParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
 }
 
 TEST(Parser, MalformedPlus)
