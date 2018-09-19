@@ -73,14 +73,6 @@ TEST(Parser, ShiftParentheses)
   EXPECT_EQ("Malformed", output);
 }
 
-TEST(Parser, JustANumber)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("2", "JustANumber", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("Malformed", output);
-}
-
 TEST(Parser, JustANumberParentheses)
 {
   std::string output;
