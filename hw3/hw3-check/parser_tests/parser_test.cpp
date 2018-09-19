@@ -73,6 +73,14 @@ TEST(Parser, ShiftParentheses)
   EXPECT_EQ("Malformed", output);
 }
 
+TEST(Parser, JustANumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("2", "JustANumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("2", output);
+}
+
 TEST(Parser, JustANumberParentheses)
 {
   std::string output;
@@ -200,6 +208,78 @@ TEST(Parser, MultipleOperatorsTwo)
   EXPECT_TRUE(runParserProgram("<>(2 * 1* ( >500000000 + <<0))", "MultipleOperatorsTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("500000000", output);
+}
+
+TEST(Parser, ParenthesMiddle)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( (>2 + (3*3) ) * 3 )", "ParenthesMiddle", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("30", output);
+}
+
+TEST(Parser, ParenthesMiddleTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( (<2 + (3+3) ) * 3 )", "ParenthesMiddleTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("30", output);
+}
+
+TEST(Parser, ParenthesMiddleAdd)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 + (3 + 3) + 3 )", "ParenthesMiddleAdd", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("11", output);
+}
+
+TEST(Parser, ParenthesMiddleMultiply)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 * (3 * 3) * 3 )", "ParenthesMiddleMultiply", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("54", output);
+}
+
+TEST(Parser, ParenthesMiddleMixedValid)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) + 3 )", "ParenthesMiddleMixedValid", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("14", output);
+}
+
+TEST(Parser, ParenthesMiddleMixedValidTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) * 3 )", "ParenthesMiddleMixedValidTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("36", output);
+}
+
+TEST(Parser, ParenthesMiddleMixedInvalid)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) + 3 )", "ParenthesMiddleMixedInvalid", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ParenthesMiddleMixedInvalidTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) * 3 )", "ParenthesMiddleMixedInvalidTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, SpaceInNumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
 }
 
 // All expressions listed on assignment page
