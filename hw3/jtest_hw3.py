@@ -15,7 +15,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v2.2"
+version = "v2.23"
 
 class bcolors:
 	HEADER = '\033[95m'

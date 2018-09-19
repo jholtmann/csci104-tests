@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <string>
 
 #include <kwsys/SystemTools.hxx>
 
@@ -9,7 +10,7 @@ testing::AssertionResult runParserProgram(std::string equation, std::string test
 {
 	// set up file structure
 	std::string executablePath = PARSER_EXECUTABLE;
-	std::string testFolder = "/parser_tests/testFiles/" + testName;
+	std::string testFolder = std::string(TEST_BINARY_DIR) + "/parser_tests/testFiles/" + testName;
 	kwsys::SystemTools::MakeDirectory(testFolder);
 	std::string inputFilePath = testFolder + "/input.txt";
 	std::string outputFilePath = testFolder + "/output.txt";
