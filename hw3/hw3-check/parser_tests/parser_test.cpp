@@ -274,10 +274,84 @@ TEST(Parser, ParenthesMiddleMixedInvalidTwo)
   EXPECT_EQ("Malformed", output);
 }
 
-TEST(Parser, SpaceInNumber)
+// Test for edge case (eg.: "(2 + 1 1)").
+// Disabled because of Piazza comment noting we do not have to check for this
+TEST(DISABLED_Parser, SpaceInNumber)
 {
   std::string output;
   EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustAPlus)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("+", "JustAPlus", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, InvalidOperator)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("-", "InvalidOperator", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, InvalidOperatorTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(10-3)", "InvalidOperatorTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustARShift)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram(">", "JustARShift", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustALShift)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<", "JustALShift", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustAPlusParen)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(+)", "JustAPlusParen", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustAMinusParen)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(-)", "JustAMinusParen", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustARShiftParen)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(>)", "JustARShiftParen", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustALShiftParen)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(<)", "JustALShiftParen", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
