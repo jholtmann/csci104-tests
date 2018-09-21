@@ -49,6 +49,14 @@ TEST(Parser, ShiftLeft)
   EXPECT_EQ("4", output);
 }
 
+TEST(Parser, ShiftComplex)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(<2 + <9)", "ShiftLeft", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("22", output);
+}
+
 TEST(Parser, ShiftRightNoValue)
 {
   std::string output;
@@ -69,6 +77,22 @@ TEST(Parser, ShiftParentheses)
 {
   std::string output;
   EXPECT_TRUE(runParserProgram("(<2)", "ShiftParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ShiftRightSide)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2>)", "ShiftRightSide", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ShiftRightSideTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2< + 7)", "ShiftRightSideTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -274,16 +298,6 @@ TEST(Parser, ParenthesMiddleMixedInvalidTwo)
   EXPECT_EQ("Malformed", output);
 }
 
-// Test for edge case (eg.: "(2 + 1 1)").
-// Disabled because of Piazza comment noting we do not have to check for this
-TEST(DISABLED_Parser, SpaceInNumber)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("Malformed", output);
-}
-
 TEST(Parser, JustAPlus)
 {
   std::string output;
@@ -348,6 +362,38 @@ TEST(Parser, JustARShiftParen)
   EXPECT_EQ("Malformed", output);
 }
 
+TEST(Parser, NotParentheses)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("[2+6]", "NotParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, NotParenthesesTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("{2+6}", "NotParenthesesTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ZeroBeforeInteger)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(02+6)", "ZeroBeforeInteger", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("8", output);
+}
+
+TEST(Parser, ZeroBeforeIntegerTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(02+00006)", "ZeroBeforeInteger", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("8", output);
+}
+
 TEST(Parser, JustALShiftParen)
 {
   std::string output;
@@ -376,4 +422,14 @@ TEST(Parser, MultipleExpressions)
   EXPECT_TRUE(runParserProgram(expression, "MultipleExpressions", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ(expected, output);
+}
+
+// Test for edge case (eg.: "(2 + 1 1)").
+// Disabled because of Piazza comment noting we do not have to check for this
+TEST(DISABLED_Parser, SpaceInNumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
 }
