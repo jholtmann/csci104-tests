@@ -353,50 +353,50 @@ TEST(Parser, ParenthesMiddleTwo)
   EXPECT_EQ("30", output);
 }
 
-TEST(Parser, ParenthesMiddleAdd)
+TEST(Parser, ParenthesesMiddleAdd)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 + (3 + 3) + 3 )", "ParenthesMiddleAdd", output));
+  EXPECT_TRUE(runParserProgram("( 2 + (3 + 3) + 3 )", "ParenthesesMiddleAdd", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("11", output);
 }
 
-TEST(Parser, ParenthesMiddleMultiply)
+TEST(Parser, ParenthesesMiddleMultiply)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 * (3 * 3) * 3 )", "ParenthesMiddleMultiply", output));
+  EXPECT_TRUE(runParserProgram("( 2 * (3 * 3) * 3 )", "ParenthesesMiddleMultiply", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("54", output);
 }
 
-TEST(Parser, ParenthesMiddleMixedValid)
+TEST(Parser, ParenthesesMiddleMixedValid)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) + 3 )", "ParenthesMiddleMixedValid", output));
+  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) + 3 )", "ParenthesesMiddleMixedValid", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("14", output);
 }
 
-TEST(Parser, ParenthesMiddleMixedValidTwo)
+TEST(Parser, ParenthesesMiddleMixedValidTwo)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) * 3 )", "ParenthesMiddleMixedValidTwo", output));
+  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) * 3 )", "ParenthesesMiddleMixedValidTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("36", output);
 }
 
-TEST(Parser, ParenthesMiddleMixedInvalid)
+TEST(Parser, ParenthesesMiddleMixedInvalid)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) + 3 )", "ParenthesMiddleMixedInvalid", output));
+  EXPECT_TRUE(runParserProgram("( 2 * (3 + 3) + 3 )", "ParenthesesMiddleMixedInvalid", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
 
-TEST(Parser, ParenthesMiddleMixedInvalidTwo)
+TEST(Parser, ParenthesesMiddleMixedInvalidTwo)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) * 3 )", "ParenthesMiddleMixedInvalidTwo", output));
+  EXPECT_TRUE(runParserProgram("( 2 + (3 * 3) * 3 )", "ParenthesesMiddleMixedInvalidTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
