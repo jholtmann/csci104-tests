@@ -161,6 +161,14 @@ TEST(Parser, AdjacentOperatorsValid)
   EXPECT_EQ("32", output);
 }
 
+TEST(Parser, AdjacentOperatorsValidTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2 *<8)", "AdjacentOperatorsValidTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("32", output);
+}
+
 TEST(Parser, MissingOperatorParenthesis)
 {
   std::string output;
@@ -241,6 +249,22 @@ TEST(Parser, MalformedParenthesesTwo)
   EXPECT_EQ("Malformed", output);
 }
 
+TEST(Parser, TooManyParentheses)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("((<123*234))", "TooManyParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, TooManyParenthesesTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("((<123*234*2))", "TooManyParenthesesTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
 TEST(Parser, ExtraTimes)
 {
   std::string output;
@@ -252,7 +276,7 @@ TEST(Parser, ExtraTimes)
 TEST(Parser, ExtraTimesTwo)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1138*3720*)", "ExtraTimes", output));
+  EXPECT_TRUE(runParserProgram("(1138*3720*)", "ExtraTimesTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -297,7 +321,6 @@ TEST(Parser, MultipleTimesOperators)
   EXPECT_EQ("12", output);
 }
 
-// Simple test that uses all operators
 TEST(Parser, MultipleOperatorsOne)
 {
   std::string output;
@@ -458,6 +481,14 @@ TEST(Parser, JustARShiftParen)
   EXPECT_EQ("Malformed", output);
 }
 
+TEST(Parser, JustALShiftParen)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(<)", "JustALShiftParen", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
 TEST(Parser, NotParentheses)
 {
   std::string output;
@@ -488,14 +519,6 @@ TEST(Parser, ZeroBeforeIntegerTwo)
   EXPECT_TRUE(runParserProgram("(02+00006)", "ZeroBeforeInteger", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("8", output);
-}
-
-TEST(Parser, JustALShiftParen)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("(<)", "JustALShiftParen", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("Malformed", output);
 }
 
 // All expressions listed on assignment page
@@ -581,7 +604,23 @@ TEST(Parser, InvalidOperatorSubtraction)
 TEST(Parser, InvalidOperatorDivision)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(100 / 200)", "InvalidOperatorSubtraction", output));
+  EXPECT_TRUE(runParserProgram("(100 / 200)", "InvalidOperatorDivision", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, AdjacentExpressions)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(100 + 200)(100 + 200)", "AdjacentExpressions", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, AdjacentExpressionsTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(100 + 200)+(100 + 200)", "AdjacentExpressionsTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -589,7 +628,15 @@ TEST(Parser, InvalidOperatorDivision)
 TEST(Parser, Complex)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1 * 1 * 2 * (><2+<<1) * (3+2) * (5 + <3))", "SpaceInNumber", output));
+  EXPECT_TRUE(runParserProgram("(1 * 1 * 2 * (><2+<<1) * (3+2) * (5 + <3))", "Complex", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("660", output);
+}
+
+TEST(Parser, ComplexTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2 + ( 2 * ( (9 * (3*3))+<4)*<6) + 4)", "ComplexTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("2142", output);
 }
