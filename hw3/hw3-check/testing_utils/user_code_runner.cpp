@@ -120,7 +120,7 @@ testing::AssertionResult UserCodeRunner::execute()
 	// start process
 	// -----------------------------------------------------------
 
-	std::cout << "Executing program: " << rang::fgB::blue << _commandString << rang::fg::reset << std::endl;
+	// std::cout << "Executing program: " << rang::fgB::blue << _commandString << rang::fg::reset << std::endl;
 
 	kwsysProcess_Execute(_process);
 	kwsysProcess_WaitForExit(_process, nullptr);

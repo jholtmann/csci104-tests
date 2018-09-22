@@ -65,6 +65,14 @@ TEST(Parser, ShiftToZero)
   EXPECT_EQ("0", output);
 }
 
+TEST(Parser, ShiftToZeroTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram(">>>>>>>>>>>>>>>>>>>>6", "ShiftToZeroTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("0", output);
+}
+
 TEST(Parser, ShiftToOne)
 {
   std::string output;
