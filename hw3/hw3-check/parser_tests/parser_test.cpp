@@ -121,6 +121,14 @@ TEST(Parser, ShiftRightSideTwo)
   EXPECT_EQ("Malformed", output);
 }
 
+TEST(Parser, ShiftOutsideParentheses)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<<(<2 + 7)", "ShiftOutsideParentheses", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("44", output);
+}
+
 TEST(Parser, AdjacentOperators)
 {
   std::string output;
