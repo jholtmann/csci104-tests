@@ -583,6 +583,15 @@ TEST(Parser, LotsOfWhitespace)
   EXPECT_EQ("3", output);
 }
 
+TEST(Parser, LotsOfTabs)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("\t(1\t\t\t\t\t\t+ 2\t\t\t  \t   \t   \t  )  \t   \t  \t \t   \t", "LotsOfWhitespace", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("3", output);
+}
+
+
 TEST(Parser, AddZero)
 {
   std::string output;
