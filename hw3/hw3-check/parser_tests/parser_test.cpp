@@ -52,7 +52,7 @@ TEST(Parser, ShiftLeft)
 TEST(Parser, ShiftComplex)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(<2 + <9)", "ShiftLeft", output));
+  EXPECT_TRUE(runParserProgram("(<2 + <9)", "ShiftComplex", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("22", output);
 }
@@ -173,6 +173,14 @@ TEST(Parser, MissingOperatorParenthesis)
 {
   std::string output;
   EXPECT_TRUE(runParserProgram("(2 + (8*3)5)", "MissingOperatorParenthesis", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, MissingOperatorParenthesisTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(2 + 5(8*3))", "MissingOperatorParenthesisTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -321,10 +329,18 @@ TEST(Parser, MultipleTimesOperators)
   EXPECT_EQ("12", output);
 }
 
-TEST(Parser, MultipleOperatorsOne)
+TEST(Parser, MultipleTimesOperatorsTwo)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(<<14 *(>>123+333 ))", "MultipleOperatorsOne", output));
+  EXPECT_TRUE(runParserProgram("(2*2 *2*2*2 *2* 2 * 2)", "MultipleTimesOperatorsTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("256", output);
+}
+
+TEST(Parser, MultipleOperators)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(<<14 *(>>123+333 ))", "MultipleOperators", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("20328", output);
 }
@@ -367,6 +383,14 @@ TEST(Parser, ParenthesesMiddleMultiply)
   EXPECT_TRUE(runParserProgram("( 2 * (3 * 3) * 3 )", "ParenthesesMiddleMultiply", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("54", output);
+}
+
+TEST(Parser, ParenthesesMiddleDouble)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("((100*200)+(100+200))", "ParenthesesMiddleDouble", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("20300", output);
 }
 
 TEST(Parser, ParenthesesMiddleMixedValid)
@@ -417,14 +441,6 @@ TEST(Parser, ParentesesMiddleShift)
   EXPECT_EQ("339708", output);
 }
 
-TEST(Parser, JustAPlus)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("+", "JustAPlus", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("Malformed", output);
-}
-
 TEST(Parser, InvalidOperator)
 {
   std::string output;
@@ -437,6 +453,14 @@ TEST(Parser, InvalidOperatorTwo)
 {
   std::string output;
   EXPECT_TRUE(runParserProgram("(10-3)", "InvalidOperatorTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, JustAPlus)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("+", "JustAPlus", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -465,10 +489,10 @@ TEST(Parser, JustAPlusParen)
   EXPECT_EQ("Malformed", output);
 }
 
-TEST(Parser, JustAMinusParen)
+TEST(Parser, JustATimesParen)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(-)", "JustAMinusParen", output));
+  EXPECT_TRUE(runParserProgram("(*)", "JustATimesParen", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -541,16 +565,6 @@ TEST(Parser, MultipleExpressions)
   EXPECT_TRUE(runParserProgram(expression, "MultipleExpressions", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ(expected, output);
-}
-
-// Test for edge case (eg.: "(2 + 1 1)").
-// Disabled because of Piazza comment noting we do not have to check for this
-TEST(DISABLED_Parser, SpaceInNumber)
-{
-  std::string output;
-  EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
-  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-  EXPECT_EQ("Malformed", output);
 }
 
 TEST(Parser, LotsOfWhitespace)
@@ -639,4 +653,50 @@ TEST(Parser, ComplexTwo)
   EXPECT_TRUE(runParserProgram("(2 + ( 2 * ( (9 * (3*3))+<4)*<6) + 4)", "ComplexTwo", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("2142", output);
+}
+
+TEST(Parser, ReallyLongInput)
+{
+  std::string output;
+  std::string input = "(1 ";
+  for (int i = 0; i < 10000; i++) {
+    input += "+ 1";
+  }
+  input += ")";
+
+  EXPECT_TRUE(runParserProgram(input, "ReallyLongInput", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("10001", output);
+}
+
+TEST(Parser, HalfIntMaxMultiply)
+{
+  std::string output;
+  std::string input = "(2 ";
+  for (int i = 0; i < 29; i++) {
+    input += "* 2";
+  }
+  input += ")";
+
+  EXPECT_TRUE(runParserProgram(input, "HalfIntMaxMultiply", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("1073741824", output);
+}
+
+TEST(Parser, HalfIntMaxLeftShift)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2", "HalfIntMaxLeftShift", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("1073741824", output);
+}
+
+// Test for edge case (eg.: "(2 + 1 1)").
+// Disabled because of Piazza comment noting we do not have to check for this
+TEST(DISABLED_Parser, SpaceInNumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("( 11 + 2 + 1 1)", "SpaceInNumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
 }
