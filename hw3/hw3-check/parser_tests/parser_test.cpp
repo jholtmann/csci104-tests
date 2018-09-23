@@ -129,6 +129,30 @@ TEST(Parser, ShiftOutsideParentheses)
   EXPECT_EQ("44", output);
 }
 
+TEST(Parser, BlankLine)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("", "BlankLine", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("", output);
+}
+
+TEST(Parser, BlankLineTwo)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram(" ", "BlankLineTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("", output);
+}
+
+TEST(Parser, BlankLineThree)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("\t", "BlankLineThree", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("", output);
+}
+
 TEST(Parser, AdjacentOperators)
 {
   std::string output;
