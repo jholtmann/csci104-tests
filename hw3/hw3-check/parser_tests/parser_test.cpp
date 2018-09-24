@@ -428,7 +428,7 @@ TEST(Parser, MixingOperatorsEarly)
 TEST(Parser, MixingOperatorsAtEnd)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1*1+2+3+5+6*7)", "MixingOperators", output));
+  EXPECT_TRUE(runParserProgram("(1*1+2+3+5+6+7)", "MixingOperators", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
