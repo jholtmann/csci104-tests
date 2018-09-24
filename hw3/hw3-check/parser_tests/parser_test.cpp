@@ -228,7 +228,7 @@ TEST(Parser, JustANumber)
 TEST(Parser, InvalidCharJustLetters)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("abc", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram("abc", "InvalidCharJustLetters", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -236,7 +236,7 @@ TEST(Parser, InvalidCharJustLetters)
 TEST(Parser, InvalidCharLettersAtEnd)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(5 + 5)feelsbadman", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram("(5 + 5)feelsbadman", "InvalidCharLettersAtEnd", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -244,7 +244,7 @@ TEST(Parser, InvalidCharLettersAtEnd)
 TEST(Parser, InvalidCharScatteredLetters)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("a(40 b + 5 c)", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram("a(40 b + 5 c)", "InvalidCharScatteredLetters", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -252,7 +252,7 @@ TEST(Parser, InvalidCharScatteredLetters)
 TEST(Parser, InvalidCharLettersOnlyInside)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(5 x + y 5)", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram("(5 x + y 5)", "InvalidCharLettersOnlyInside", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -260,7 +260,7 @@ TEST(Parser, InvalidCharLettersOnlyInside)
 TEST(Parser, InvalidCharHappyFace)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram(":)", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram(":)", "InvalidCharHappyFace", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -268,7 +268,7 @@ TEST(Parser, InvalidCharHappyFace)
 TEST(Parser, InvalidCharSadFace)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram(":(", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram(":(", "InvalidCharSadFace", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -276,7 +276,7 @@ TEST(Parser, InvalidCharSadFace)
 TEST(Parser, InvalidCharNeutralFace)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(0 _ 0)", "JustSomeLetters", output));
+  EXPECT_TRUE(runParserProgram("(0 _ 0)", "InvalidCharNeutralFace", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -348,7 +348,7 @@ TEST(Parser, TooManyParentheses)
 TEST(Parser, TooManyParenthesesShifted)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(<>(<123*234))", "TooManyParentheses", output));
+  EXPECT_TRUE(runParserProgram("(<>(<123*234))", "TooManyParenthesesShifted", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -404,7 +404,7 @@ TEST(Parser, MixingOperators)
 TEST(Parser, MixingOperatorsShifted)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1+2*>3)", "MixingOperators", output));
+  EXPECT_TRUE(runParserProgram("(1+2*>3)", "MixingOperatorsShifted", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -412,7 +412,7 @@ TEST(Parser, MixingOperatorsShifted)
 TEST(Parser, MixingOperatorsMidway)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1+1+2*3+5+6+7)", "MixingOperators", output));
+  EXPECT_TRUE(runParserProgram("(1+1+2*3+5+6+7)", "MixingOperatorsMidway", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -420,7 +420,7 @@ TEST(Parser, MixingOperatorsMidway)
 TEST(Parser, MixingOperatorsEarly)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1+1+2+3+5+6*7)", "MixingOperators", output));
+  EXPECT_TRUE(runParserProgram("(1+1+2+3+5+6*7)", "MixingOperatorsEarly", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
@@ -428,7 +428,7 @@ TEST(Parser, MixingOperatorsEarly)
 TEST(Parser, MixingOperatorsAtEnd)
 {
   std::string output;
-  EXPECT_TRUE(runParserProgram("(1*1+2+3+5+6+7)", "MixingOperators", output));
+  EXPECT_TRUE(runParserProgram("(1*1+2+3+5+6+7)", "MixingOperatorsAtEnd", output));
   output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
   EXPECT_EQ("Malformed", output);
 }
