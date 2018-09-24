@@ -129,6 +129,22 @@ TEST(Parser, ShiftOutsideParentheses)
   EXPECT_EQ("44", output);
 }
 
+TEST(Parser, ShiftOutsideParenthesesMixedAddition)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<1+1<(<2 + 7)", "ShiftOutsideParenthesesMixedAddition", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
+TEST(Parser, ShiftOutsideParenthesesMixedNumber)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("<11<(<2 + 7)", "ShiftOutsideParenthesesMixedNumber", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("Malformed", output);
+}
+
 TEST(Parser, BlankLine)
 {
   std::string output;
