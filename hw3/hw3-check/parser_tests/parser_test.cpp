@@ -681,6 +681,14 @@ TEST(Parser, ZeroBeforeIntegerTwo)
   EXPECT_EQ("8", output);
 }
 
+TEST(Parser, ZeroBeforeIntegerThree)
+{
+  std::string output;
+  EXPECT_TRUE(runParserProgram("(02+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006)", "ZeroBeforeIntegerThree", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ("8", output);
+}
+
 // All expressions listed on assignment page
 TEST(Parser, MultipleExpressions)
 {
