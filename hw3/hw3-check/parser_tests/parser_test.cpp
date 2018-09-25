@@ -711,6 +711,29 @@ TEST(Parser, MultipleExpressions)
   EXPECT_EQ(expected, output);
 }
 
+// All expressions listed on assignment page
+TEST(Parser, MultipleExpressionsTwo)
+{
+  std::string output;
+std::string expression =    "((<123*234)\n"
+                            "(1337*9001+42)\n"
+                            "(*1138*3720)\n"
+                            "(<<14 *(>>123+333 ))\n"
+                            "<>(2 * 1* ( >500000000 + <<0))\n"
+                            "<>(1 * >3 * 3)\n";
+
+  std::string expected =    "Malformed"
+                            "Malformed"
+                            "Malformed"
+                            "20328"
+                            "500000000"
+                            "2";
+
+  EXPECT_TRUE(runParserProgram(expression, "MultipleExpressionsTwo", output));
+  output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+  EXPECT_EQ(expected, output);
+}
+
 TEST(Parser, LotsOfWhitespace)
 {
   std::string output;
