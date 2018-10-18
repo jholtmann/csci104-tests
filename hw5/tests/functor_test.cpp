@@ -52,7 +52,7 @@ TEST_F(NumStrCompTestTrue, ComplexAlphabet) {
   s2 = "ZZZZZZZZZZZZZZZZ";
 }
 
-TEST_F(NumStrCompTestTrue, ComplexAlphabetFalse) {
+TEST_F(NumStrCompTestFalse, ComplexAlphabetFalse) {
   s1 = "ZZZZZZZZZZZZZZZZ";
   s2 = "ABBABAFHWEFWHWEF";
 }
