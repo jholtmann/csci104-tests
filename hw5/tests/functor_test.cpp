@@ -52,7 +52,7 @@ TEST_F(NumStrCompTestTrue, ComplexAlphabet) {
   s2 = "ZZZZZZZZZZZZZZZZ";
 }
 
-TEST_F(NumStrCompTestTrue, ComplexAlphabetFalse) {
+TEST_F(NumStrCompTestFalse, ComplexAlphabetFalse) {
   s1 = "ZZZZZZZZZZZZZZZZ";
   s2 = "ABBABAFHWEFWHWEF";
 }
@@ -67,17 +67,17 @@ TEST_F(NumStrCompTestTrue, MixedCase) {
   s2 = "AaBbCcDda";
 }
 
-TEST_F(NumStrCompTest, OtherSymbols) {
+TEST_F(NumStrCompTestTrue, OtherSymbols) {
   s1 = "!.[]{}\\~`===`==``=`..,,--.,Z-,--,--.";
   s2 = "Y2";
 }
 
-TEST_F(NumStrCompTest, MixedCaseAlphanumeric) {
+TEST_F(NumStrCompTestTrue, MixedCaseAlphanumeric) {
   s1 = "Z";
   s2 = "Y2";
 }
 
-TEST_F(NumStrCompTest, MixedCaseAlphanumericTwo) {
+TEST_F(NumStrCompTestTrue, MixedCaseAlphanumericTwo) {
   s1 = "A1aBb4C7cDd2";
   s2 = "A2aBb4C8cDdb1";
 }
