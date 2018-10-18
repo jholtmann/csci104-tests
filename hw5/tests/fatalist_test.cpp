@@ -17,7 +17,7 @@ protected:
 class FatalistTestTrue : public FatalistTest {
 protected:
     void TearDown() {
-        EXPECT_TRUE(FatalistHypothesis(tmp) == true);
+        EXPECT_TRUE(FatalistHypothesis(tmp));
     }
 };
 
@@ -25,13 +25,12 @@ protected:
 class FatalistTestFalse : public FatalistTest {
 protected:
     void TearDown() {
-        EXPECT_TRUE(FatalistHypothesis(tmp) == false);
+        EXPECT_TRUE(!FatalistHypothesis(tmp));
     }
 };
 
 /*** Test Definitions ***/
 TEST_F (FatalistTestTrue, SimpleTest) {
-  vector<pair<int, int>> test;
   tmp.emplace_back(50,90);
   tmp.emplace_back(30,20);
   tmp.emplace_back(30,20);
