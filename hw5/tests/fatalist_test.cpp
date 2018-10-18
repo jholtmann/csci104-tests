@@ -1,13 +1,37 @@
-//
-// Fatalist-Test
-//
-//     Created: 10/17/18
-//      Author: Matthew Treadwell 
-// 
-//
+#include "gtest/gtest.h"
 
-#include <gtest/gtest.h>
-#include "fatalist.cpp"
+#include "../fatalist.cpp"
+
+#include <vector>
+
+using namespace std;
+
+TEST (Fatalist, SimpleTest) {
+  vector<pair<int, int>> test;
+  test.push_back(make_pair(50,90));
+  test.push_back(make_pair(30,20));
+  test.push_back(make_pair(30,20));
+
+  EXPECT_TRUE(FatalistHypothesis(test) == 1);
+}
+
+TEST (Fatalist, SimpleTestTwo) {
+  vector<pair<int, int>> test;
+  test.push_back(make_pair(50,90));
+  test.push_back(make_pair(30,20));
+  test.push_back(make_pair(29,20));
+
+  EXPECT_TRUE(FatalistHypothesis(test) == 0);
+}
+
+TEST (Fatalist, Unordered) {
+  vector<pair<int, int>> test;
+  test.push_back(make_pair(28,10));
+  test.push_back(make_pair(90,90));
+  test.push_back(make_pair(29,70));
+
+  EXPECT_TRUE(FatalistHypothesis(test) == 1);
+}
 
 TEST(Basic, empty) {
     std::vector<std::pair<int,int>> tmp;
