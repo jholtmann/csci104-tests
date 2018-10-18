@@ -86,7 +86,7 @@ TEST(Basic, ThreeStudentsFalse) {
     tmp.emplace_back(80, 80);
     tmp.emplace_back(90, 79); // False because 79 < 80
 
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
+    ASSERT_EQ(FatalistHypothesis(tmp), false);
 }
 
 TEST(Basic, ManyStudentsSimpleTrue) {
@@ -106,5 +106,5 @@ TEST(Basic, ManyStudentsSimpleFalse) {
     // False because 500 > 499 (104 score), but 0 < 499 (170 score)
     tmp.emplace_back(500, 0);
 
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
+    ASSERT_EQ(FatalistHypothesis(tmp), false);
 }
