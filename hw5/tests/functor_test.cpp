@@ -6,101 +6,78 @@
 
 using namespace std;
 
-TEST(NumStrComp, Simple) {
-  NumStrComp comp;
+class NumStrCompTest : public ::testing::Test {
+protected:
+    NumStrComp comp;
+    string s1, s2;
+};
 
-  string s1 = "1";
-  string s2 = "2";
+class NumStrCompTestTrue: public NumStrCompTest {
+protected:
+    void TearDown() {
+      EXPECT_TRUE(comp(s1, s2));
+    }
+};
 
-  EXPECT_TRUE(comp(s1, s2) == true);
+class NumStrCompTestFalse: public NumStrCompTest {
+protected:
+    void TearDown() {
+      EXPECT_TRUE(!comp(s1, s2));
+    }
+};
+
+TEST_F(NumStrCompTestTrue, Simple) {
+  s1 = "1";
+  s2 = "2";
 }
 
-TEST(NumStrComp, SimpleTwo) {
-  NumStrComp comp;
-
-  string s1 = "111";
-  string s2 = "222";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTestTrue, SimpleTwo) {
+  s1 = "111";
+  s2 = "222";
 }
 
-TEST(NumStrComp, SimpleAlphabet) {
-  NumStrComp comp;
+TEST_F(NumStrCompTestTrue, SimpleAlphabet) {
+  s1 = "A";
+  s2 = "B";
 
-  string s1 = "A";
-  string s2 = "B";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
 }
 
-TEST(NumStrComp, SimpleAlphabetFalse) {
-  NumStrComp comp;
-
-  string s1 = "B";
-  string s2 = "A";
-
-  EXPECT_TRUE(comp(s1, s2) == false);
+TEST_F(NumStrCompTestFalse, SimpleAlphabetFalse) {
+  s1 = "B";
+  s2 = "A";
 }
 
-TEST(NumStrComp, ComplexAlphabet) {
-  NumStrComp comp;
-
-  string s1 = "ABBABAFHWEFWHWEF";
-  string s2 = "ZZZZZZZZZZZZZZZZ";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTestTrue, ComplexAlphabet) {
+  s1 = "ABBABAFHWEFWHWEF";
+  s2 = "ZZZZZZZZZZZZZZZZ";
 }
 
-TEST(NumStrComp, ComplexAlphabetFalse) {
-  NumStrComp comp;
-
-  string s1 = "ZZZZZZZZZZZZZZZZ";
-  string s2 = "ABBABAFHWEFWHWEF";
-
-  EXPECT_TRUE(comp(s1, s2) == false);
+TEST_F(NumStrCompTestTrue, ComplexAlphabetFalse) {
+  s1 = "ZZZZZZZZZZZZZZZZ";
+  s2 = "ABBABAFHWEFWHWEF";
 }
 
-TEST(NumStrComp, LowerCase) {
-  NumStrComp comp;
-
-  string s1 = "aaa";
-  string s2 = "ddd";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTestTrue, LowerCase) {
+  s1 = "aaa";
+  s2 = "ddd";
 }
 
-TEST(NumStrComp, MixedCase) {
-  NumStrComp comp;
-
-  string s1 = "AaBbCcDd";
-  string s2 = "AaBbCcDda";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTestTrue, MixedCase) {
+  s1 = "AaBbCcDd";
+  s2 = "AaBbCcDda";
 }
 
-TEST(NumStrComp, OtherSymbols) {
-  NumStrComp comp;
-
-  string s1 = "!.[]{}\\~`===`==``=`..,,--.,Z-,--,--.";
-  string s2 = "Y2";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTest, OtherSymbols) {
+  s1 = "!.[]{}\\~`===`==``=`..,,--.,Z-,--,--.";
+  s2 = "Y2";
 }
 
-TEST(NumStrComp, MixedCaseAlphanumeric) {
-  NumStrComp comp;
-
-  string s1 = "Z";
-  string s2 = "Y2";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTest, MixedCaseAlphanumeric) {
+  s1 = "Z";
+  s2 = "Y2";
 }
 
-TEST(NumStrComp, MixedCaseAlphanumericTwo) {
-  NumStrComp comp;
-
-  string s1 = "A1aBb4C7cDd2";
-  string s2 = "A2aBb4C8cDdb1";
-
-  EXPECT_TRUE(comp(s1, s2) == true);
+TEST_F(NumStrCompTest, MixedCaseAlphanumericTwo) {
+  s1 = "A1aBb4C7cDd2";
+  s2 = "A2aBb4C8cDdb1";
 }

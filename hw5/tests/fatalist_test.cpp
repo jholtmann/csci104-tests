@@ -6,105 +6,94 @@
 
 using namespace std;
 
-TEST (Fatalist, SimpleTest) {
+/*** Test Fixture ***/
+// Base class; no default assertion run at end
+class FatalistTest : public ::testing::Test {
+protected:
+    vector<pair<int,int>> tmp;
+};
+
+// Use this if expect true
+class FatalistTestTrue : public FatalistTest {
+protected:
+    void TearDown() {
+        EXPECT_TRUE(FatalistHypothesis(tmp) == true);
+    }
+};
+
+// Use this if expect false
+class FatalistTestFalse : public FatalistTest {
+protected:
+    void TearDown() {
+        EXPECT_TRUE(FatalistHypothesis(tmp) == false);
+    }
+};
+
+/*** Test Definitions ***/
+TEST_F (FatalistTestTrue, SimpleTest) {
   vector<pair<int, int>> test;
-  test.push_back(make_pair(50,90));
-  test.push_back(make_pair(30,20));
-  test.push_back(make_pair(30,20));
-
-  EXPECT_TRUE(FatalistHypothesis(test) == true);
+  tmp.emplace_back(50,90);
+  tmp.emplace_back(30,20);
+  tmp.emplace_back(30,20);
 }
 
-TEST (Fatalist, SimpleTestTwo) {
-  vector<pair<int, int>> test;
-  test.push_back(make_pair(50,90));
-  test.push_back(make_pair(30,20));
-  test.push_back(make_pair(29,20));
-
-  EXPECT_TRUE(FatalistHypothesis(test) == true);
+TEST_F (FatalistTestTrue, SimpleTestTwo) {
+  tmp.emplace_back(50,90);
+  tmp.emplace_back(30,20);
+  tmp.emplace_back(29,20);
 }
 
-TEST (Fatalist, Unordered) {
-  vector<pair<int, int>> test;
-  test.push_back(make_pair(28,10));
-  test.push_back(make_pair(90,90));
-  test.push_back(make_pair(29,70));
-
-  EXPECT_TRUE(FatalistHypothesis(test) == true);
+TEST_F (FatalistTestTrue, Unordered) {
+  tmp.emplace_back(28,10);
+  tmp.emplace_back(90,90);
+  tmp.emplace_back(29,70);
 }
 
-TEST(Basic, empty) {
-    std::vector<std::pair<int,int>> tmp;
-
-    ASSERT_EQ(FatalistHypothesis(tmp),false);
+TEST_F(FatalistTestFalse, empty) {
 }
 
-TEST(Basic, TwoStudentsTrue) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestTrue, TwoStudentsTrue) {
     tmp.emplace_back(70, 71);
     tmp.emplace_back(90, 87);
-
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
-TEST(Basic, TwoStudentsTrueClose) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestTrue, TwoStudentsTrueClose) {
     tmp.emplace_back(70, 71);
     tmp.emplace_back(71, 71); // True because 71 >= 71
-
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
-TEST(Basic, TwoStudentsFalse) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestFalse, TwoStudentsFalse) {
     tmp.emplace_back(70, 71);
     tmp.emplace_back(52, 87); // False because 52 < 70
-
-    ASSERT_EQ(FatalistHypothesis(tmp), false);
 }
 
-TEST(Basic, TwoStudentsSame) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestTrue, TwoStudentsSame) {
     tmp.emplace_back(69, 69);
     tmp.emplace_back(69, 69);
-
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
-TEST(Basic, ThreeStudentsTrue) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestTrue, ThreeStudentsTrue) {
     tmp.emplace_back(70, 70);
     tmp.emplace_back(80, 80);
     tmp.emplace_back(90, 90);
-
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
-TEST(Basic, ThreeStudentsFalse) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestFalse, ThreeStudentsFalse) {
     tmp.emplace_back(70, 70);
     tmp.emplace_back(80, 80);
     tmp.emplace_back(90, 79); // False because 79 < 80
-
-    ASSERT_EQ(FatalistHypothesis(tmp), false);
 }
 
-TEST(Basic, ManyStudentsSimpleTrue) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestTrue, ManyStudentsSimpleTrue) {
     for(int i=0;i < 1000;i++) {
         tmp.emplace_back(i, i);
     }
-
-    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
-TEST(Basic, ManyStudentsSimpleFalse) {
-    std::vector<std::pair<int,int>> tmp;
+TEST_F(FatalistTestFalse, ManyStudentsSimpleFalse) {
     for(int i=0;i < 1000;i++) {
         tmp.emplace_back(i, i);
     }
     // False because 500 > 499 (104 score), but 0 < 499 (170 score)
     tmp.emplace_back(500, 0);
-
-    ASSERT_EQ(FatalistHypothesis(tmp), false);
 }
