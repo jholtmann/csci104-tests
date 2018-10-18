@@ -76,7 +76,7 @@ TEST(Basic, ManyStudentsSimpleTrue) {
 
 TEST(Basic, ManyStudentsSimpleFalse) {
     std::vector<std::pair<int,int>> tmp;
-    for(int i=0;i < 100;i++) {
+    for(int i=0;i < 1000;i++) {
         tmp.emplace_back(i, i);
     }
     // False because 500 > 499 (104 score), but 0 < 499 (170 score)
