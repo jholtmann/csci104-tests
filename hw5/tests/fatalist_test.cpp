@@ -68,7 +68,7 @@ TEST(Basic, TwoStudentsSame) {
     tmp.emplace_back(69, 69);
     tmp.emplace_back(69, 69);
 
-    ASSERT_EQ(FatalistHypothesis(tmp), false);
+    ASSERT_EQ(FatalistHypothesis(tmp), true);
 }
 
 TEST(Basic, ThreeStudentsTrue) {
