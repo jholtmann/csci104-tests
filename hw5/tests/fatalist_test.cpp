@@ -8,7 +8,7 @@ using namespace std;
 
 /*** Test Fixture ***/
 // Base class; no default assertion run at end
-class FatalistTest : public ::testing:Test {
+class FatalistTest : public ::testing::Test {
 protected:
     vector<pair<int,int>> tmp;
 };
