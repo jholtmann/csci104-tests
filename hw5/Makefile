@@ -33,7 +33,6 @@ fatalist-test: $(TEST_DIR)/fatalist_test.cpp
 ###########################################
 
 clean:
-	rm -rf *.o
 	rm $(TEST_DIR)/merge-test
 	rm $(TEST_DIR)/functor-test
 	rm $(TEST_DIR)/fatalist-test
