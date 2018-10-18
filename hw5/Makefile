@@ -3,9 +3,6 @@ CPPFLAGS = -g -std=c++11 -Wall
 
 TEST_DIR = tests
 
-SRC_FILES = $(wildcard *.cpp)
-OBJ_FILES = $(patsubst %.cpp, %.o, $(SRC_FILES))
-
 GTEST_LL = -I /usr/include/gtest/ -l gtest -l gtest_main -pthread
 UTILS = $(TEST_DIR)/utils/runtime_evaluator.cpp $(TEST_DIR)/utils/random_generator.cpp
 
