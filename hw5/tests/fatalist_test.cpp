@@ -12,7 +12,7 @@ TEST (Fatalist, SimpleTest) {
   test.push_back(make_pair(30,20));
   test.push_back(make_pair(30,20));
 
-  EXPECT_TRUE(FatalistHypothesis(test) == 1);
+  EXPECT_TRUE(FatalistHypothesis(test) == true);
 }
 
 TEST (Fatalist, SimpleTestTwo) {
@@ -21,7 +21,7 @@ TEST (Fatalist, SimpleTestTwo) {
   test.push_back(make_pair(30,20));
   test.push_back(make_pair(29,20));
 
-  EXPECT_TRUE(FatalistHypothesis(test) == 0);
+  EXPECT_TRUE(FatalistHypothesis(test) == true);
 }
 
 TEST (Fatalist, Unordered) {
@@ -30,7 +30,7 @@ TEST (Fatalist, Unordered) {
   test.push_back(make_pair(90,90));
   test.push_back(make_pair(29,70));
 
-  EXPECT_TRUE(FatalistHypothesis(test) == 1);
+  EXPECT_TRUE(FatalistHypothesis(test) == true);
 }
 
 TEST(Basic, empty) {

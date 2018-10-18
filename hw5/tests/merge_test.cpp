@@ -111,6 +111,7 @@ TEST(MergeNumeric, TenElementAllK) {
   NumComp comp;
 
   for (int k = 2; k <= 10; k++) {
+    sortedVec = {1,2,3,4,5,6,7,8,9,10};
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
       EXPECT_EQ(sortedVec[i], vec[i]);
@@ -125,6 +126,7 @@ TEST(MergeNumeric, TenElementAlreadySorted) {
   NumComp comp;
 
   for (int k = 2; k <= 10; k++) {
+    sortedVec = {1,2,3,4,5,6,7,8,9,10};
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
       EXPECT_EQ(sortedVec[i], vec[i]);
@@ -141,6 +143,8 @@ TEST(MergeNumeric, TenElementFiveEqual) {
   NumComp comp;
 
   for (int k = 2; k <= 10; k++) {
+    cout << "Sorting with k=" << k << endl;
+    sortedVec = {5,5,5,5,5,1,1,1,1,1};
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
       EXPECT_EQ(sortedVec[i], vec[i]);
@@ -172,6 +176,7 @@ TEST(MergeAlphaStrComp, SevenElementMixedK) {
   AlphaStrComp alph;
 
   for (int k = 2; k <= 7; k++) {
+    sortedVec = {"xyz", "def", "eee", "abc", "zzz", "aaa", "aab"};
     mergeSort(sortedVec, k, alph);
     for (size_t i = 0; i < vec.size(); i++) {
       EXPECT_EQ(sortedVec[i], vec[i]);
@@ -194,19 +199,40 @@ TEST(MergeLengthStrComp, TwoElementSort) {
   }
 }
 
-TEST(MergeNumericStress, TenThousandElement) {
-  srand(12345);
-  vector<int> vec;
-  for (int i = 0; i < 10000; i++) {
-    vec.push_back(rand());
-  }
+TEST(MergeNumericStress, ThousandElement) {
+  vector<int> vec = makeRandomNumberVector(1000, 0, 2147483646, 12345, true);
   vector<int> sortedVec = vec;
 
   std::sort(vec.begin(), vec.end(), NumComp());
 
   NumComp comp;
 
-  for (int k = 2; k <= 10000; k+=998) {
+  for (int k = 2; k <= 1000; k++) {
+    vec = makeRandomNumberVector(1000, 0, 2147483646, 999999, true);
+    sortedVec = vec;
+    std::sort(vec.begin(), vec.end(), NumComp());
+
+    cout << "Sorting with k=" << k << endl;
+    mergeSort(sortedVec, k, comp);
+    for (size_t i = 0; i < vec.size(); i++) {
+      EXPECT_EQ(sortedVec[i], vec[i]);
+    }
+  }
+}
+
+TEST(MergeNumericStress, TenThousandElement) {
+  vector<int> vec = makeRandomNumberVector(10000, 0, 2147483646, 12345, true);
+  vector<int> sortedVec = vec;
+
+  std::sort(vec.begin(), vec.end(), NumComp());
+
+  NumComp comp;
+
+  for (int k = 2; k <= 10000; k+=33) {
+    vec = makeRandomNumberVector(10000, 0, 2147483646, 999999, true);
+    sortedVec = vec;
+    std::sort(vec.begin(), vec.end(), NumComp());
+
     cout << "Sorting with k=" << k << endl;
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
@@ -216,18 +242,18 @@ TEST(MergeNumericStress, TenThousandElement) {
 }
 
 TEST(MergeNumericStress, HundredThousandElement) {
-  srand(999999);
-  vector<int> vec;
-  for (int i = 0; i < 100000; i++) {
-    vec.push_back(rand());
-  }
+  vector<int> vec = makeRandomNumberVector(100000, 0, 2147483646, 999999, true);
   vector<int> sortedVec = vec;
 
   std::sort(vec.begin(), vec.end(), NumComp());
 
   NumComp comp;
 
-  for (int k = 2; k <= 100000; k+=9998) {
+  for (int k = 2; k <= 100000; k+=5427) {
+    vec = makeRandomNumberVector(100000, 0, 2147483646, 999999, true);
+    sortedVec = vec;
+    std::sort(vec.begin(), vec.end(), NumComp());
+
     cout << "Sorting with k=" << k << endl;
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
