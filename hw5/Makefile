@@ -30,9 +30,14 @@ fatalist-test: $(TEST_DIR)/fatalist_test.cpp
 	$(CC) $(CPPFLAGS) $< $(GTEST_LL) -o $(TEST_DIR)/$@
 	$(VLGR) $(TEST_DIR)/fatalist-test
 
+cave-test: $(TEST_DIR)/cave_test.cpp
+	$(CC) $(CPPFLAGS) $< $(GTEST_LL) -o $(TEST_DIR)/$@
+	$(VLGR) $(TEST_DIR)/cave-test
+
 ###########################################
 
 clean:
 	rm $(TEST_DIR)/merge-test
 	rm $(TEST_DIR)/functor-test
 	rm $(TEST_DIR)/fatalist-test
+	rm $(TEST_DIR)/cave-test
