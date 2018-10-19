@@ -50,13 +50,13 @@ TEST_F(NumStrCompTestTrue, SimpleAlphabet) {
 }
 
 TEST_F(NumStrCompTestTrue, mixedClose1) {
-  s1 = "111111111";
-  s2 = "A";
+  s1 = "1";
+  s2 = "Ao";
 }
 
 TEST_F(NumStrCompTestFalse, mixedClose2) {
   s1 = "A";
-  s2 = "11111111111";
+  s2 = "1111111111";
 }
 
 TEST_F(NumStrCompTestFalse, SimpleAlphabetFalse) {
@@ -101,7 +101,7 @@ TEST_F(NumStrCompTestTrue, MixedCaseAlphanumericTwo) {
 
 TEST_F(NumStrCompTestTie, MixedCaseAlphanumericShuffleSame) {
   s1 = "IAmMadScientist7";
-  s2 = "imad7scientist";
+  s2 = "imadam7scientist";
 }
 
 TEST_F(NumStrCompTestTie, MixedCaseSame) {
