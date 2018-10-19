@@ -50,8 +50,8 @@ TEST_F(NumStrCompTestTrue, SimpleAlphabet) {
 }
 
 TEST_F(NumStrCompTestTrue, mixedClose1) {
-  s1 = "1";
-  s2 = "Ao";
+  s1 = "9";
+  s2 = "A";
 }
 
 TEST_F(NumStrCompTestFalse, mixedClose2) {
