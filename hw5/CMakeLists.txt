@@ -32,3 +32,9 @@ add_executable(Merge-Test
         tests/merge_test.cpp)
 add_test(Merge-Test Merge-Test)
 target_link_libraries(Merge-Test gtest gtest_main)
+
+add_executable(Cave-Test
+        tests/cave_test.cpp)
+add_test(Cave-Test Cave-Test)
+target_link_libraries(Cave-Test gtest gtest_main)
+

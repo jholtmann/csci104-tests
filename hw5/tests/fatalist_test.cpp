@@ -48,7 +48,17 @@ TEST_F (FatalistTestTrue, Unordered) {
   tmp.emplace_back(29,70);
 }
 
-TEST_F(FatalistTestFalse, empty) {
+TEST_F(FatalistTestTrue, empty) {
+  // True because we need to disprove in order for it to be false
+  // tl;dr need counter-example
+}
+
+TEST_F(FatalistTestTrue, OneStudentBoiSame) {
+    tmp.emplace_back(100, 100);
+}
+
+TEST_F(FatalistTestTrue, OneStudentBoiMismatch) {
+    tmp.emplace_back(70, 71);
 }
 
 TEST_F(FatalistTestTrue, TwoStudentsTrue) {
@@ -71,6 +81,11 @@ TEST_F(FatalistTestTrue, TwoStudentsSame) {
     tmp.emplace_back(69, 69);
 }
 
+TEST_F(FatalistTestTrue, TwoStudentsSimilar) {
+    tmp.emplace_back(69, 1337);
+    tmp.emplace_back(69, 420);
+}
+
 TEST_F(FatalistTestTrue, ThreeStudentsTrue) {
     tmp.emplace_back(70, 70);
     tmp.emplace_back(80, 80);
@@ -81,6 +96,18 @@ TEST_F(FatalistTestFalse, ThreeStudentsFalse) {
     tmp.emplace_back(70, 70);
     tmp.emplace_back(80, 80);
     tmp.emplace_back(90, 79); // False because 79 < 80
+}
+
+TEST_F(FatalistTestTrue, ThreeStudentsTwoSameTrue) {
+    tmp.emplace_back(70, 81);
+    tmp.emplace_back(70, 80);
+    tmp.emplace_back(71, 82); 
+}
+
+TEST_F(FatalistTestFalse, ThreeStudentsTwoSameFalse) {
+    tmp.emplace_back(70, 83);
+    tmp.emplace_back(70, 80);
+    tmp.emplace_back(71, 82); // False because 79 < 80
 }
 
 TEST_F(FatalistTestTrue, ManyStudentsSimpleTrue) {
@@ -96,3 +123,18 @@ TEST_F(FatalistTestFalse, ManyStudentsSimpleFalse) {
     // False because 500 > 499 (104 score), but 0 < 499 (170 score)
     tmp.emplace_back(500, 0);
 }
+
+TEST_F(FatalistTestTrue, StressTrue) {
+    for(int i=0;i < 100000;i++) {
+        tmp.emplace_back(i, i);
+    }
+}
+
+TEST_F(FatalistTestFalse, StressFalse) {
+    for(int i=0;i < 100000;i++) {
+        tmp.emplace_back(i, i);
+    }
+    // False because 500 > 499 (104 score), but 0 < 499 (170 score)
+    tmp.emplace_back(500, 0);
+}
+

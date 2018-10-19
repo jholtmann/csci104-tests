@@ -26,6 +26,14 @@ protected:
     }
 };
 
+class NumStrCompTestTie: public NumStrCompTest {
+protected:
+    void TearDown() {
+      // Use standard string comparison
+      EXPECT_EQ(comp(s1,s2),s1 < s2);
+    }
+};
+
 TEST_F(NumStrCompTestTrue, Simple) {
   s1 = "1";
   s2 = "2";
@@ -39,7 +47,16 @@ TEST_F(NumStrCompTestTrue, SimpleTwo) {
 TEST_F(NumStrCompTestTrue, SimpleAlphabet) {
   s1 = "A";
   s2 = "B";
+}
 
+TEST_F(NumStrCompTestTrue, mixedClose1) {
+  s1 = "9";
+  s2 = "A";
+}
+
+TEST_F(NumStrCompTestFalse, mixedClose2) {
+  s1 = "A";
+  s2 = "1111111111";
 }
 
 TEST_F(NumStrCompTestFalse, SimpleAlphabetFalse) {
@@ -81,3 +98,19 @@ TEST_F(NumStrCompTestTrue, MixedCaseAlphanumericTwo) {
   s1 = "A1aBb4C7cDd2";
   s2 = "A2aBb4C8cDdb1";
 }
+
+TEST_F(NumStrCompTestTie, MixedCaseAlphanumericShuffleSame) {
+  s1 = "IAmMadScientist7";
+  s2 = "imadam7scientist";
+}
+
+TEST_F(NumStrCompTestTie, MixedCaseSame) {
+  s1 = "a";
+  s2 = "A";
+}
+
+TEST_F(NumStrCompTestTie, AlphanumericSame) {
+  s1 = "19";
+  s2 = "A";
+}
+
