@@ -111,7 +111,7 @@ TEST(MergeNumeric, TenElementAllK) {
   NumComp comp;
 
   for (int k = 2; k <= 10; k++) {
-    sortedVec = {1,2,3,4,5,6,7,8,9,10};
+    sortedVec = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     mergeSort(sortedVec, k, comp);
     for (size_t i = 0; i < vec.size(); i++) {
       EXPECT_EQ(sortedVec[i], vec[i]);
@@ -124,6 +124,24 @@ TEST(MergeNumeric, TenElementAlreadySorted) {
   vector<int> sortedVec = vec;
 
   NumComp comp;
+
+  for (int k = 2; k <= 10; k++) {
+    sortedVec = {1,2,3,4,5,6,7,8,9,10};
+    mergeSort(sortedVec, k, comp);
+    for (size_t i = 0; i < vec.size(); i++) {
+      EXPECT_EQ(sortedVec[i], vec[i]);
+    }
+  }
+}
+
+
+TEST(MergeNumericReverse, TenElementAllK) {
+  vector<int> vec = {1,2,3,4,5,6,7,8,9,10};
+  vector<int> sortedVec = vec;
+
+  std::sort(vec.begin(), vec.end(), RevNumComp());
+
+  RevNumComp comp;
 
   for (int k = 2; k <= 10; k++) {
     sortedVec = {1,2,3,4,5,6,7,8,9,10};
