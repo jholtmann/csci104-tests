@@ -29,6 +29,7 @@ add_test(Functor-Test Functor-Test)
 target_link_libraries(Functor-Test gtest gtest_main)
 
 add_executable(Merge-Test
+	tests/utils/runtime_evaluator.cpp
         tests/merge_test.cpp)
 add_test(Merge-Test Merge-Test)
 target_link_libraries(Merge-Test gtest gtest_main)
