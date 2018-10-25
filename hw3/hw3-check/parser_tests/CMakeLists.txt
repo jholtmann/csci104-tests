@@ -1,4 +1,3 @@
-
 # add all source files in the current source folder as sources
 file(GLOB STACK_TEST_SOURCES "*.cpp")
 
