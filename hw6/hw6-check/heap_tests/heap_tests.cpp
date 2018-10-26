@@ -13,7 +13,6 @@
 using namespace std;
 
 /*** Test Fixtures ***/
-
 class MinHeapNum : public ::testing::Test {
 protected:
   MinHeap<int>* mh;
@@ -31,7 +30,7 @@ class MinHeapNumParam : public MinHeapNum, public ::testing::WithParamInterface<
 protected:
 };
 
-class MinHeapSort : public ::testing::Test, public ::testing::WithParamInterface<int> {
+class MinHeapSort : public ::testing::TestWithParam<int> {
 protected:
   MinHeap<int>* mh;
   size_t array_size;
