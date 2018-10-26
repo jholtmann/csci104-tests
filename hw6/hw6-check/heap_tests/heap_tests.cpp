@@ -20,18 +20,8 @@ protected:
   }
 };
 
-class MinHeapNumParam : public ::testing::TestWithParam<const int> {
+class MinHeapNumParam : public MinHeapNum, public ::testing::WithParamInterface<const int> {
 protected:
-  MinHeap<int>* mh;
-  int d;
-
-  void SetUp(int d) {
-    mh = new MinHeap<int>(d);
-  }
-
-  virtual void TearDown() {
-    delete mh;
-  }
 };
 
 
