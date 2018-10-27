@@ -7,13 +7,13 @@
 #include <user_code_runner.h>
 #include <kwsys/SystemTools.hxx>
 
-#include "search_utils.h"
+#include "color_utils.h"
 
 using namespace std;
 
 testing::AssertionResult runColor(string & output, string testName, int letters, int rows, int cols, string map) {
 	// set up file structure
-	std::string executablePath = USER_CODE_DIR "/color";
+	std::string executablePath = USER_CODE_DIR "/coloring";
 	std::string testFolder =  TEST_BINARY_DIR "/color_tests/test_files/" + testName;
 	kwsys::SystemTools::MakeDirectory(testFolder);
 	std::string configFilePath = testFolder + "/input.txt";

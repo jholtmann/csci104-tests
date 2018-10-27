@@ -1,19 +1,26 @@
 #include "gtest/gtest.h"
 
-// Base class; no defaults (as of now)
+#include <string>
+#include <sstream>
+#include <vector>
+#include <iostream>
+
+#include "color_utils.h"
+
+using namespace std;
 
 class ColorTest : public ::testing::Test {
 protected:
-  int letter_count;
-  int row_count;
-  int col_count;
-  vector<int> expected;
+  size_t letter_count;
+  size_t row_count;
+  size_t col_count;
+  vector<size_t> expected;
   string map;
   string testName;
 
   string output;
 
-  void SetUp(string testName, string map, int letter_count, int row_count, int col_count, vector<int> expected) {
+  void SetUp(string testName, string map, size_t letter_count, size_t row_count, size_t col_count, vector<size_t> expected) {
     this->testName = testName;
     this->map = map;
     this->letter_count = letter_count;
@@ -23,17 +30,45 @@ protected:
   }
 
   virtual void TearDown() {
-    EXPECT_TRUE(runSearch(output, testName, letter_count, row_count, col_count, map));
+    EXPECT_TRUE(runColor(output, testName, letter_count, row_count, col_count, map));
 
-    // Erase newline characters
-    output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+    stringstream ss;
+    for (size_t i = 0; i < letter_count; i++) {
+      ss << (char)(65 + i) << " " << expected[i] << endl;
+    }
 
-    EXPECT_EQ(stoi(output), expected);
+    EXPECT_TRUE(output.find(ss.str()) != string::npos);
   }
 };
 
+TEST_F(ColorTest, Provided) {
+  string s =  "AAAAAACCCCCCC\n"
+              "AAAAAACCCCCCD\n"
+              "BBBAAACCCCCDD\n"
+              "BBAAAACCEEDDD\n"
+              "BBBBBACDEEEDD\n"
+              "BBBBBBDDDDDDD\n";
+  SetUp("Provided", s, 5, 6, 13, {1, 2, 2, 1, 3});
+}
 
-/*** Test Definitions ***/
-TEST_F (SearchTest, simple) {
+TEST_F(ColorTest, Provided2) {
+  string s =  "FFFFFFFF\n"
+              "FEEEDDDF\n"
+              "FAABBCCF\n"
+              "FFFFFFFF\n";
+  SetUp("Provided2", s, 6, 4, 8, {1, 2, 3, 1, 3, 4});
+}
 
+TEST_F(ColorTest, Provided3) {
+  string s =  "FFFFFFFFFFFFFFF\n"
+              "FFFFFFFFFFFFFFF\n"
+              "FFEEEDDDDDDDDFF\n"
+              "FFEEEDDDDDDDDFF\n"
+              "FFEEEDDDDDDDDFF\n"
+              "FFAABBBBBBCCCFF\n"
+              "FFAABBBBBBCCCFF\n"
+              "FFAABBBBBBCCCFF\n"
+              "FFFFFFFFFFFFFFF\n"
+              "FFFFFFFFFFFFFFF\n";
+  SetUp("Provided2", s, 6, 10, 15, {1, 2, 3, 1, 3, 4});
 }

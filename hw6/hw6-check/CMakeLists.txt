@@ -99,5 +99,5 @@ add_subdirectory(testing_utils)
 # build actual tests
 # ----------------------------------------------------------
 add_subdirectory(search_tests)
-#add_subdirectory(color_tests)
+add_subdirectory(color_tests)
 add_subdirectory(heap_tests)
