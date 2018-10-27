@@ -33,7 +33,7 @@ protected:
     EXPECT_TRUE(runSearch(output, testName, letter_count, row_count, col_count, map));
 
     // Erase newline characters
-    output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+    // output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
 
     EXPECT_EQ(stoi(output), expected);
   }
