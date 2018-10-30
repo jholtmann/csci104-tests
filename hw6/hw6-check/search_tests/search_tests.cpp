@@ -32,9 +32,6 @@ protected:
   virtual void TearDown() {
     EXPECT_TRUE(runSearch(output, testName, letter_count, row_count, col_count, map));
 
-    // Erase newline characters
-    // output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
-
     EXPECT_EQ(stoi(output), expected);
   }
 };
@@ -48,17 +45,6 @@ TEST_F(SearchTest, Provided) {
               "BBBBBBAAAAAAA \n";
 
   SetUp("Provided", s, 3, 6, 13, 21);
-}
-
-TEST_F(SearchTest, AllAs) {
-  string s =  "AAAAAAAAAAAAA \n"
-              "AAAAAAAAAAAAA \n"
-              "AAAAAAAAAAAAA \n"
-              "AAAAAAAAAAAAA \n"
-              "AAAAAAAAAAAAA \n"
-              "AAAAAAAAAAAAA \n";
-
-  SetUp("Provided", s, 1, 6, 13, 78);
 }
 
 TEST_F(SearchTest, Provided2) {
@@ -83,6 +69,17 @@ TEST_F(SearchTest, Provided3) {
                 "FFFFFFFFFFFFFFF\n";
 
   SetUp("Provided3", s, 6, 10, 15, 84);
+}
+
+TEST_F(SearchTest, AllAs) {
+  string s =  "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n";
+
+  SetUp("AllAs", s, 1, 6, 13, 78);
 }
 
 TEST_F(SearchTest, NarrowPath) {
@@ -120,27 +117,27 @@ TEST_F(SearchTest, BorderingAcross) {
 }
 
 TEST_F(SearchTest, Heart) {
-    string s =  "_____8888888888_____________________\n"
-                "____888888888888888_________________\n"
-                "__888888822222228888________________\n"
-                "_88888822222222288888_______________\n"
-                "888888222222222228888822228888______\n"
-                "888882222222222222288222222222888___\n"
-                "8888822222222222222222222222222288__\n"
-                "_8888822222222222222222222222222_88_\n"
-                "__88888222222222222222222222222__888\n"
-                "___888822222222222222222222222___888\n"
-                "____8888222222222222222222222____888\n"
-                "_____8888222222222222222222_____888_\n"
-                "______8882222222222222222_____8888__\n"
-                "_______888822222222222______888888__\n"
-                "________8888882222______88888888____\n"
-                "_________888888_____888888888_______\n"
-                "__________88888888888888____________\n"
-                "___________8888888888_______________\n"
-                "____________8888888_________________\n"
-                "_____________88888__________________\n"
-                "______________888___________________\n"
-                "_______________8____________________\n";
-    SetUp("Heart", s, 4, 22, 36, 224);
+    string s =  "BBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBB\n"
+                "BBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB\n"
+                "BBAAAAAAACCCCCCCAAAABBBBBBBBBBBBBBBB\n"
+                "BAAAAAACCCCCCCCCAAAAABBBBBBBBBBBBBBB\n"
+                "AAAAAACCCCCCCCCCCAAAAACCCCAAAABBBBBB\n"
+                "AAAAACCCCCCCCCCCCCCAACCCCCCCCCAAABBB\n"
+                "AAAAACCCCCCCCCCCCCCCCCCCCCCCCCCCAABB\n"
+                "BAAAAACCCCCCCCCCCCCCCCCCCCCCCCCCBAAB\n"
+                "BBAAAAACCCCCCCCCCCCCCCCCCCCCCCCBBAAA\n"
+                "BBBAAAACCCCCCCCCCCCCCCCCCCCCCCBBBAAA\n"
+                "BBBBAAAACCCCCCCCCCCCCCCCCCCCCBBBBAAA\n"
+                "BBBBBAAAACCCCCCCCCCCCCCCCCCBBBBBAAAB\n"
+                "BBBBBBAAACCCCCCCCCCCCCCCCBBBBBAAAABB\n"
+                "BBBBBBBAAAACCCCCCCCCCCBBBBBBAAAAAABB\n"
+                "BBBBBBBBAAAAAACCCCBBBBBBAAAAAAAABBBB\n"
+                "BBBBBBBBBAAAAAABBBBBAAAAAAAAABBBBBBB\n"
+                "BBBBBBBBBBAAAAAAAAAAAAAABBBBBBBBBBBB\n"
+                "BBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBB\n"
+                "BBBBBBBBBBBBAAAAAAABBBBBBBBBBBBBBBBB\n"
+                "BBBBBBBBBBBBBAAAAABBBBBBBBBBBBBBBBBB\n"
+                "BBBBBBBBBBBBBBAAABBBBBBBBBBBBBBBBBBB\n"
+                "BBBBBBBBBBBBBBBABBBBBBBBBBBBBBBBBBBB\n";
+    SetUp("Heart", s, 3, 22, 36, 224);
 }

@@ -19,6 +19,9 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
 version = "v6.11"
 
+hw = "hw6"
+hwcheck = hw + "-check"
+
 class bcolors:
 	HEADER = '\033[95m'
 	OKBLUE = '\033[94m'
@@ -35,7 +38,7 @@ def print_banner(str):
 	print("########################################################")
 
 def print_credits():
-	print('JTest HW6 ' + version)
+	print('JTest ' + hw.upper() + ' ' + version)
 	print("Author: Jonathan Holtmann")
 	print("Tests by: Jonathan Holtmann, Matthew Treadwell")
 
@@ -181,16 +184,16 @@ def hashFile(file):
 	return md5.hexdigest()
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description='JTest Script - HW6')
+	parser = argparse.ArgumentParser(description='JTest Script - ' + hw.upper())
 	test_args = parser.add_argument_group('test arguments')
 	advanced_args = parser.add_argument_group('advanced arguments')
 
 	parser.add_argument('-s', '--suppress', help='Suppress status messages', action='store_true', required=False, default=False)
 	parser.add_argument('-d', '--debug', help='Enable debug messages', action='store_true', required=False, default=False)
-	parser.add_argument('-v', '--version', action='version', version="JTest HW6 " + version)
+	parser.add_argument('-v', '--version', action='version', version="JTest " + hw.upper() + " " + version)
 	parser.add_argument('--credits', help='Print credits and exit', action='store_true', required=False, default=False)
 
-	test_args.add_argument('-a','--all', help='Run all HW6 test cases', action='store_true', required=False, default=False)
+	test_args.add_argument('-a','--all', help='Run all ' + hw.upper() + ' test cases', action='store_true', required=False, default=False)
 	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["search","color", "heap"], required=False, default="")
 	test_args.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
 	test_args.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
@@ -211,11 +214,11 @@ if __name__ == "__main__":
 		sys.exit()
 
 	if args.testdir == "":
-		if script_path.split(os.sep)[-2] != "hw6":
-			print("jtest: Please place this script in your hw-[yourid]/hw6 directory")
+		if script_path.split(os.sep)[-2] != hw:
+			print("jtest: Please place this script in your hw-[yourid]/" + hw + " directory")
 			sys.exit()
 
-	print_banner("JTest HW6");
+	print_banner("JTest " + hw.upper());
 	print_credits();
 	print("");
 
@@ -249,7 +252,7 @@ if __name__ == "__main__":
 		git_dir = args.gitdir
 
 	if args.testdir == "":
-		test_dir = script_dir + os.sep + "hw6-check"
+		test_dir = script_dir + os.sep + hwcheck
 	else:
 		test_dir = args.testdir
 
@@ -259,7 +262,7 @@ if __name__ == "__main__":
 	force_update = False
 	noupdate = args.noupdate
 
-	git_script = os.path.abspath(git_dir + os.sep + "hw6" + os.sep + "jtest_hw6.py")
+	git_script = os.path.abspath(git_dir + os.sep + hw + os.sep + "jtest_" + hw + ".py")
 
 	if args.uninstall:
 		print("jtest: removing test cases")
@@ -271,9 +274,9 @@ if __name__ == "__main__":
 
 	####################### DEFINE TESTS #######################
 	test_list = dict()
-	test_list["search"] = [os.path.abspath(test_dir + os.sep + "search_tests"), os.path.abspath(git_dir + os.sep + "hw6" + os.sep + "hw6-check" + os.sep + "search_tests" + os.sep + "search_tests.cpp"), "search_test"]
-	test_list["color"] = [os.path.abspath(test_dir + os.sep + "color_tests"), os.path.abspath(git_dir + os.sep + "hw6" + os.sep + "hw6-check" + os.sep + "color_tests" + os.sep + "color_tests.cpp"), "color_test"]
-	test_list["heap"] = [os.path.abspath(test_dir + os.sep + "heap_tests"), os.path.abspath(git_dir + os.sep + "hw6" + os.sep + "hw6-check" + os.sep + "heap_tests" + os.sep + "heap_tests.cpp"), "heap_test"]
+	test_list["search"] = [os.path.abspath(test_dir + os.sep + "search_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "search_tests" + os.sep + "search_tests.cpp"), "search_test"]
+	test_list["color"] = [os.path.abspath(test_dir + os.sep + "color_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "color_tests" + os.sep + "color_tests.cpp"), "color_test"]
+	test_list["heap"] = [os.path.abspath(test_dir + os.sep + "heap_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "heap_tests" + os.sep + "heap_tests.cpp"), "heap_test"]
 	###########################################################
 
 	# check if repo exists
@@ -292,16 +295,16 @@ if __name__ == "__main__":
 		changes = True
 
 	if not suppress: print("jtest: Checking if CMake needs updating")
-	if os.path.isfile(git_dir + os.sep + "hw6" + os.sep + ".jtest"):
-		with open(git_dir + os.sep + "hw6" + os.sep + ".jtest", 'r') as f:
+	if os.path.isfile(git_dir + os.sep + hw + os.sep + ".jtest"):
+		with open(git_dir + os.sep + hw + os.sep + ".jtest", 'r') as f:
 			git_version = f.read().strip('\n')
 			print("jtest: current: %s, git %s" % (version, git_version))
 			if version != git_version:
-				updateCMake(git_dir + os.sep + "hw6" + os.sep + "hw6-check",os.path.abspath(test_dir))
+				updateCMake(git_dir + os.sep + hw + os.sep + hwcheck,os.path.abspath(test_dir))
 				force_update = True
 				noupdate = False
 	if not os.path.isdir(os.path.abspath(test_dir)):
-		updateCMake(git_dir + os.sep + "hw6" + os.sep + "hw6-check",os.path.abspath(test_dir))
+		updateCMake(git_dir + os.sep + hw + os.sep + hwcheck,os.path.abspath(test_dir))
 
 	if not noupdate:
 		if changes or force_update:

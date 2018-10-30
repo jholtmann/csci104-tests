@@ -70,5 +70,26 @@ TEST_F(ColorTest, Provided3) {
               "FFAABBBBBBCCCFF\n"
               "FFFFFFFFFFFFFFF\n"
               "FFFFFFFFFFFFFFF\n";
-  SetUp("Provided2", s, 6, 10, 15, {1, 2, 3, 1, 3, 4});
+  SetUp("Provided3", s, 6, 10, 15, {1, 2, 3, 1, 3, 4});
+}
+
+TEST_F(ColorTest, AllAs) {
+  string s =  "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n"
+              "AAAAAAAAAAAAA \n";
+
+  SetUp("AllAs", s, 1, 6, 13, {1});
+}
+
+TEST_F(ColorTest, NarrowPath) {
+  string s =  "ABCDEFGHIJ\n"
+              "ABCDEFGHIJ\n"
+              "ABCDEFGHIJ\n"
+              "ABCDEFGHIJ\n"
+              "ABCDEFGHIJ\n";
+
+  SetUp("NarrowPath", s, 10, 5, 10, {1,2,1,2,1,2,1,2,1,2});
 }
