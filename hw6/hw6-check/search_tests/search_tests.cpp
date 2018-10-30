@@ -32,7 +32,13 @@ protected:
   virtual void TearDown() {
     EXPECT_TRUE(runSearch(output, testName, letter_count, row_count, col_count, map));
 
-    EXPECT_EQ(stoi(output), expected);
+    try {
+      EXPECT_EQ(stoi(output), expected);
+    } catch (exception& e) {
+      cerr << "Failed to parse output" << endl;
+      cerr << "Your program output: " << output << endl;
+      FAIL();
+    }
   }
 };
 
