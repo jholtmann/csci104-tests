@@ -29,7 +29,7 @@ protected:
     this->expected = expected;
   }
 
-  virtual void TearDown() {
+  virtual void runTest() {
     EXPECT_TRUE(runSearch(output, testName, letter_count, row_count, col_count, map));
 
     try {
@@ -51,6 +51,7 @@ TEST_F(SearchTest, Provided) {
               "BBBBBBAAAAAAA \n";
 
   SetUp("Provided", s, 3, 6, 13, 21);
+  runTest();
 }
 
 TEST_F(SearchTest, Provided2) {
@@ -60,6 +61,7 @@ TEST_F(SearchTest, Provided2) {
               "FFFFFFFF \n";
 
   SetUp("Provided2", s, 6, 4, 8, 20);
+  runTest();
 }
 
 TEST_F(SearchTest, Provided3) {
@@ -75,6 +77,7 @@ TEST_F(SearchTest, Provided3) {
                 "FFFFFFFFFFFFFFF\n";
 
   SetUp("Provided3", s, 6, 10, 15, 84);
+  runTest();
 }
 
 TEST_F(SearchTest, AllAs) {
@@ -86,6 +89,7 @@ TEST_F(SearchTest, AllAs) {
               "AAAAAAAAAAAAA \n";
 
   SetUp("AllAs", s, 1, 6, 13, 78);
+  runTest();
 }
 
 TEST_F(SearchTest, NarrowPath) {
@@ -96,6 +100,7 @@ TEST_F(SearchTest, NarrowPath) {
               "ABACABABAB\n";
 
   SetUp("NarrowPath", s, 3, 5, 10, 11);
+  runTest();
 }
 
 TEST_F(SearchTest, UniqueLetters) {
@@ -103,6 +108,7 @@ TEST_F(SearchTest, UniqueLetters) {
               "KLMNOPQRST \n";
 
   SetUp("UniqueLetters", s, 20, 2, 10, 1);
+  runTest();
 }
 
 TEST_F(SearchTest, TwoByTwo) {
@@ -110,6 +116,7 @@ TEST_F(SearchTest, TwoByTwo) {
               "AB \n";
 
   SetUp("TwoByTwo", s, 3, 2, 2, 2);
+  runTest();
 }
 
 TEST_F(SearchTest, BorderingAcross) {
@@ -120,6 +127,7 @@ TEST_F(SearchTest, BorderingAcross) {
               "BBBBBABACC\n";
 
   SetUp("BorderingAcross", s, 3, 5, 10, 13);
+  runTest();
 }
 
 TEST_F(SearchTest, Heart) {
@@ -145,5 +153,6 @@ TEST_F(SearchTest, Heart) {
                 "BBBBBBBBBBBBBAAAAABBBBBBBBBBBBBBBBBB\n"
                 "BBBBBBBBBBBBBBAAABBBBBBBBBBBBBBBBBBB\n"
                 "BBBBBBBBBBBBBBBABBBBBBBBBBBBBBBBBBBB\n";
-    SetUp("Heart", s, 3, 22, 36, 224);
+  SetUp("Heart", s, 3, 22, 36, 224);
+  runTest();
 }
