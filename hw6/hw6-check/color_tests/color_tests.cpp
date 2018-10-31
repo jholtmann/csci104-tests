@@ -29,7 +29,7 @@ protected:
     this->expected = expected;
   }
 
-  virtual void TearDown() {
+  virtual void runTest() {
     EXPECT_TRUE(runColor(output, testName, letter_count, row_count, col_count, map));
 
     stringstream ss;
@@ -49,6 +49,7 @@ TEST_F(ColorTest, Provided) {
               "BBBBBACDEEEDD\n"
               "BBBBBBDDDDDDD\n";
   SetUp("Provided", s, 5, 6, 13, {1, 2, 2, 1, 3});
+  runTest();
 }
 
 TEST_F(ColorTest, Provided2) {
@@ -57,6 +58,7 @@ TEST_F(ColorTest, Provided2) {
               "FAABBCCF\n"
               "FFFFFFFF\n";
   SetUp("Provided2", s, 6, 4, 8, {1, 2, 3, 1, 3, 4});
+  runTest();
 }
 
 TEST_F(ColorTest, Provided3) {
@@ -71,6 +73,7 @@ TEST_F(ColorTest, Provided3) {
               "FFFFFFFFFFFFFFF\n"
               "FFFFFFFFFFFFFFF\n";
   SetUp("Provided3", s, 6, 10, 15, {1, 2, 3, 1, 3, 4});
+  runTest();
 }
 
 TEST_F(ColorTest, AllAs) {
@@ -82,6 +85,7 @@ TEST_F(ColorTest, AllAs) {
               "AAAAAAAAAAAAA \n";
 
   SetUp("AllAs", s, 1, 6, 13, {1});
+  runTest();
 }
 
 TEST_F(ColorTest, NarrowPath) {
@@ -92,4 +96,5 @@ TEST_F(ColorTest, NarrowPath) {
               "ABCDEFGHIJ\n";
 
   SetUp("NarrowPath", s, 10, 5, 10, {1,2,1,2,1,2,1,2,1,2});
+  runTest();
 }
