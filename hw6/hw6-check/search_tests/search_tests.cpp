@@ -130,6 +130,83 @@ TEST_F(SearchTest, BorderingAcross) {
   runTest();
 }
 
+TEST_F(SearchTest, SingleIsland) {
+  string s = "AAAAABAAAAA\n"
+             "AAAAABAAAAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("SingleIsland", s, 2, 3, 11, 31);
+  runTest();
+}
+
+TEST_F(SearchTest, SingleIsland2) {
+  string s = "AAAAAAAAAAA\n"
+             "AAAAABAAAAA\n"
+             "AAAAABAAAAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("SingleIsland2", s, 2, 4, 11, 42);
+  runTest();
+}
+
+TEST_F(SearchTest, DoubleIsland) {
+  string s = "AAAAAAAAAAA\n"
+             "AAAAABAACAA\n"
+             "AAAAABAACAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("DoubleIsland", s, 3, 4, 11, 40);
+  runTest();
+}
+
+TEST_F(SearchTest, DoubleIsland2) {
+  string s = "AAAAABAACAA\n"
+             "AAAAABAACAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("DoubleIsland2", s, 3, 3, 11, 29);
+  runTest();
+}
+
+TEST_F(SearchTest, TripleIsland) {
+  string s = "AAAAAAAAAAA\n"
+             "AADAABAACAA\n"
+             "AADAABAACAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("TripleIsland", s, 4, 4, 11, 38);
+  runTest();
+}
+
+TEST_F(SearchTest, TripleIsland2) {
+  string s = "AADAABAACAA\n"
+             "AADAABAACAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("TripleIsland2", s, 4, 3, 11, 27);
+  runTest();
+}
+
+TEST_F(SearchTest, LeftFlank) {
+  string s = "BBBBAAAAAAA\n"
+             "BBBBAAAAAAA\n"
+             "BBBBBBBBBBB\n"
+             "BBBBBBBBBBB\n";
+  
+  SetUp("LeftFlank", s, 2, 4, 11, 30);
+  runTest();
+}
+
+TEST_F(SearchTest, RightFlank) {
+  string s = "BBBBBBBAAAA\n"
+             "BBBBBBBAAAA\n"
+             "AAAAAAAAAAA\n"
+             "AAAAAAAAAAA\n";
+  
+  SetUp("RightFlank", s, 2, 4, 11, 30);
+  runTest();
+}
+
 TEST_F(SearchTest, Heart) {
     string s =  "BBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBB\n"
                 "BBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBB\n"

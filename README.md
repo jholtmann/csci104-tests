@@ -4,6 +4,8 @@ This repository contains my student-made test cases for University of Southern C
 **Contributors:**  
 - Jonathan Holtmann
 - Matthew Treadwell
+- Chase Zimmerman
+- Chad Helou
 
 Note that the test skeleton has been adapted from an example one provided by
 the course staff. The libraries and most utilities in the testing_utils folders
