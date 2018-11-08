@@ -17,10 +17,9 @@ template<typename Key, typename Value>
 class BSTTest : public ::testing::Test {
 protected:
   BinarySearchTree<Key, Value>* bst;
-
   vector<pair<Key, Value>> pairs;
 
-  void SetUp() {
+  virtual void SetUp() {
 	   bst = new BinarySearchTree<Key, Value>();
   }
 
@@ -78,13 +77,14 @@ protected:
     }
   }
 
-  void check(const pair<Key,Value> &p) const {
+  void check(const pair<Key, Value> &p) const {
     ASSERT_TRUE(bst->find(p.first) != bst->end());
   }
 
-  void checkRemove(const pair<Key,Value> &p) {
+  void checkRemove(const pair<Key, Value> p) {
     remove(p);
-    ASSERT_TRUE(bst->find(p.first) == bst->end());
+    auto it = bst->find(p.first);
+    ASSERT_TRUE(it == bst->end());
   }
 };
 
@@ -99,6 +99,43 @@ protected:
     pairs.push_back(p);
     bst->insert(p);
     return pairs.back();
+  }
+};
+
+// Test fixture for BSTSort
+class BSTSort : public ::testing::TestWithParam<int>  {
+protected:
+  BinarySearchTree<int, int>* bst;
+  vector<pair<int, int>> pairs;
+
+  void runTest(size_t array_size, bool remove = false) {
+    bst = new BinarySearchTree<int, int>();
+
+    // cout << "Sorting array of size: " << array_size << endl;
+
+    vector<int> vec = makeRandomNumberVector(array_size, 0, 2147483646, 1, false);
+    vector<int> vec2 = makeRandomNumberVector(array_size, 0, 2147483646, 1, true);
+
+  	for (size_t i = 0; i < vec.size(); i++) {
+      pairs.push_back(make_pair(vec[i], vec2[i]));
+  	  bst->insert(pairs.back());
+  	}
+
+    std::sort(pairs.begin(), pairs.end());
+
+    size_t i = 0;
+    for (auto &p : *bst) {
+      ASSERT_EQ(p.first, pairs[i].first);
+      ASSERT_EQ(p.second, pairs[i].second);
+
+      if (remove) {
+        bst->remove(p.first);
+      }
+
+      i++;
+    }
+
+    delete bst;
   }
 };
 
@@ -136,7 +173,38 @@ TEST_F(BSTTestIntStr, AddFiveItems) {
   check(insert(make_pair(11, "def")));
 }
 
-TEST_F(BSTTestInt, AddFiveRemoveFive) {
+TEST_F(BSTTestInt, AddFiveItemsIterate) {
+  insert(20);
+  insert(10);
+  insert(30);
+  insert(9);
+  insert(11);
+
+  sort(pairs.begin(), pairs.end());
+
+  size_t i = 0;
+  for (auto key : *bst) {
+    ASSERT_EQ(key, pairs[i]);
+    i++;
+  }
+}
+
+TEST_F(BSTTestInt, AddFiveRemoveRoot) {
+  check(insert(3));
+  check(insert(2));
+  check(insert(1));
+  check(insert(4));
+  check(insert(5));
+
+  checkRemove(findByKey(3));
+
+  check(findByKey(2));
+  check(findByKey(1));
+  check(findByKey(4));
+  check(findByKey(5));
+}
+
+TEST_F(BSTTestInt, AddRemoveFive) {
   check(insert(3));
   check(insert(2));
   check(insert(1));
@@ -146,4 +214,14 @@ TEST_F(BSTTestInt, AddFiveRemoveFive) {
   for (int i = 5; i > 0; i--) {
     checkRemove(findByKey(i));
   }
+}
+
+INSTANTIATE_TEST_CASE_P(BSTSortNItems, BSTSort, ::testing::Range(10, 10010, 100));
+
+TEST_P(BSTSort, StressSort) {
+  runTest(GetParam());
+}
+
+TEST_P(BSTSort, StressSortRemove) {
+  runTest(GetParam(), true);
 }

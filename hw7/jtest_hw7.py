@@ -17,7 +17,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v7.0"
+version = "v7.1"
 
 hw = "hw7"
 hwcheck = hw + "-check"
