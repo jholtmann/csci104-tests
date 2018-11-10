@@ -17,7 +17,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v7.1"
+version = "v7.12"
 
 hw = "hw7"
 hwcheck = hw + "-check"
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 	parser.add_argument('--credits', help='Print credits and exit', action='store_true', required=False, default=False)
 
 	test_args.add_argument('-a','--all', help='Run all ' + hw.upper() + ' test cases', action='store_true', required=False, default=False)
-	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["bst","avl"], required=False, default="")
+	test_args.add_argument('-t','--test', help='Runs individual test case', choices=["bst","rotate","avl"], required=False, default="")
 	test_args.add_argument('-p','--pull', help='Pull test repo only', action='store_true', required=False, default=False)
 	test_args.add_argument('-nv','--novalgr', help="Don't run valgrind on tests", action='store_true', required=False, default=False)
 	test_args.add_argument('-g','--gdb', help="Run gdb on test cases. Helpful for tracing segfaults. Does not run valgrind", action='store_true', required=False, default=False)
@@ -275,7 +275,7 @@ if __name__ == "__main__":
 	####################### DEFINE TESTS #######################
 	test_list = dict()
 	test_list["bst"] = [os.path.abspath(test_dir + os.sep + "bst_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "bst_tests" + os.sep + "bst_tests.cpp"), "bst_test"]
-	# test_list["color"] = [os.path.abspath(test_dir + os.sep + "color_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "color_tests" + os.sep + "color_tests.cpp"), "color_test"]
+	test_list["rotate"] = [os.path.abspath(test_dir + os.sep + "rotate_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "rotate_tests" + os.sep + "rotate_tests.cpp"), "rotate_test"]
 	# test_list["heap"] = [os.path.abspath(test_dir + os.sep + "heap_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "heap_tests" + os.sep + "heap_tests.cpp"), "heap_test"]
 	###########################################################
 

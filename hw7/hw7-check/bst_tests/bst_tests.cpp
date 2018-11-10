@@ -123,17 +123,24 @@ protected:
 
     std::sort(pairs.begin(), pairs.end());
 
-    size_t i = 0;
-    for (auto &p : *bst) {
-      ASSERT_EQ(p.first, pairs[i].first);
-      ASSERT_EQ(p.second, pairs[i].second);
+    if (!remove) {
+      size_t i = 0;
+      for (auto &p : *bst) {
+        ASSERT_EQ(p.first, pairs[i].first);
+        ASSERT_EQ(p.second, pairs[i].second);
+        i++;
+      }
+    } else {
+      for (auto &p : pairs) {
+        auto first = bst->begin();
 
-      if (remove) {
+        ASSERT_EQ(first->first, p.first);
+        ASSERT_EQ(first->second, p.second);
         bst->remove(p.first);
       }
-
-      i++;
     }
+
+
 
     delete bst;
   }

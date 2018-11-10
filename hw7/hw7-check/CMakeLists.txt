@@ -82,3 +82,4 @@ add_subdirectory(testing_utils)
 # build actual tests
 # ----------------------------------------------------------
 add_subdirectory(bst_tests)
+add_subdirectory(rotate_tests)
