@@ -12,6 +12,11 @@
 
 using namespace std;
 
+void waitForEnter() {
+  cout << "> Press Enter to Continue";
+  cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+}
+
 /*** Test Fixtures ***/
 template<typename Key, typename Value>
 class BSTTest : public ::testing::Test {
@@ -140,8 +145,6 @@ protected:
       }
     }
 
-
-
     delete bst;
   }
 };
@@ -178,6 +181,11 @@ TEST_F(BSTTestIntStr, AddFiveItems) {
   check(insert(make_pair(30, "ccc")));
   check(insert(make_pair(9, "abc")));
   check(insert(make_pair(11, "def")));
+}
+
+TEST_F(BSTTestInt, DuplicateKeys) {
+  check(insert(20));
+  check(insert(20));
 }
 
 TEST_F(BSTTestInt, AddFiveItemsIterate) {
@@ -221,6 +229,49 @@ TEST_F(BSTTestInt, AddRemoveFive) {
   for (int i = 5; i > 0; i--) {
     checkRemove(findByKey(i));
   }
+}
+
+TEST_F(BSTTestInt, DirectPredecessor) {
+  check(insert(10));
+  check(insert(8));
+  check(insert(20));
+  check(insert(15));
+  check(insert(13));
+  check(insert(21));
+
+  bst->print();
+
+  cout << "Removing node with key 20" << endl;
+  checkRemove(findByKey(20));
+
+  for (auto &p : pairs) {
+    check(p);
+  }
+
+  bst->print();
+  waitForEnter();
+}
+
+TEST_F(BSTTestInt, IndirectPredecessorLeftChild) {
+  check(insert(1));
+  check(insert(0));
+  check(insert(10));
+  check(insert(2));
+  check(insert(8));
+  check(insert(3));
+  check(insert(11));
+
+  bst->print();
+
+  cout << "Removing node with key 10" << endl;
+  checkRemove(findByKey(10));
+
+  for (auto &p : pairs) {
+    check(p);
+  }
+
+  bst->print();
+  waitForEnter();
 }
 
 INSTANTIATE_TEST_CASE_P(BSTSortNItems, BSTSort, ::testing::Range(10, 10010, 100));

@@ -17,7 +17,7 @@ import hashlib
 repo_url = "https://github.com/jholtmann/csci104-tests"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 script_path = os.path.realpath(__file__)
-version = "v7.12"
+version = "v7.2"
 
 hw = "hw7"
 hwcheck = hw + "-check"
@@ -276,7 +276,7 @@ if __name__ == "__main__":
 	test_list = dict()
 	test_list["bst"] = [os.path.abspath(test_dir + os.sep + "bst_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "bst_tests" + os.sep + "bst_tests.cpp"), "bst_test"]
 	test_list["rotate"] = [os.path.abspath(test_dir + os.sep + "rotate_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "rotate_tests" + os.sep + "rotate_tests.cpp"), "rotate_test"]
-	# test_list["heap"] = [os.path.abspath(test_dir + os.sep + "heap_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "heap_tests" + os.sep + "heap_tests.cpp"), "heap_test"]
+	test_list["avl"] = [os.path.abspath(test_dir + os.sep + "avl_tests"), os.path.abspath(git_dir + os.sep + hw + os.sep + hwcheck + os.sep + "avl_tests" + os.sep + "avl_tests.cpp"), "avl_test"]
 	###########################################################
 
 	# check if repo exists
