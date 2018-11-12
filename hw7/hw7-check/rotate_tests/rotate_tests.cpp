@@ -8,6 +8,7 @@
 #include <utility>
 #include <cstdlib>
 #include <climits>
+#include <sstream>
 
 #include <cassert>
 
@@ -37,7 +38,7 @@ protected:
 class RotateInt : public RotateBSTTest<int, int> {};
 
 // Test fixture for BSTSort
-class SameKeys : public ::testing::TestWithParam<int>  {
+class RotateMass : public ::testing::TestWithParam<int>  {
 protected:
   rotateBST<int, int>* rst;
   rotateBST<int, int>* rst2;
@@ -72,21 +73,55 @@ protected:
     delete rst;
     delete rst2;
   }
-};
 
-class RotateIntTransform : public SameKeys {
-protected:
-  void print() {
-    rst->print();
-    rst2->print();
+  streambuf* beginCapture(stringstream &ss) {
+    streambuf *sbuf = cout.rdbuf();
+    cout.rdbuf(ss.rdbuf());
+
+    return sbuf;
+  }
+
+  void endCapture(streambuf* sbuf) {
+    cout.rdbuf(sbuf);
+  }
+
+  string treeToString(BinarySearchTree<int, int>* bst) {
+    stringstream output;
+    streambuf* buf = beginCapture(output);
+
+    bst->print();
+
+    endCapture(buf);
+
+    return output.str();
+  }
+
+  void compareTrees(BinarySearchTree<int, int>* bst1, BinarySearchTree<int, int>* bst2) {
+    string expected = treeToString(bst1);
+    string result = treeToString(bst2);
+
+    // Hack to keep google test from printign expected/got output
+    // If there is time, this can be done better with a custom TestEventListener
+    if (result != expected) {
+      EXPECT_TRUE(false);
+    }
+
+    if (::testing::Test::HasFailure()) {
+      cout << "EXPECTED:" << endl;
+      cout << expected;
+      cout << endl << "GOT: " << endl;
+      cout << result << endl;
+    }
   }
 };
 
+class RotateIntTransform : public RotateMass {};
+
 TEST_F(RotateInt, Create) {}
 
-INSTANTIATE_TEST_CASE_P(ManualTransform, RotateIntTransform, ::testing::Range(5, 45, 10));
+INSTANTIATE_TEST_CASE_P(Transform, RotateIntTransform, ::testing::Range(5, 145, 5));
 
-TEST_P(RotateIntTransform, Manual) {
+TEST_P(RotateIntTransform, LimitedTransform) {
   runTest(GetParam(), 12345);
 
   rst->transform(*rst2);
@@ -94,46 +129,16 @@ TEST_P(RotateIntTransform, Manual) {
   ASSERT_TRUE(rst->sameKeys(*rst2));
   ASSERT_TRUE(rst2->sameKeys(*rst));
 
-  print();
-  cout << "Please verify the two graphs are identical" << endl;
-  waitForEnter();
+  compareTrees(rst, rst2);
 }
 
-TEST_P(RotateIntTransform, ManualTwo) {
-  runTest(GetParam(), 1);
+INSTANTIATE_TEST_CASE_P(RotateBSTTestSameKeys, RotateMass, ::testing::Range(10, 10000, 101));
 
-  rst->transform(*rst2);
-
-  ASSERT_TRUE(rst->sameKeys(*rst2));
-  ASSERT_TRUE(rst2->sameKeys(*rst));
-
-  print();
-  cout << "Please verify the two graphs are identical" << endl;
-  waitForEnter();
-}
-
-TEST_P(RotateIntTransform, ManualThree) {
-  runTest(GetParam(), 99999);
-
-  rst->transform(*rst2);
-
-  ASSERT_TRUE(rst->sameKeys(*rst2));
-  ASSERT_TRUE(rst2->sameKeys(*rst));
-
-  print();
-  cout << "Please verify the two graphs are identical" << endl;
-  waitForEnter();
-}
-
-INSTANTIATE_TEST_CASE_P(RotateBSTTestSameKeys, SameKeys, ::testing::Range(10, 10010, 200));
-
-TEST_P(SameKeys, SameKeysMass) {
+TEST_P(RotateMass, MassSameKeys) {
   runTest(GetParam(), 12345);
 }
 
-TEST_P(SameKeys, SameKeysTransform) {
-  cout << "Running transform with array size: " << GetParam() << endl;
-
+TEST_P(RotateMass, MassTransform) {
   runTest(GetParam(), 12345);
 
   rst->transform(*rst2);
@@ -146,4 +151,6 @@ TEST_P(SameKeys, SameKeysTransform) {
     ++it;
     ++it2;
   }
+
+  compareTrees(rst, rst2);
 }
