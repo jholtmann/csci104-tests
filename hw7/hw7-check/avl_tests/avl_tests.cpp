@@ -238,6 +238,8 @@ TEST_F(AVLTestInt, ZigZigLarge) {
     checkInsert(i);
   }
 
+  ASSERT_TRUE(avl->isBalanced());
+
   avl->print();
   waitForEnter();
 }
@@ -299,9 +301,10 @@ TEST_F(AVLTestInt, TwoChildRemoveUnbalanced) {
 
   checkRemove(findByKey(15));
 
-  // for (auto &p : pairs) {
-  //   check(p);
-  // }
+  for (auto &p : pairs) {
+    check(p);
+  }
 
+  ASSERT_TRUE(avl->isBalanced());
   compareTrees({10, 5, 16, 1, 7, 12, 17}, avl);
 }

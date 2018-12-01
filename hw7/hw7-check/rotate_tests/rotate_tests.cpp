@@ -132,14 +132,25 @@ TEST_P(RotateIntTransform, LimitedTransform) {
   compareTrees(rst, rst2);
 }
 
+TEST(TranformFalse, One) {
+  rotateBST<int, int> rst;
+  rotateBST<int, int> rst2;
+
+  rst.insert(make_pair(1, 1));
+  rst2.insert(make_pair(2, 2));
+
+  ASSERT_TRUE(!rst.sameKeys(rst2));
+  ASSERT_TRUE(!rst2.sameKeys(rst));
+}
+
 INSTANTIATE_TEST_CASE_P(RotateBSTTestSameKeys, RotateMass, ::testing::Range(10, 10000, 101));
 
 TEST_P(RotateMass, MassSameKeys) {
-  runTest(GetParam(), 12345);
+  runTest(GetParam(), 12345 + GetParam());
 }
 
 TEST_P(RotateMass, MassTransform) {
-  runTest(GetParam(), 12345);
+  runTest(GetParam(), 12345 + GetParam());
 
   rst->transform(*rst2);
 
@@ -151,6 +162,9 @@ TEST_P(RotateMass, MassTransform) {
     ++it;
     ++it2;
   }
+
+  ASSERT_TRUE(rst->sameKeys(*rst));
+  ASSERT_TRUE(rst2->sameKeys(*rst2));
 
   compareTrees(rst, rst2);
 }
